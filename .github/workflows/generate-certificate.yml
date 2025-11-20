@@ -9,28 +9,23 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Generate Certificate Signing Request
         run: |
-          # Generate private key and CSR
           openssl genrsa -out ios_distribution.key 2048
-          
           openssl req -new -key ios_distribution.key \
             -out CertificateSigningRequest.certSigningRequest \
             -subj "/emailAddress=hello@windaily.ca/CN=Christine Izere/C=CA"
-          
-          echo "✅ CSR Generated successfully!"
+          echo "✅ CSR Generated!"
           
       - name: Display CSR
         run: |
-          echo "📋 Your Certificate Signing Request (CSR):"
-          echo "=========================================="
+          echo "📋 Your Certificate Signing Request:"
           cat CertificateSigningRequest.certSigningRequest
-          echo "=========================================="
           
       - name: Upload CSR as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-certificate-files
           path: |
