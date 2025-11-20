@@ -1,0 +1,38 @@
+name: Generate iOS Certificate
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-certificate:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Generate Certificate Signing Request
+        run: |
+          # Generate private key and CSR
+          openssl genrsa -out ios_distribution.key 2048
+          
+          openssl req -new -key ios_distribution.key \
+            -out CertificateSigningRequest.certSigningRequest \
+            -subj "/emailAddress=hello@windaily.ca/CN=Christine Izere/C=CA"
+          
+          echo "✅ CSR Generated successfully!"
+          
+      - name: Display CSR
+        run: |
+          echo "📋 Your Certificate Signing Request (CSR):"
+          echo "=========================================="
+          cat CertificateSigningRequest.certSigningRequest
+          echo "=========================================="
+          
+      - name: Upload CSR as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-certificate-files
+          path: |
+            CertificateSigningRequest.certSigningRequest
+            ios_distribution.key
