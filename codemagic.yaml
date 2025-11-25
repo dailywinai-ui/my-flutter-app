@@ -3,54 +3,53 @@ workflows:
     name: iOS Workflow
     max_build_duration: 120
     instance_type: mac_mini_m1
+
     integrations:
       app_store_connect: codemagicfresh
+
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: ca.windaily.app
-      vars:
-        XCODE_WORKSPACE: "ios/Runner.xcworkspace"
-        XCODE_SCHEME: "Runner"
       flutter: stable
       xcode: latest
       cocoapods: default
+
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: ca.windaily.app
+
+      vars:
+        XCODE_WORKSPACE: "ios/Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
+
     scripts:
-      - name: Set up code signing settings on Xcode project
-        script: |
-          xcode-project use-profiles
-      - name: Increment build number
-        script: |
-          cd ios
-          agvtool new-version -all $(($(agvtool what-version -terse) + 1))
-          cd ..
       - name: Get Flutter packages
         script: |
           flutter packages pub get
-      - name: Install pods
+
+      - name: Install CocoaPods
         script: |
           find . -name "Podfile" -execdir pod install \;
-      - name: Flutter build
+
+      - name: Build IPA with auto-incremented build number
         script: |
-          flutter build ios --release --no-codesign
-      - name: Build IPA with Xcode
-        script: |
-          xcode-project build-ipa \
-            --workspace ios/Runner.xcworkspace \
-            --scheme Runner \
-            --archive-flags="-destination 'generic/platform=iOS'" \
-            --export-options-plist /Users/builder/export_options.plist
+          echo "PROJECT_BUILD_NUMBER from Codemagic: $PROJECT_BUILD_NUMBER"
+          NEXT_BUILD_NUMBER=$(($PROJECT_BUILD_NUMBER + 1))
+          echo "Using NEXT_BUILD_NUMBER=$NEXT_BUILD_NUMBER"
+
+          flutter build ipa --release \
+            --build-name=1.0.$NEXT_BUILD_NUMBER \
+            --build-number=$NEXT_BUILD_NUMBER
+
     artifacts:
       - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
+
     publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false
       email:
         recipients:
           - hello@windaily.ca
         notify:
           success: true
           failure: true
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
-        submit_to_app_store: false
