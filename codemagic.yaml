@@ -31,14 +31,15 @@ workflows:
           BUILD_NUMBER=$(($(app-store-connect get-latest-testflight-build-number "$APP_ID") + 1))
           echo "Setting build number to $BUILD_NUMBER"
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/Runner/Info.plist
+      - name: Generate Flutter xcconfig files
+        script: |
+          flutter build ios --config-only --release
       - name: Build IPA
         script: |
-          set -x  # Enable verbose output
           xcode-project build-ipa \
             --workspace ios/Runner.xcworkspace \
             --scheme Runner \
-            --archive-flags="-destination 'generic/platform=iOS'" \
-            --verbose
+            --config "Release"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
