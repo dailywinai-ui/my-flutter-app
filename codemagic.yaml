@@ -19,6 +19,11 @@ workflows:
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles
+      - name: Increment build number
+        script: |
+          cd ios
+          agvtool new-version -all $(($(agvtool what-version -terse) + 1))
+          cd ..
       - name: Get Flutter packages
         script: |
           flutter packages pub get
