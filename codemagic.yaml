@@ -13,6 +13,8 @@ workflows:
         XCODE_WORKSPACE: "ios/Runner.xcworkspace"
         XCODE_SCHEME: "Runner"
         APP_ID: 6755403321
+        SUPABASE_URL: "https://vmjcsflnqoqqvlmqnnyk.supabase.co"
+        SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtamNzZmxucW9xcXZsbXFubnlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1NjUzNDcsImV4cCI6MjA3NDE0MTM0N30.n5kHPhFjIBXic3pIHSk7sVa1xpzHfEYH5kpgTqMNu58"
       flutter: stable
       xcode: latest
       cocoapods: default
@@ -33,7 +35,9 @@ workflows:
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/Runner/Info.plist
       - name: Generate Flutter xcconfig files
         script: |
-          flutter build ios --config-only --release
+          flutter build ios --config-only --release \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
       - name: Build IPA
         script: |
           xcode-project build-ipa \
