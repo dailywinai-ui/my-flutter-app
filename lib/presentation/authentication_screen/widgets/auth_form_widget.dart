@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../core/app_export.dart';
 import '../../../theme/wddl_design_system.dart';
@@ -94,11 +93,9 @@ class _AuthFormWidgetState extends State<AuthFormWidget>
     // Dismiss keyboard
     FocusScope.of(context).unfocus();
 
-    // Button scale animation and haptic feedback
     _buttonController.forward().then((_) {
       _buttonController.reverse();
     });
-    HapticFeedback.mediumImpact();
 
     widget.onSignIn(
       _emailController.text.trim().toLowerCase(),

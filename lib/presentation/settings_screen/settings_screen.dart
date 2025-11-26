@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../core/app_export.dart';
 import '../../services/auth_service.dart';
@@ -84,8 +83,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     });
     _saveSettings();
 
-    // Provide haptic feedback
-    HapticFeedback.lightImpact();
   }
 
   Future<void> _onTimeChanged(TimeOfDay? time) async {
@@ -467,8 +464,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                   // Sign out using AuthService (AuthWrapper will handle navigation automatically)
                   await AuthService.instance.signOut();
 
-                  // Provide haptic feedback
-                  HapticFeedback.lightImpact();
 
                   // Remove manual navigation - let AuthWrapper handle it
                   // The auth state change will automatically redirect to authentication screen
@@ -529,7 +524,6 @@ class _SettingsScreenState extends State<SettingsScreen>
               size: 16,
             ),
             onTap: () {
-              HapticFeedback.lightImpact();
               // Open app store for rating
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
