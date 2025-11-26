@@ -16,16 +16,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Supabase
+  bool supabaseInitialized = false;
   try {
     await SupabaseService.initialize();
+    supabaseInitialized = true;
     debugPrint('✅ Supabase initialized successfully');
   } catch (e) {
     debugPrint('❌ Failed to initialize Supabase: $e');
     // Continue with the app even if Supabase fails to initialize
   }
 
-  // Set up deep link listener for password recovery
-  _setupDeepLinkListener();
+  // Set up deep link listener ONLY if Supabase initialized successfully
+  if (supabaseInitialized) {
+    _setupDeepLinkListener();
+  }
 
   bool _hasShownError = false;
 
@@ -134,8 +138,7 @@ class _MyAppState extends State<MyApp> {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.light,
-          navigatorKey: navigatorKey, // ← ADDED: Navigator key for deep links
-          // 🚨 CRITICAL: NEVER REMOVE OR MODIFY
+          navigatorKey: navigatorKey,
           builder: (context, child) {
             return MediaQuery(
               data: MediaQuery.of(
@@ -144,7 +147,6 @@ class _MyAppState extends State<MyApp> {
               child: child!,
             );
           },
-          // 🚨 END CRITICAL SECTION
           debugShowCheckedModeBanner: false,
           routes: AppRoutes.routes,
           initialRoute: _initialRoute,
