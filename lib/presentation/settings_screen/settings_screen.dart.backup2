@@ -12,7 +12,6 @@ import './widgets/about_section_widget.dart';
 import './widgets/data_management_widget.dart';
 import './widgets/notification_settings_widget.dart';
 import './widgets/theme_selection_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -532,67 +531,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                   duration: Duration(seconds: 2),
                 ),
               );
-            },
-          ),
-          
-          // Divider between Rate and Contact
-          const Divider(height: 24),
-          
-          // Contact Support
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: CustomIconWidget(
-              iconName: 'email',
-              color: WDDLDesignSystem.primary,
-              size: 24,
-            ),
-            title: Text(
-              'Contact Support',
-              style: WDDLDesignSystem.bodyLarge.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: Text(
-              'Get help or send feedback',
-              style: WDDLDesignSystem.body.copyWith(
-                color: WDDLDesignSystem.textSecondary,
-              ),
-            ),
-            trailing: CustomIconWidget(
-              iconName: 'arrow_forward_ios',
-              color: WDDLDesignSystem.secondary,
-              size: 16,
-            ),
-            onTap: () async {
-              final Uri emailUri = Uri(
-                scheme: 'mailto',
-                path: 'support@windaily.ca',
-                query: 'subject=Win Daily Support Request',
-              );
-              
-              try {
-                if (await canLaunchUrl(emailUri)) {
-                  await launchUrl(emailUri);
-                } else {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Could not open email app'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                }
-              } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error: ${e.toString()}'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
             },
           ),
         ],
