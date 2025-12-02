@@ -452,7 +452,10 @@ class _SettingsScreenState extends State<SettingsScreen>
             TextButton(
               onPressed: () async {
                 try {
-                  Navigator.of(context).pop(); // Close dialog first
+                  // Capture navigator before async operations
+                  final navigator = Navigator.of(context);
+                  
+                  navigator.pop(); // Close dialog first
 
                   // Show loading indicator
                   showDialog(
@@ -466,16 +469,12 @@ class _SettingsScreenState extends State<SettingsScreen>
                   // Sign out - AuthWrapper will detect and handle navigation
                   await AuthService.instance.signOut();
                   
-                  // Close loading dialog and navigate to login
-                  if (mounted) {
-                    Navigator.of(context).pop(); // Close loading dialog
-                    
-                    // Navigate to authentication screen and clear stack
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/authentication-screen',
-                      (route) => false,
-                    );
-                  }
+                  // Close loading and navigate using captured navigator
+                  navigator.pop(); // Close loading dialog
+                  navigator.pushNamedAndRemoveUntil(
+                    '/authentication-screen',
+                    (route) => false,
+                  );
 
 
                 } catch (error) {
@@ -582,7 +581,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               
               try {
                 if (await canLaunchUrl(emailUri)) {
-                  await launchUrl(emailUri);
+                  await launchUrl(emailUri, mode: LaunchMode.externalApplication);
                 } else {
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
