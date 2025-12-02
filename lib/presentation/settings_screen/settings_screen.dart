@@ -463,22 +463,21 @@ class _SettingsScreenState extends State<SettingsScreen>
                     ),
                   );
                   
-                  // Sign out
+                  // Sign out - AuthWrapper will detect and handle navigation
                   await AuthService.instance.signOut();
                   
                   // Close loading dialog and navigate to login
                   if (mounted) {
-                    Navigator.of(context).pop(); // Close loading
+                    Navigator.of(context).pop(); // Close loading dialog
                     
-                    // Navigate to authentication screen and clear all routes
+                    // Navigate to authentication screen and clear stack
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       '/authentication-screen',
                       (route) => false,
                     );
                   }
 
-                  // Remove manual navigation - let AuthWrapper handle it
-                  // The auth state change will automatically redirect to authentication screen
+
                 } catch (error) {
                   // Handle logout error
                   if (mounted) {
