@@ -580,23 +580,15 @@ class _SettingsScreenState extends State<SettingsScreen>
               );
               
               try {
-                if (await canLaunchUrl(emailUri)) {
-                  await launchUrl(emailUri, mode: LaunchMode.externalApplication);
-                } else {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Could not open email app'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                }
+                await launchUrl(
+                  emailUri,
+                  mode: LaunchMode.externalApplication,
+                );
               } catch (e) {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error: ${e.toString()}'),
+                      content: Text('Could not open email: ${e.toString()}'),
                       backgroundColor: Colors.red,
                     ),
                   );
