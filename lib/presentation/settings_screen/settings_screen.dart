@@ -455,16 +455,27 @@ class _SettingsScreenState extends State<SettingsScreen>
                   Navigator.of(context).pop(); // Close dialog first
 
                   // Show loading indicator
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Logging out...'),
-                      duration: Duration(seconds: 1),
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const Center(
+                      child: CircularProgressIndicator(),
                     ),
                   );
-
-                  // Sign out using AuthService (AuthWrapper will handle navigation automatically)
+                  
+                  // Sign out
                   await AuthService.instance.signOut();
-
+                  
+                  // Close loading dialog and navigate to login
+                  if (mounted) {
+                    Navigator.of(context).pop(); // Close loading
+                    
+                    // Navigate to authentication screen and clear all routes
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/authentication-screen',
+                      (route) => false,
+                    );
+                  }
 
                   // Remove manual navigation - let AuthWrapper handle it
                   // The auth state change will automatically redirect to authentication screen
