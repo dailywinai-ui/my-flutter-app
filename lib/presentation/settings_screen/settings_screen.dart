@@ -25,7 +25,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     with TickerProviderStateMixin {
   bool _isNotificationEnabled = false; // Default OFF as requested
   TimeOfDay? _notificationTime;
-  CustomThemeMode _selectedTheme = CustomThemeMode.system;
   int _currentBottomNavIndex = 2; // Settings tab
   late AnimationController _fadeAnimationController;
   late Animation<double> _fadeAnimation;
@@ -62,7 +61,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     setState(() {
       _isNotificationEnabled = false; // Default OFF
       _notificationTime = null;
-      _selectedTheme = CustomThemeMode.system;
     });
   }
 
@@ -98,15 +96,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     }
   }
 
-  void _onThemeChanged(CustomThemeMode theme) {
-    setState(() {
-      _selectedTheme = theme;
-    });
-    _saveSettings();
-
-    // Apply theme change immediately
-    // This would typically involve updating the app's theme through a provider
-  }
 
   void _onDataCleared() {
     // Handle data clearing completion
@@ -215,28 +204,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                 ),
 
                 // WDDL section gap between sections
-                SizedBox(height: WDDLDesignSystem.sectionGap),
 
                 // Theme section with WDDL styling
-                Padding(
-                  padding: WDDLDesignSystem.screenPadding,
-                  child: Text(
-                    'Appearance',
-                    style: WDDLDesignSystem.body.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: WDDLDesignSystem.secondary,
-                    ),
-                  ),
-                ),
-                SizedBox(height: WDDLDesignSystem.componentGap),
-                ThemeSelectionWidget(
-                  selectedTheme: _selectedTheme,
-                  onThemeChanged: _onThemeChanged,
-                ),
-
-                // WDDL section gap between sections
-                SizedBox(height: WDDLDesignSystem.sectionGap),
 
                 // Data section
                 Padding(

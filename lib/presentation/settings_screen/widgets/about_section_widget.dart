@@ -107,49 +107,6 @@ class AboutSectionWidget extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.privacyPolicy);
             },
           ),
-
-          Divider(color: theme.dividerColor, thickness: 0.5),
-
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: Container(
-              width: 10.w,
-              height: 10.w,
-              decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: CustomIconWidget(
-                  iconName: 'support_agent',
-                  color: Colors.green,
-                  size: 20,
-                ),
-              ),
-            ),
-            title: Text(
-              'Contact Support',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: Text(
-              'Get help with Win Daily',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.secondary,
-              ),
-            ),
-            trailing: CustomIconWidget(
-              iconName: 'arrow_forward_ios',
-              color: theme.colorScheme.secondary,
-              size: 16,
-            ),
-            onTap: () {
-              HapticFeedback.lightImpact();
-              // Open email client or support form
-              // Implementation would use url_launcher package
-            },
-          ),
         ],
       ),
     );
