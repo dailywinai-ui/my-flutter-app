@@ -11,6 +11,7 @@ import '../presentation/privacy_policy_screen/privacy_policy_screen.dart';
 import '../presentation/reflection_screen/reflection_screen.dart';
 import '../presentation/insights_screen/insights_screen.dart';
 import '../presentation/onboarding_screen/onboarding_intro_screen.dart';
+import '../presentation/welcome_screen/welcome_screen.dart';
 
 class AppRoutes {
   // Splash screen route
@@ -23,6 +24,7 @@ class AppRoutes {
 
   // Onboarding routes
   static const String onboardingIntro = '/onboarding-intro';
+  static const String welcome = '/welcome-screen';
 
   // Main app routes
   static const String winDetail = '/win-detail-screen';
@@ -39,6 +41,7 @@ class AppRoutes {
     authentication: (context) => const AuthenticationScreen(),
     resetPassword: (context) => const ResetPasswordScreen(),
     onboardingIntro: (context) => const OnboardingIntroScreen(),
+    welcome: (context) => const WelcomeScreen(),
     winDetail: (context) => const WinDetailScreen(),
     settings: (context) => const SettingsScreen(),
     today: (context) => const TodayScreen(),

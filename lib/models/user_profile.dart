@@ -1,6 +1,7 @@
 class UserProfile {
   final String id;
   final String email;
+  final String? firstName;
   final DateTime createdAt;
   final DateTime? lastSeenAt;
   final bool notificationEnabled;
@@ -10,6 +11,7 @@ class UserProfile {
   UserProfile({
     required this.id,
     required this.email,
+    this.firstName,
     required this.createdAt,
     this.lastSeenAt,
     required this.notificationEnabled,
@@ -21,6 +23,7 @@ class UserProfile {
     return UserProfile(
       id: json['id'] as String,
       email: json['email'] as String,
+      firstName: json['first_name'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
       lastSeenAt: json['last_seen_at'] != null
           ? DateTime.parse(json['last_seen_at'] as String)
@@ -35,6 +38,7 @@ class UserProfile {
     return {
       'id': id,
       'email': email,
+      'first_name': firstName,
       'created_at': createdAt.toIso8601String(),
       'last_seen_at': lastSeenAt?.toIso8601String(),
       'notification_enabled': notificationEnabled,
