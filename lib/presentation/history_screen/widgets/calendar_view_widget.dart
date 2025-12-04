@@ -404,7 +404,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'Log your first to see your streak grow.',
+                              'Your reflection journey starts here.',
                               style: WDDLDesignSystem.body.copyWith(
                                 color: WDDLDesignSystem.textSecondary,
                               ),
