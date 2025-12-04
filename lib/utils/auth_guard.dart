@@ -5,13 +5,13 @@ import '../routes/app_routes.dart';
 class AuthGuard {
   static void checkAuthStatus(BuildContext context) {
     if (!AuthService.instance.isSignedIn) {
-      Navigator.pushReplacementNamed(context, AppRoutes.authenticationScreen);
+      Navigator.pushReplacementNamed(context, AppRoutes.authentication);
     }
   }
 
   static Future<bool> requireAuth(BuildContext context) async {
     if (!AuthService.instance.isSignedIn) {
-      Navigator.pushReplacementNamed(context, AppRoutes.authenticationScreen);
+      Navigator.pushReplacementNamed(context, AppRoutes.authentication);
       return false;
     }
     return true;
