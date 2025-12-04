@@ -3,21 +3,21 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:win_daily/theme/wddl_design_system.dart';
 
-class StreakCardWidget extends StatefulWidget {
-  final int currentStreak;
+class ReflectionCountWidget extends StatefulWidget {
+  final int totalReflections;
   final List<int> winsByDay;
 
-  const StreakCardWidget({
+  const ReflectionCountWidget({
     super.key,
-    required this.currentStreak,
+    required this.totalReflections,
     required this.winsByDay,
   });
 
   @override
-  State<StreakCardWidget> createState() => _StreakCardWidgetState();
+  State<ReflectionCountWidget> createState() => _ReflectionCountWidgetState();
 }
 
-class _StreakCardWidgetState extends State<StreakCardWidget>
+class _ReflectionCountWidgetState extends State<ReflectionCountWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _sparklineController;
   late Animation<double> _sparklineAnimation;
@@ -66,7 +66,7 @@ class _StreakCardWidgetState extends State<StreakCardWidget>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Current streak',
+            'This month',
             style: WDDLDesignSystem.h2.copyWith(
               color: WDDLDesignSystem.primary,
             ),
@@ -86,7 +86,7 @@ class _StreakCardWidgetState extends State<StreakCardWidget>
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  '${widget.currentStreak}',
+                  '${widget.totalReflections}',
                   style: WDDLDesignSystem.h1.copyWith(
                     color: Colors.white,
                     fontSize: 32,

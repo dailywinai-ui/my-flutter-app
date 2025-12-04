@@ -57,7 +57,7 @@ class DataManagementWidget extends StatelessWidget {
             "notification_time": "20:00",
             "theme": "system",
           },
-          "stats": {"total_wins": 3, "current_streak": 3, "average_mood": 4.7},
+          "stats": {"total_wins": 3, "total_reflections": 3, "average_mood": 4.7},
         },
       };
 
@@ -142,7 +142,7 @@ class DataManagementWidget extends StatelessWidget {
               _buildDeleteItem(context, 'All your logged wins'),
               _buildDeleteItem(context, 'Reflection notes'),
               _buildDeleteItem(context, 'Mood ratings'),
-              _buildDeleteItem(context, 'Streak progress'),
+              _buildDeleteItem(context, 'Reflection history'),
               SizedBox(height: 2.h),
               Container(
                 padding: EdgeInsets.all(3.w),

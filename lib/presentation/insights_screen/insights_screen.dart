@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../services/wins_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
-import './widgets/streak_card_widget.dart';
+import './widgets/reflection_count_widget.dart';
 import './widgets/wins_this_week_widget.dart';
 import './widgets/mood_trend_widget.dart';
 import './widgets/categories_widget.dart';
@@ -30,7 +30,7 @@ class _InsightsScreenState extends State<InsightsScreen>
   List<Map<String, dynamic>> _tagCounts = [];
   List<String> _topReflectionSentences = [];
   List<String> _top3Keywords = [];
-  int _currentStreak = 0;
+  int _totalReflections = 0;
   int _completionRate = 0;
   double _averageMood = 0.0;
 
@@ -151,8 +151,8 @@ class _InsightsScreenState extends State<InsightsScreen>
       }
     }
 
-    // Calculate current streak
-    _currentStreak = _calculateCurrentStreak(wins);
+    // Calculate total reflections this month
+    _totalReflections = _calculateTotalReflections(wins);
 
     // Calculate completion rate (days with wins in last 7 days)
     final daysWithWins = _winsByDayLast7.where((count) => count > 0).length;
@@ -201,7 +201,7 @@ class _InsightsScreenState extends State<InsightsScreen>
         date1.day == date2.day;
   }
 
-  int _calculateCurrentStreak(List<dynamic> wins) {
+  int _calculateTotalReflections(List<dynamic> wins) {
     if (wins.isEmpty) return 0;
 
     final sortedWins = List.from(wins);
@@ -211,7 +211,7 @@ class _InsightsScreenState extends State<InsightsScreen>
       ).compareTo(DateTime.parse(a.winDate.toString())),
     );
 
-    int streak = 0;
+    int total = 0;
     DateTime currentDate = DateTime.now();
 
     for (final win in sortedWins) {
@@ -228,14 +228,14 @@ class _InsightsScreenState extends State<InsightsScreen>
       );
 
       if (winDateNormalized.isAtSameMomentAs(checkDate)) {
-        streak++;
+        total++;
         currentDate = currentDate.subtract(const Duration(days: 1));
       } else {
         break;
       }
     }
 
-    return streak;
+    return total;
   }
 
   void _onWinsThisWeekTap() {
@@ -366,11 +366,11 @@ class _InsightsScreenState extends State<InsightsScreen>
 
           SizedBox(height: 32),
 
-          // Card 1 - Streak
+          // Card 1 - This Month
           _buildCardWithAnimation(
             delay: 0,
-            child: StreakCardWidget(
-              currentStreak: _currentStreak,
+            child: ReflectionCountWidget(
+              totalReflections: _totalReflections,
               winsByDay: _winsByDay,
             ),
           ),

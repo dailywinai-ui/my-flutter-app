@@ -54,7 +54,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               _buildBulletPoint(theme, 'Device type and OS version'),
               _buildBulletPoint(
                 theme,
-                'App usage data (e.g., streaks, feature usage)',
+                'App usage data (e.g., wins logged, feature usage)',
               ),
               _buildBulletPoint(
                 theme,
@@ -70,7 +70,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               _buildSectionContent(theme, 'We use your data to:'),
               _buildBulletPoint(
                 theme,
-                'Keep your account and streaks synced securely',
+                'Keep your account synced securely',
               ),
               _buildBulletPoint(theme, 'Improve app performance and usability'),
               _buildBulletPoint(
