@@ -285,48 +285,6 @@ class DataManagementWidget extends StatelessWidget {
         children: [
           SizedBox(height: 2.h),
           Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: theme.dividerColor, width: 0.5),
-              ),
-            ),
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Container(
-                width: 10.w,
-                height: 10.w,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.tertiary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: CustomIconWidget(
-                    iconName: 'download',
-                    color: theme.colorScheme.tertiary,
-                    size: 20,
-                  ),
-                ),
-              ),
-              title: Text(
-                'Export Data',
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-              subtitle: Text(
-                'Download your wins as JSON file',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.secondary,
-                ),
-              ),
-              trailing: CustomIconWidget(
-                iconName: 'chevron_right',
-                color: theme.colorScheme.secondary,
-                size: 20,
-              ),
-              onTap: () => _exportData(context),
-            ),
           ),
           Container(
             child: ListTile(
