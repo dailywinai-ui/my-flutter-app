@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class RotatingNudgeWidget extends StatefulWidget {
   const RotatingNudgeWidget({super.key});

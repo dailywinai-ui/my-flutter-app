@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../routes/app_routes.dart';
 import '../../services/auth_service.dart';
-import '../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
 import './widgets/forgot_password_modal.dart';
 

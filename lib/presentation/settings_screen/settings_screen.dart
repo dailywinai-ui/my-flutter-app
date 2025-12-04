@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../services/auth_service.dart';
 import '../../services/wins_service.dart';
-import '../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_bottom_bar.dart';

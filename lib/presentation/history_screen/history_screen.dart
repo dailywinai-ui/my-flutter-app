@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/app_export.dart';
 import '../../services/wins_service.dart';
-import '../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../widgets/custom_bottom_bar.dart';
 import '../../widgets/custom_icon_widget.dart';
 import './widgets/calendar_view_widget.dart';

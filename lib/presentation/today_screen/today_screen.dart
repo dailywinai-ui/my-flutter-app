@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../core/app_export.dart';
 import '../../services/wins_service.dart';
-import '../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../widgets/custom_icon_widget.dart';
 import './widgets/empty_state_widget.dart';
 import './widgets/floating_action_button_widget.dart';

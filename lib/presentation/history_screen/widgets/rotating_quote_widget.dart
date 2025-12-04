@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class RotatingQuoteWidget extends StatefulWidget {
   const RotatingQuoteWidget({super.key});

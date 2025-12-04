@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import 'dart:io' if (dart.library.io) 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -72,7 +73,7 @@ class DataManagementWidget extends StatelessWidget {
         msg: "Data exported successfully",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: AppTheme.lightTheme.colorScheme.tertiary,
+        backgroundColor: WDDLDesignSystem.sageMedium,
         textColor: Colors.white,
       );
     } catch (e) {
@@ -80,7 +81,7 @@ class DataManagementWidget extends StatelessWidget {
         msg: "Export failed. Please try again.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: AppTheme.errorLight,
+        backgroundColor: WDDLDesignSystem.error,
         textColor: Colors.white,
       );
     }
@@ -146,10 +147,10 @@ class DataManagementWidget extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(3.w),
                 decoration: BoxDecoration(
-                  color: AppTheme.errorLight.withValues(alpha: 0.1),
+                  color: WDDLDesignSystem.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: AppTheme.errorLight.withValues(alpha: 0.3),
+                    color: WDDLDesignSystem.error.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -157,7 +158,7 @@ class DataManagementWidget extends StatelessWidget {
                   children: [
                     CustomIconWidget(
                       iconName: 'warning',
-                      color: AppTheme.errorLight,
+                      color: WDDLDesignSystem.error,
                       size: 20,
                     ),
                     SizedBox(width: 2.w),
@@ -165,7 +166,7 @@ class DataManagementWidget extends StatelessWidget {
                       child: Text(
                         'This action cannot be undone',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppTheme.errorLight,
+                          color: WDDLDesignSystem.error,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -188,7 +189,7 @@ class DataManagementWidget extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.errorLight,
+                backgroundColor: WDDLDesignSystem.error,
                 foregroundColor: Colors.white,
               ),
               child: Text(
@@ -247,7 +248,7 @@ class DataManagementWidget extends StatelessWidget {
         msg: "All data cleared successfully",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: AppTheme.lightTheme.colorScheme.tertiary,
+        backgroundColor: WDDLDesignSystem.sageMedium,
         textColor: Colors.white,
       );
     } catch (e) {
@@ -255,7 +256,7 @@ class DataManagementWidget extends StatelessWidget {
         msg: "Failed to clear data. Please try again.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: AppTheme.errorLight,
+        backgroundColor: WDDLDesignSystem.error,
         textColor: Colors.white,
       );
     }

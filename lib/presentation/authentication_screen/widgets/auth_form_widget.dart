@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/app_export.dart';
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../../widgets/custom_icon_widget.dart';
 
 class AuthFormWidget extends StatefulWidget {

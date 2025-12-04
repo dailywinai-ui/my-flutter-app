@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
@@ -470,7 +471,7 @@ class _WinDetailScreenState extends State<WinDetailScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Win updated successfully!'),
-            backgroundColor: AppTheme.successLight,
+            backgroundColor: WDDLDesignSystem.success,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -530,7 +531,7 @@ class _WinDetailScreenState extends State<WinDetailScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Win deleted successfully'),
-            backgroundColor: AppTheme.errorLight,
+            backgroundColor: WDDLDesignSystem.error,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -552,7 +553,7 @@ class _WinDetailScreenState extends State<WinDetailScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to delete win: ${error.toString()}'),
-            backgroundColor: AppTheme.errorLight,
+            backgroundColor: WDDLDesignSystem.error,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

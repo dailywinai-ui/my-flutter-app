@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,7 +45,7 @@ class WinCardGenerator {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Win card created and ready to share!'),
-            backgroundColor: AppTheme.successLight,
+            backgroundColor: WDDLDesignSystem.success,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -58,7 +59,7 @@ class WinCardGenerator {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Unable to create win card. Please try again.'),
-            backgroundColor: AppTheme.errorLight,
+            backgroundColor: WDDLDesignSystem.error,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

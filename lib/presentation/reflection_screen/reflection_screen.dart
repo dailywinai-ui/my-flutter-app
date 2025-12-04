@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../services/wins_service.dart';
-import '../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import './widgets/reflection_mood_selector_widget.dart';
 import './widgets/reflection_success_modal.dart';
 

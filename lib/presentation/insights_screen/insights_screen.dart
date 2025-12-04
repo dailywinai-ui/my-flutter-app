@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/wins_service.dart';
-import '../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import './widgets/streak_card_widget.dart';
 import './widgets/wins_this_week_widget.dart';
 import './widgets/mood_trend_widget.dart';

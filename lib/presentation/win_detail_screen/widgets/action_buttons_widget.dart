@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
@@ -172,7 +173,7 @@ class ActionButtonsWidget extends StatelessWidget {
               child: Text(
                 'Delete',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.errorLight,
+                  color: WDDLDesignSystem.error,
                   fontWeight: FontWeight.w600,
                 ),
               ),

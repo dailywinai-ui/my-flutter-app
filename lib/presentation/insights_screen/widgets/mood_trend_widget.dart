@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class MoodTrendWidget extends StatelessWidget {
   final List<double?> moodScoresLast30;

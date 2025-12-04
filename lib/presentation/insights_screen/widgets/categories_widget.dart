@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class CategoriesWidget extends StatelessWidget {
   final List<Map<String, dynamic>> tagCounts;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
@@ -47,7 +48,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: _isSearchActive
-                      ? AppTheme.accentLight
+                      ? WDDLDesignSystem.sageMedium
                       : theme.colorScheme.outline.withValues(alpha: 0.2),
                   width: _isSearchActive ? 2 : 1,
                 ),
@@ -74,7 +75,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                     child: CustomIconWidget(
                       iconName: 'search',
                       color: _isSearchActive
-                          ? AppTheme.accentLight
+                          ? WDDLDesignSystem.sageMedium
                           : theme.colorScheme.onSurfaceVariant,
                       size: 20,
                     ),

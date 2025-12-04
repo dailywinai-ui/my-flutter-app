@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../services/auth_service.dart';
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class ForgotPasswordModal extends StatefulWidget {
   const ForgotPasswordModal({super.key});

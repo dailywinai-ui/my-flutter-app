@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/app_export.dart';
-import '../../../theme/wddl_design_system.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import './progress_halo_widget.dart';
 import './rotating_quote_widget.dart';
 

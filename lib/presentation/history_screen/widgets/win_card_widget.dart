@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
@@ -34,7 +35,7 @@ class WinCardWidget extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: EdgeInsets.symmetric(horizontal: 5.w),
         decoration: BoxDecoration(
-          color: AppTheme.errorLight,
+          color: WDDLDesignSystem.error,
           borderRadius: BorderRadius.circular(12),
         ),
         child: CustomIconWidget(
@@ -125,19 +126,19 @@ class WinCardWidget extends StatelessWidget {
     Color moodColor;
     switch (mood) {
       case 1:
-        moodColor = AppTheme.errorLight;
+        moodColor = WDDLDesignSystem.error;
         break;
       case 2:
-        moodColor = AppTheme.warningLight;
+        moodColor = WDDLDesignSystem.warning;
         break;
       case 3:
         moodColor = theme.colorScheme.secondary;
         break;
       case 4:
-        moodColor = AppTheme.successLight;
+        moodColor = WDDLDesignSystem.success;
         break;
       case 5:
-        moodColor = AppTheme.accentLight;
+        moodColor = WDDLDesignSystem.sageMedium;
         break;
       default:
         moodColor = theme.colorScheme.secondary;
@@ -186,7 +187,7 @@ class WinCardWidget extends StatelessWidget {
               onDelete?.call();
             },
             style: TextButton.styleFrom(
-              foregroundColor: AppTheme.errorLight,
+              foregroundColor: WDDLDesignSystem.error,
             ),
             child: const Text('Delete'),
           ),
@@ -241,7 +242,7 @@ class WinCardWidget extends StatelessWidget {
             ListTile(
               leading: CustomIconWidget(
                 iconName: 'delete',
-                color: AppTheme.errorLight,
+                color: WDDLDesignSystem.error,
                 size: 24,
               ),
               title: const Text('Delete Win'),

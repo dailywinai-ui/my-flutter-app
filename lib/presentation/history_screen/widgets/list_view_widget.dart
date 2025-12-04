@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
@@ -66,7 +67,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 
     return RefreshIndicator(
       onRefresh: _handleRefresh,
-      color: AppTheme.accentLight,
+      color: WDDLDesignSystem.sageMedium,
       backgroundColor: theme.cardColor,
       child: ListView.builder(
         controller: _scrollController,
@@ -101,7 +102,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 
     return RefreshIndicator(
       onRefresh: _handleRefresh,
-      color: AppTheme.accentLight,
+      color: WDDLDesignSystem.sageMedium,
       backgroundColor: theme.cardColor,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -115,13 +116,13 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                 width: 20.w,
                 height: 20.w,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentLight.withValues(alpha: 0.1),
+                  color: WDDLDesignSystem.sageMedium.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: CustomIconWidget(
                     iconName: 'emoji_events',
-                    color: AppTheme.accentLight,
+                    color: WDDLDesignSystem.sageMedium,
                     size: 8.w,
                   ),
                 ),
