@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../core/app_export.dart';
+import '../../services/auth_service.dart';
+import '../../services/user_service.dart';
+import '../../models/user_profile.dart';
 import '../../services/wins_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../widgets/custom_icon_widget.dart';
@@ -20,6 +23,7 @@ class TodayScreen extends StatefulWidget {
 
 class _TodayScreenState extends State<TodayScreen>
     with TickerProviderStateMixin {
+  UserProfile? _userProfile;
   int _currentTabIndex = 0;
   bool _isLoading = false;
   Map<String, dynamic>? _todayWin;
@@ -30,6 +34,7 @@ class _TodayScreenState extends State<TodayScreen>
   @override
   void initState() {
     super.initState();
+    _loadUserProfile();
     _confettiController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
@@ -59,6 +64,19 @@ class _TodayScreenState extends State<TodayScreen>
   }
 
   /// Load today's win for the authenticated user from Supabase
+  Future<void> _loadUserProfile() async {
+    try {
+      final profile = await AuthService.instance.getUserProfile();
+      if (mounted) {
+        setState(() {
+          _userProfile = profile;
+        });
+      }
+    } catch (e) {
+      // Silently fail - greeting will just not have name
+    }
+  }
+
   Future<void> _loadTodayWin() async {
     setState(() => _isLoading = true);
 
@@ -326,11 +344,11 @@ class _TodayScreenState extends State<TodayScreen>
   String _getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'Good morning';
+      return _userProfile?.firstName != null ? 'Good morning, ${_userProfile!.firstName}!' : 'Good morning';
     } else if (hour < 17) {
-      return 'Good afternoon';
+      return _userProfile?.firstName != null ? 'Good afternoon, ${_userProfile!.firstName}!' : 'Good afternoon';
     } else {
-      return 'Good evening';
+      return _userProfile?.firstName != null ? 'Good evening, ${_userProfile!.firstName}!' : 'Good evening';
     }
   }
 
