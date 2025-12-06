@@ -787,7 +787,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                                     : Text(
                                                       _isSignUpMode
                                                           ? 'Create Account'
-                                                          : 'Sign In',
+                                                          : 'Welcome back',
                                                       style: TextStyle(
                                                         fontFamily: 'Inter',
                                                         fontSize: 14,
@@ -839,7 +839,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                               onTap: _toggleAuthMode,
                               child: RichText(
                                 text: TextSpan(
-                                  text: 'New here? ',
+                                  text: 'New to Win Daily? ',
                                   style: TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 14,
@@ -876,7 +876,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                             GestureDetector(
                               onTap: _toggleAuthMode,
                               child: Text(
-                                'Already have an account? Sign In',
+                                'Already have an account? Welcome back',
                                 style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 14,
