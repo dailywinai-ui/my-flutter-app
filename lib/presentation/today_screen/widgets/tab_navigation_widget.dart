@@ -79,14 +79,14 @@ class TabNavigationWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 2.h),
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFFF1FAEE) // Lightened active tab background
+                ? const Color(0xFFE8F0ED) // Lightened active tab background
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(14),
             border: isSelected
                 ? Border(
                     bottom: BorderSide(
                       color: const Color(
-                        0xFF457B9D,
+                        0xFF7A9D8E,
                       ), // Active tab underline color
                       width: 2.0,
                     ),

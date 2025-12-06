@@ -185,7 +185,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                 SizedBox(height: 8),
                 Container(
                   child: Text(
-                    'Streak: $streak ${streak == 1 ? 'day' : 'days'} — keep going!',
+                    'Reflections this month: $streak',
                     style: GoogleFonts.inter(
                       fontSize: 14, // Font size 14px as specified
                       fontWeight: FontWeight.w600, // Weight 600 as specified
