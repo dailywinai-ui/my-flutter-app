@@ -99,7 +99,7 @@ class TabNavigationWidget extends StatelessWidget {
               CustomIconWidget(
                 iconName: isSelected ? activeIcon : icon,
                 color: isSelected
-                    ? const Color(0xFF1D3557) // Active text color
+                    ? const Color(0xFF6B8B7F) // Active text color
                     : const Color(0xFF6E767D)
                         .withAlpha(179), // Inactive tabs 70% opacity
                 size: 20,
@@ -110,7 +110,7 @@ class TabNavigationWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13, // Font size
                   color: isSelected
-                      ? const Color(0xFF1D3557) // Active text color
+                      ? const Color(0xFF6B8B7F) // Active text color
                       : const Color(0xFF6E767D)
                           .withAlpha(179), // Inactive tabs 70% opacity
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,

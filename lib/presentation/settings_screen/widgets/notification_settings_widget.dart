@@ -30,30 +30,30 @@ class NotificationSettingsWidget extends StatelessWidget {
           data: Theme.of(context).copyWith(
             // Time picker modal: background gradient #F1FAEE → #A8DADC
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: const Color(0xFF457B9D), // Selected color #457B9D
-              surface: const Color(0xFFF1FAEE), // Background start color
-              onSurface: const Color(0xFF1D3557), // Text color
+              primary: const Color(0xFF7A9D8E), // Selected color #457B9D
+              surface: const Color(0xFFFFFFFF), // Background start color
+              onSurface: const Color(0xFF6B8B7F), // Text color
             ),
             timePickerTheme: TimePickerThemeData(
-              backgroundColor: const Color(0xFFF1FAEE),
-              dialBackgroundColor: const Color(0xFFA8DADC),
-              dialHandColor: const Color(0xFF457B9D),
-              dialTextColor: const Color(0xFF1D3557),
-              entryModeIconColor: const Color(0xFF457B9D),
+              backgroundColor: const Color(0xFFFFFFFF),
+              dialBackgroundColor: const Color(0xFFEBE8E3),
+              dialHandColor: const Color(0xFF7A9D8E),
+              dialTextColor: const Color(0xFF6B8B7F),
+              entryModeIconColor: const Color(0xFF7A9D8E),
               helpTextStyle: const TextStyle(
-                color: Color(0xFF1D3557),
+                color: Color(0xFF6B8B7F),
                 fontWeight: FontWeight.w500,
               ),
             ),
             dialogTheme: DialogThemeData(
-              backgroundColor: const Color(0xFFF1FAEE),
+              backgroundColor: const Color(0xFFFFFFFF),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             textTheme: Theme.of(context).textTheme.copyWith(
               headlineMedium: const TextStyle(
-                color: Color(0xFF1D3557),
+                color: Color(0xFF6B8B7F),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -64,8 +64,8 @@ class NotificationSettingsWidget extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFFF1FAEE), // Background gradient #F1FAEE
-                  Color(0xFFA8DADC), // → #A8DADC
+                  Color(0xFFFFFFFF), // Background gradient #F1FAEE
+                  Color(0xFFEBE8E3), // → #A8DADC
                 ],
               ),
             ),
@@ -96,7 +96,7 @@ class NotificationSettingsWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: const EdgeInsets.all(12), // Card padding 12px
       decoration: BoxDecoration(
-        color: const Color(0xFFF1FAEE), // Background #F1FAEE
+        color: const Color(0xFFFFFFFF), // Background #F1FAEE
         borderRadius: BorderRadius.circular(8), // Radius 8px
         boxShadow: [
           BoxShadow(
@@ -120,7 +120,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                 iconName: 'notifications',
                 color:
                     isNotificationEnabled
-                        ? const Color(0xFF457B9D) // Active color #457B9D
+                        ? const Color(0xFF7A9D8E) // Active color #457B9D
                         : const Color(0xFFE0E5E9), // Inactive color #E0E5E9
                 size: 24,
               ),
@@ -150,7 +150,7 @@ class NotificationSettingsWidget extends StatelessWidget {
               Switch(
                 value: isNotificationEnabled,
                 onChanged: onNotificationToggle,
-                activeColor: const Color(0xFF457B9D), // Active color #457B9D
+                activeColor: const Color(0xFF7A9D8E), // Active color #457B9D
                 inactiveThumbColor: const Color(0xFFE0E5E9), // Inactive #E0E5E9
                 inactiveTrackColor: const Color(
                   0xFFE0E5E9,
@@ -178,7 +178,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                   children: [
                     CustomIconWidget(
                       iconName: 'schedule',
-                      color: const Color(0xFF457B9D), // Selected color #457B9D
+                      color: const Color(0xFF7A9D8E), // Selected color #457B9D
                       size: 20,
                     ),
                     SizedBox(width: 3.w),
@@ -210,17 +210,17 @@ class NotificationSettingsWidget extends StatelessWidget {
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF457B9D).withValues(alpha: 0.1),
+                  color: const Color(0xFF7A9D8E).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: const Color(0xFF457B9D).withValues(alpha: 0.3),
+                    color: const Color(0xFF7A9D8E).withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
                   children: [
                     CustomIconWidget(
                       iconName: 'add_alarm',
-                      color: const Color(0xFF457B9D), // Selected color #457B9D
+                      color: const Color(0xFF7A9D8E), // Selected color #457B9D
                       size: 20,
                     ),
                     SizedBox(width: 3.w),
@@ -228,7 +228,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                       'Tap to set reminder time',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: const Color(
-                          0xFF457B9D,
+                          0xFF7A9D8E,
                         ), // Selected color #457B9D
                         fontWeight: FontWeight.w500,
                       ),

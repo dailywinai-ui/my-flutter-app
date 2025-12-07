@@ -46,7 +46,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget>
       margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 5.w),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1FAEE),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(

@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen>
                     const Color(0xFF2B3442), // bgDarkEnd
                   ]
                 : [
-                    const Color(0xFFA8DADC), // Light mode background
-                    const Color(0xFFF1FAEE), // Light mode surface
+                    const Color(0xFFEBE8E3), // Light mode background
+                    const Color(0xFFFFFFFF), // Light mode surface
                   ],
           ),
         ),

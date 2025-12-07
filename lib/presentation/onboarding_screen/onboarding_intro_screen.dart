@@ -206,7 +206,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF1A1F2A) : const Color(0xFFF1FAEE),
+          isDark ? const Color(0xFF1A1F2A) : const Color(0xFFFFFFFF),
       body: Container(
         // Theme-aware background gradient
         decoration: BoxDecoration(
@@ -220,8 +220,8 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                       const Color(0xFF2B3442), // bgDarkEnd
                     ]
                     : [
-                      const Color(0xFFA8DADC), // #A8DADC
-                      const Color(0xFFF1FAEE), // #F1FAEE
+                      const Color(0xFFEBE8E3), // #A8DADC
+                      const Color(0xFFFFFFFF), // #F1FAEE
                     ],
           ),
         ),

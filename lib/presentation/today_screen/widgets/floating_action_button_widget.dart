@@ -64,7 +64,7 @@ class _FloatingActionButtonWidgetState extends State<FloatingActionButtonWidget>
                 width: 56, // Standard FAB size
                 height: 56,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1D3557),
+                  color: const Color(0xFF6B8B7F),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(

@@ -144,7 +144,7 @@ class _ForgotPasswordModalState extends State<ForgotPasswordModal>
                       fontFamily: 'Inter',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1D3557),
+                      color: const Color(0xFF6B8B7F),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -263,7 +263,7 @@ class _ForgotPasswordModalState extends State<ForgotPasswordModal>
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _handleResetPassword,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1D3557),
+                    backgroundColor: const Color(0xFF6B8B7F),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -330,7 +330,7 @@ class _ForgotPasswordModalState extends State<ForgotPasswordModal>
             fontFamily: 'Inter',
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF1D3557),
+            color: const Color(0xFF6B8B7F),
           ),
           textAlign: TextAlign.center,
         ),
@@ -357,7 +357,7 @@ class _ForgotPasswordModalState extends State<ForgotPasswordModal>
             fontFamily: 'Inter',
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF1D3557),
+            color: const Color(0xFF6B8B7F),
           ),
           textAlign: TextAlign.center,
         ),
@@ -408,7 +408,7 @@ class _ForgotPasswordModalState extends State<ForgotPasswordModal>
           child: ElevatedButton(
             onPressed: _closeModal,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1D3557),
+              backgroundColor: const Color(0xFF6B8B7F),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

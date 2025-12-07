@@ -75,14 +75,14 @@ class ReflectionMoodSelectorWidget extends StatelessWidget {
                       shape: BoxShape.circle,
                       color:
                           isSelected
-                              ? const Color(0xFF457B9D).withValues(alpha: 0.15)
+                              ? const Color(0xFF7A9D8E).withValues(alpha: 0.15)
                               : Colors.transparent,
                       boxShadow:
                           isSelected
                               ? [
                                 BoxShadow(
                                   color: const Color(
-                                    0xFF457B9D,
+                                    0xFF7A9D8E,
                                   ).withValues(alpha: 0.2),
                                   blurRadius: 12,
                                   offset: const Offset(0, 2),
@@ -105,7 +105,7 @@ class ReflectionMoodSelectorWidget extends StatelessWidget {
                     style: theme.textTheme.bodySmall?.copyWith(
                       color:
                           isSelected
-                              ? const Color(0xFF457B9D)
+                              ? const Color(0xFF7A9D8E)
                               : theme.colorScheme.onSurfaceVariant,
                       fontWeight:
                           isSelected ? FontWeight.w600 : FontWeight.w400,

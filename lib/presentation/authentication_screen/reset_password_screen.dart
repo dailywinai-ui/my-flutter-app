@@ -149,7 +149,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
       resizeToAvoidBottomInset: true,
       body: Container(
         // Uniform calm background
-        color: isDark ? const Color(0xFF1A1F2A) : const Color(0xFFA8DADC),
+        color: isDark ? const Color(0xFF1A1F2A) : const Color(0xFFEBE8E3),
         child: Stack(
           children: [
             // Top brand header zone with subtle overlay
@@ -226,7 +226,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                               fontWeight: FontWeight.bold,
                                               color: isDark
                                                   ? Colors.white
-                                                  : const Color(0xFF1D3557),
+                                                  : const Color(0xFF6B8B7F),
                                             ),
                                             textAlign: TextAlign.center,
                                           );
@@ -249,7 +249,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                                 0xFFFFFFFF,
                                               ).withValues(alpha: 0.8)
                                             : const Color(
-                                                0xFF1D3557,
+                                                0xFF6B8B7F,
                                               ).withValues(alpha: 0.8),
                                       ),
                                       textAlign: TextAlign.center,
@@ -305,7 +305,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                             fontFamily: 'Inter',
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
-                                            color: const Color(0xFF1D3557),
+                                            color: const Color(0xFF6B8B7F),
                                           ),
                                         ),
                                         const SizedBox(height: 8),
@@ -549,7 +549,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                                     : null,
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: const Color(
-                                                0xFF1D3557,
+                                                0xFF6B8B7F,
                                               ), // Brand navy
                                               foregroundColor: Colors.white,
                                               shape: RoundedRectangleBorder(
@@ -613,10 +613,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                 fontFamily: 'Inter',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: const Color(0xFF1D3557)
+                                color: const Color(0xFF6B8B7F)
                                     .withValues(alpha: 0.8),
                                 decoration: TextDecoration.underline,
-                                decorationColor: const Color(0xFF1D3557)
+                                decorationColor: const Color(0xFF6B8B7F)
                                     .withValues(alpha: 0.8),
                               ),
                             ),

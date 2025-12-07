@@ -85,7 +85,7 @@ class _ReflectionSuccessModalState extends State<ReflectionSuccessModal>
                     width: 16.w,
                     height: 16.w,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF457B9D).withValues(alpha: 0.1),
+                      color: const Color(0xFF7A9D8E).withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -100,7 +100,7 @@ class _ReflectionSuccessModalState extends State<ReflectionSuccessModal>
                     'Reflection saved 🌿',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1D3557),
+                      color: const Color(0xFF6B8B7F),
                     ),
                     textAlign: TextAlign.center,
                   ),

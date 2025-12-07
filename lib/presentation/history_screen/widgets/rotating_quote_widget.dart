@@ -99,7 +99,7 @@ class _RotatingQuoteWidgetState extends State<RotatingQuoteWidget>
               // Add faint translucent card background behind rotating quote
               decoration: BoxDecoration(
                 color: Color(
-                  0xFFF1FAEE,
+                  0xFFFFFFFF,
                 ).withValues(alpha: 0.6), // #F1FAEE at 60% opacity
                 borderRadius: BorderRadius.circular(8), // 8px radius
               ),

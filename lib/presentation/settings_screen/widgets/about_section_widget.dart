@@ -15,7 +15,7 @@ class AboutSectionWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1FAEE),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(

@@ -52,7 +52,7 @@ class _ReflectionCountWidgetState extends State<ReflectionCountWidget>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1FAEE),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(

@@ -25,7 +25,7 @@ class ThemeSelectionWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1FAEE),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -93,13 +93,13 @@ class ThemeSelectionWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               isSelected
-                  ? const Color(0xFF457B9D).withValues(alpha: 0.1)
+                  ? const Color(0xFF7A9D8E).withValues(alpha: 0.1)
                   : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border:
               isSelected
                   ? Border.all(
-                    color: const Color(0xFF457B9D).withValues(alpha: 0.3),
+                    color: const Color(0xFF7A9D8E).withValues(alpha: 0.3),
                     width: 1,
                   )
                   : null,
@@ -110,7 +110,7 @@ class ThemeSelectionWidget extends StatelessWidget {
               iconName: icon,
               color:
                   isSelected
-                      ? const Color(0xFF457B9D)
+                      ? const Color(0xFF7A9D8E)
                       : const Color(0xFFE0E5E9),
               size: 24,
             ),
@@ -125,7 +125,7 @@ class ThemeSelectionWidget extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color:
                           isSelected
-                              ? const Color(0xFF457B9D)
+                              ? const Color(0xFF7A9D8E)
                               : theme.colorScheme.primary,
                     ),
                   ),
@@ -141,7 +141,7 @@ class ThemeSelectionWidget extends StatelessWidget {
             if (isSelected)
               CustomIconWidget(
                 iconName: 'check_circle',
-                color: const Color(0xFF457B9D),
+                color: const Color(0xFF7A9D8E),
                 size: 20,
               ),
           ],

@@ -53,7 +53,7 @@ class _TitleInputWidgetState extends State<TitleInputWidget> {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF1D3557),
+            color: const Color(0xFF6B8B7F),
           ),
         ),
         const SizedBox(height: 8),

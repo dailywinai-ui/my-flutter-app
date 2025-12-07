@@ -231,7 +231,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
       resizeToAvoidBottomInset: true,
       body: Container(
         // Uniform calm background
-        color: isDark ? const Color(0xFF1A1F2A) : const Color(0xFFA8DADC),
+        color: isDark ? const Color(0xFF1A1F2A) : const Color(0xFFEBE8E3),
         child: Stack(
           children: [
             // Top brand header zone with subtle overlay
@@ -311,7 +311,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                               color:
                                                   isDark
                                                       ? Colors.white
-                                                      : const Color(0xFF1D3557),
+                                                      : const Color(0xFF6B8B7F),
                                             ),
                                             textAlign: TextAlign.center,
                                           );
@@ -335,7 +335,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                                   0xFFFFFFFF,
                                                 ).withValues(alpha: 0.8)
                                                 : const Color(
-                                                  0xFF1D3557,
+                                                  0xFF6B8B7F,
                                                 ).withValues(alpha: 0.8),
                                       ),
                                       textAlign: TextAlign.center,
@@ -754,7 +754,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                                     : null,
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: const Color(
-                                                0xFF1D3557,
+                                                0xFF6B8B7F,
                                               ), // Brand navy
                                               foregroundColor: Colors.white,
                                               shape: RoundedRectangleBorder(
@@ -822,11 +822,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: const Color(
-                                    0xFF1D3557,
+                                    0xFF6B8B7F,
                                   ).withValues(alpha: 0.8),
                                   decoration: TextDecoration.underline,
                                   decorationColor: const Color(
-                                    0xFF1D3557,
+                                    0xFF6B8B7F,
                                   ).withValues(alpha: 0.8),
                                 ),
                               ),
@@ -845,7 +845,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500, // Inter Medium
                                     color: const Color(
-                                      0xFF1D3557,
+                                      0xFF6B8B7F,
                                     ).withValues(alpha: 0.8),
                                   ),
                                   children: [
@@ -857,13 +857,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                         fontWeight:
                                             FontWeight.w500, // Inter Medium
                                         color: const Color(
-                                          0xFF1D3557,
+                                          0xFF6B8B7F,
                                         ).withValues(alpha: 0.8),
                                         decoration:
                                             TextDecoration
                                                 .underline, // underline on "Create an account" portion
                                         decorationColor: const Color(
-                                          0xFF1D3557,
+                                          0xFF6B8B7F,
                                         ).withValues(alpha: 0.8),
                                       ),
                                     ),
@@ -882,11 +882,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: const Color(
-                                    0xFF1D3557,
+                                    0xFF6B8B7F,
                                   ).withValues(alpha: 0.8),
                                   decoration: TextDecoration.underline,
                                   decorationColor: const Color(
-                                    0xFF1D3557,
+                                    0xFF6B8B7F,
                                   ).withValues(alpha: 0.8),
                                 ),
                               ),
