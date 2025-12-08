@@ -73,7 +73,7 @@ class BrandAssets {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return isDark
         ? const Color(0xFFFFFFFF).withValues(alpha: 0.6) // White at 60% opacity
-        : const Color(0xFF1D3557).withValues(alpha: 0.6); // Navy at 60% opacity
+        : const Color(0xFF6B8B7F).withValues(alpha: 0.6); // Navy at 60% opacity
   }
 
   /// Returns appropriate authentication subtext color based on theme
@@ -81,7 +81,7 @@ class BrandAssets {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return isDark
         ? const Color(0xFFFFFFFF).withValues(alpha: 0.8) // White at 80% opacity
-        : const Color(0xFF1D3557); // Navy
+        : const Color(0xFF6B8B7F); // Navy
   }
 
   /// Returns appropriate onboarding text color based on theme
@@ -89,6 +89,6 @@ class BrandAssets {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return isDark
         ? const Color(0xFFFFFFFF).withValues(alpha: 0.9) // White at 90% opacity
-        : const Color(0xFF1D3557); // Navy
+        : const Color(0xFF6B8B7F); // Navy
   }
 }
