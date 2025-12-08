@@ -143,7 +143,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
   void _navigateToNextScreen() {
     // Check if user is already signed in
     if (AuthService.instance.isSignedIn) {
-      Navigator.pushReplacementNamed(context, AppRoutes.today);
+      Navigator.pushReplacementNamed(context, AppRoutes.welcome);
     } else {
       Navigator.pushReplacementNamed(context, AppRoutes.authentication);
     }
