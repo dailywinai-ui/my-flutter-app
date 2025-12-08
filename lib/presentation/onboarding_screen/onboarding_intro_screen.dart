@@ -348,7 +348,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                   height: 120,
                   margin: const EdgeInsets.only(bottom: 32),
                   child: Image.asset(
-                    BrandAssets.onboardingLogo(context, isIntroSlide: true),
+                    'assets/images/onboarding/slide1_arc.svg',
                     width: 120,
                     height: 120,
                     fit: BoxFit.contain,
@@ -440,10 +440,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                             width: 32,
                             height: 32,
                             child: Image.asset(
-                              BrandAssets.onboardingLogo(
-                                context,
-                                isIntroSlide: false,
-                              ),
+                              'assets/images/onboarding/slide2_checkmark.svg',
                               width: 32,
                               height: 32,
                               fit: BoxFit.contain,
