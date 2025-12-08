@@ -110,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen>
                           width: 200,
                           height: 200,
                           child: Image.asset(
-                            BrandAssets.splashLogo(context),
+                            'assets/images/the_node_logo.svg',
                             width: 200,
                             height: 200,
                             fit: BoxFit.contain,
