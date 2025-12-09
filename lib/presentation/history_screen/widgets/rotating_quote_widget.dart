@@ -100,7 +100,7 @@ class _RotatingQuoteWidgetState extends State<RotatingQuoteWidget>
               decoration: BoxDecoration(
                 color: Color(
                   0xFFFFFFFF,
-                ).withValues(alpha: 0.6), // #F1FAEE at 60% opacity
+                ).withValues(alpha: 0.6), // Warm beige #EBE8E3 at 60% opacity
                 borderRadius: BorderRadius.circular(8), // 8px radius
               ),
               padding: EdgeInsets.symmetric(
@@ -113,7 +113,7 @@ class _RotatingQuoteWidgetState extends State<RotatingQuoteWidget>
                   fontSize: 13, // Font size 13px as specified
                   fontWeight: FontWeight.w400, // Weight 400 as specified
                   color: WDDLDesignSystem.textPrimary.withValues(
-                    alpha: 0.7, // #1D3557 at 70% opacity
+                    alpha: 0.7, // Dark sage #6B8B7F at 70% opacity
                   ),
                   letterSpacing: 0.2, // Letter spacing 0.2px as specified
                   height: 1.5,

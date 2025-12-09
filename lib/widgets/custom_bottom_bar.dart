@@ -106,7 +106,7 @@ class CustomBottomBar extends StatelessWidget {
               child: Icon(
                 isSelected ? activeIcon : icon,
                 key: ValueKey(isSelected),
-                color: isSelected ? Color(0xFF457B9D) : Color(0xFF9AA0A6),
+                color: isSelected ? Color(0xFF7A9D8E) : Color(0xFF9AA0A6),
                 size: 24,
               ),
             ),
@@ -114,7 +114,7 @@ class CustomBottomBar extends StatelessWidget {
             Text(
               label,
               style: theme.textTheme.labelSmall?.copyWith(
-                color: isSelected ? Color(0xFF457B9D) : Color(0xFF9AA0A6),
+                color: isSelected ? Color(0xFF7A9D8E) : Color(0xFF9AA0A6),
                 fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
               ),
             ),

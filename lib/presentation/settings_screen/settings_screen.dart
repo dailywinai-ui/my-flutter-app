@@ -190,7 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                     style: WDDLDesignSystem.body.copyWith(
                       fontSize: 14, // Font size 14px
                       fontWeight: FontWeight.w500, // Weight 500
-                      color: WDDLDesignSystem.secondary, // Color #457B9D
+                      color: WDDLDesignSystem.secondary, // Color #7A9D8E
                     ),
                   ),
                 ),

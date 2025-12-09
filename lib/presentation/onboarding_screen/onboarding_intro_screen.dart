@@ -220,8 +220,8 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                       const Color(0xFF2B3442), // bgDarkEnd
                     ]
                     : [
-                      const Color(0xFFEBE8E3), // #A8DADC
-                      const Color(0xFFFFFFFF), // #F1FAEE
+                      const Color(0xFFEBE8E3), // Light sage #E8F0ED
+                      const Color(0xFFFFFFFF), // Warm beige #EBE8E3
                     ],
           ),
         ),
@@ -321,7 +321,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
             color:
                 index == _currentPage
                     ? WDDLDesignSystem
-                        .secondary // Active dot #457B9D
+                        .secondary // Active dot #7A9D8E
                     : WDDLDesignSystem.textSecondary.withValues(alpha: 0.3),
           ),
         );
@@ -709,7 +709,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
       child: ElevatedButton(
         onPressed: _nextPage,
         style: ElevatedButton.styleFrom(
-          backgroundColor: WDDLDesignSystem.primary, // #1D3557
+          backgroundColor: WDDLDesignSystem.primary, // Dark sage #6B8B7F
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -737,7 +737,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
           child: ElevatedButton(
             onPressed: _isLoading ? null : _completeOnboarding,
             style: ElevatedButton.styleFrom(
-              backgroundColor: WDDLDesignSystem.primary, // #1D3557
+              backgroundColor: WDDLDesignSystem.primary, // Dark sage #6B8B7F
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

@@ -10,16 +10,16 @@ class AppTheme {
   AppTheme._();
 
   // WDDL Color Specifications - Updated to match design system
-  static const Color primaryLight = Color(0xFF1D3557); // Primary #1D3557
-  static const Color secondaryLight = Color(0xFF457B9D); // Secondary #457B9D
+  static const Color primaryLight = Color(0xFF6B8B7F); // Primary #6B8B7F
+  static const Color secondaryLight = Color(0xFF7A9D8E); // Secondary #7A9D8E
   static const Color accentLight = Color(
-    0xFF457B9D,
+    0xFF7A9D8E,
   ); // Using secondary as accent
   static const Color successLight = Color(0xFF84C69B); // Success #84C69B
   static const Color warningLight = Color(0xFFD69E2E); // Warm amber
   static const Color errorLight = Color(0xFFE76F51); // Error #E76F51
-  static const Color backgroundLight = Color(0xFFA8DADC); // Background #A8DADC
-  static const Color surfaceLight = Color(0xFFF1FAEE); // Surface #F1FAEE
+  static const Color backgroundLight = Color(0xFFE8F0ED); // Background #E8F0ED
+  static const Color surfaceLight = Color(0xFFEBE8E3); // Surface #EBE8E3
   static const Color borderLight = Color(0xFFD9E4E6); // Input border
   static const Color overlayLight = Color(0x66000000); // 40% opacity black
 
@@ -50,8 +50,8 @@ class AppTheme {
 
   // WDDL Text colors
   static const Color textHighEmphasisLight = Color(
-    0xFF1D3557,
-  ); // TextPrimary #1D3557
+    0xFF6B8B7F,
+  ); // TextPrimary #6B8B7F
   static const Color textMediumEmphasisLight = Color(
     0xFF6E767D,
   ); // TextSecondary #6E767D

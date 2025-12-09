@@ -121,7 +121,7 @@ class _AuthHeaderWidgetState extends State<AuthHeaderWidget>
         Text(
           'One win at a time.',
           style: WDDLDesignSystem.body.copyWith(
-            color: WDDLDesignSystem.secondary, // #457B9D
+            color: WDDLDesignSystem.secondary, // Sage green #7A9D8E
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -135,7 +135,7 @@ class _AuthHeaderWidgetState extends State<AuthHeaderWidget>
           style: WDDLDesignSystem.h1.copyWith(
             fontSize: 22,
             fontWeight: FontWeight.w600,
-            color: WDDLDesignSystem.textPrimary, // #1D3557
+            color: WDDLDesignSystem.textPrimary, // Dark sage #6B8B7F
           ),
         ),
 

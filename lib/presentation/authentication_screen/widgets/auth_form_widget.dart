@@ -146,7 +146,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget>
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(
-                    color: WDDLDesignSystem.secondary, // #457B9D
+                    color: WDDLDesignSystem.secondary, // Sage green #7A9D8E
                     width: 1,
                   ),
                 ),
@@ -228,7 +228,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget>
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(
-                    color: WDDLDesignSystem.secondary, // #457B9D
+                    color: WDDLDesignSystem.secondary, // Sage green #7A9D8E
                     width: 1,
                   ),
                 ),
@@ -303,7 +303,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget>
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
-                      color: WDDLDesignSystem.secondary, // #457B9D
+                      color: WDDLDesignSystem.secondary, // Sage green #7A9D8E
                       width: 1,
                     ),
                   ),
@@ -340,7 +340,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget>
                             ? _handleSubmit
                             : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: WDDLDesignSystem.secondary, // #457B9D
+                      backgroundColor: WDDLDesignSystem.secondary, // Sage green #7A9D8E
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(

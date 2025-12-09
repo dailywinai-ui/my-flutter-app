@@ -376,12 +376,12 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                                   decoration: BoxDecoration(
                                     color:
                                         WDDLDesignSystem
-                                            .surface, // selected chip bg #EBE8E3
+                                            .surface, // selected chip bg #F1FAEE
                                     border: Border.all(
                                       color:
                                           isSelected
                                               ? WDDLDesignSystem
-                                                  .secondary // border #7A9D8E
+                                                  .secondary // border #457B9D
                                               : WDDLDesignSystem.surface,
                                       width: 1,
                                     ),

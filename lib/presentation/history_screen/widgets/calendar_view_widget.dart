@@ -169,13 +169,13 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                 margin: EdgeInsets.only(bottom: 16),
               ),
 
-              // Month header ("October 2025") - elevated with 18px semi-bold font, color #1D3557
+              // Month header ("October 2025") - elevated with 18px semi-bold font, color #6B8B7F
               Text(
                 _getMonthYearString(_focusedDay),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600, // Semi-bold
-                  color: WDDLDesignSystem.textPrimary, // #1D3557
+                  color: WDDLDesignSystem.textPrimary, // Dark sage #6B8B7F
                   height: 1.5,
                 ),
               ),
@@ -190,7 +190,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                       fontSize: 14, // Font size 14px as specified
                       fontWeight: FontWeight.w600, // Weight 600 as specified
                       color: WDDLDesignSystem.textPrimary.withValues(
-                        alpha: 0.85, // #1D3557 at 85% opacity
+                        alpha: 0.85, // Dark sage #6B8B7F at 85% opacity
                       ),
                       shadows: [
                         Shadow(
@@ -258,13 +258,13 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                 weekendTextStyle: WDDLDesignSystem.body,
                 holidayTextStyle: WDDLDesignSystem.body,
 
-                // Highlight active day with filled background #457B9D (10% opacity), border #457B9D
+                // Highlight active day with filled background #7A9D8E (10% opacity), border #7A9D8E
                 selectedDecoration: BoxDecoration(
                   color: WDDLDesignSystem.secondary.withValues(
                     alpha: 0.1,
-                  ), // #457B9D 10% opacity
+                  ), // Sage green #7A9D8E 10% opacity
                   border: Border.all(
-                    color: WDDLDesignSystem.secondary, // #457B9D border
+                    color: WDDLDesignSystem.secondary, // Sage green #7A9D8E border
                     width: 2,
                   ),
                   shape: BoxShape.circle,

@@ -28,9 +28,9 @@ class NotificationSettingsWidget extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            // Time picker modal: background gradient #F1FAEE → #A8DADC
+            // Time picker modal: background gradient #EBE8E3 → #E8F0ED
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: const Color(0xFF7A9D8E), // Selected color #457B9D
+              primary: const Color(0xFF7A9D8E), // Selected color #7A9D8E
               surface: const Color(0xFFFFFFFF), // Background start color
               onSurface: const Color(0xFF6B8B7F), // Text color
             ),
@@ -64,8 +64,8 @@ class NotificationSettingsWidget extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFFFFFFFF), // Background gradient #F1FAEE
-                  Color(0xFFEBE8E3), // → #A8DADC
+                  Color(0xFFFFFFFF), // Background gradient #EBE8E3
+                  Color(0xFFEBE8E3), // → #E8F0ED
                 ],
               ),
             ),
@@ -96,7 +96,7 @@ class NotificationSettingsWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: const EdgeInsets.all(12), // Card padding 12px
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFFFF), // Background #F1FAEE
+        color: const Color(0xFFFFFFFF), // Background #EBE8E3
         borderRadius: BorderRadius.circular(8), // Radius 8px
         boxShadow: [
           BoxShadow(
@@ -120,7 +120,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                 iconName: 'notifications',
                 color:
                     isNotificationEnabled
-                        ? const Color(0xFF7A9D8E) // Active color #457B9D
+                        ? const Color(0xFF7A9D8E) // Active color #7A9D8E
                         : const Color(0xFFE0E5E9), // Inactive color #E0E5E9
                 size: 24,
               ),
@@ -150,7 +150,7 @@ class NotificationSettingsWidget extends StatelessWidget {
               Switch(
                 value: isNotificationEnabled,
                 onChanged: onNotificationToggle,
-                activeColor: const Color(0xFF7A9D8E), // Active color #457B9D
+                activeColor: const Color(0xFF7A9D8E), // Active color #7A9D8E
                 inactiveThumbColor: const Color(0xFFE0E5E9), // Inactive #E0E5E9
                 inactiveTrackColor: const Color(
                   0xFFE0E5E9,
@@ -178,7 +178,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                   children: [
                     CustomIconWidget(
                       iconName: 'schedule',
-                      color: const Color(0xFF7A9D8E), // Selected color #457B9D
+                      color: const Color(0xFF7A9D8E), // Selected color #7A9D8E
                       size: 20,
                     ),
                     SizedBox(width: 3.w),
@@ -220,7 +220,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                   children: [
                     CustomIconWidget(
                       iconName: 'add_alarm',
-                      color: const Color(0xFF7A9D8E), // Selected color #457B9D
+                      color: const Color(0xFF7A9D8E), // Selected color #7A9D8E
                       size: 20,
                     ),
                     SizedBox(width: 3.w),
@@ -229,7 +229,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: const Color(
                           0xFF7A9D8E,
-                        ), // Selected color #457B9D
+                        ), // Selected color #7A9D8E
                         fontWeight: FontWeight.w500,
                       ),
                     ),

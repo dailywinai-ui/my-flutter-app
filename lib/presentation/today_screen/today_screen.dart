@@ -433,7 +433,7 @@ class _TodayScreenState extends State<TodayScreen>
                             currentIndex: _currentTabIndex,
                             onTabChanged: _onTabChanged,
                           ),
-                          // Light divider line between date and list of wins (8% opacity #1D3557)
+                          // Light divider line between date and list of wins (8% opacity #6B8B7F)
                           Container(
                             height: 1,
                             margin: EdgeInsets.symmetric(
@@ -497,7 +497,7 @@ class _TodayScreenState extends State<TodayScreen>
             ),
           ),
           SizedBox(height: WDDLDesignSystem.componentGap),
-          // Toast with refined styling (#84C69B 10% opacity, text #1D3557, 8px blur)
+          // Toast with refined styling (#84C69B 10% opacity, text #6B8B7F, 8px blur)
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -514,7 +514,7 @@ class _TodayScreenState extends State<TodayScreen>
                   child: Text(
                     WDDLDesignSystem.winLoggedMessage,
                     style: WDDLDesignSystem.body.copyWith(
-                      color: WDDLDesignSystem.primary, // Text color #1D3557
+                      color: WDDLDesignSystem.primary, // Text color #6B8B7F
                       fontWeight: FontWeight.w500,
                     ),
                   ),
