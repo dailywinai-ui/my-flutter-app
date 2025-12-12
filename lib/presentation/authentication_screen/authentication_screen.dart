@@ -294,7 +294,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                     SizedBox(
                                       width: 140,
                                       child: Image.asset(
-                                        BrandAssets.otherHorizontalLogo(),
+                                        'assets/images/the_node_logo.svg',
                                         width: 140,
                                         fit: BoxFit.contain,
                                         filterQuality: FilterQuality.high,
