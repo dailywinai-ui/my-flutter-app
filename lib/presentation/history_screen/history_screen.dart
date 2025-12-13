@@ -170,7 +170,17 @@ class _HistoryScreenState extends State<HistoryScreen>
                 ),
 
                 // Centered title with WDDL H2 typography
-                Text('History', style: WDDLDesignSystem.h2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('History', style: WDDLDesignSystem.h2),
+                    Image.asset(
+                      'assets/images/history_pattern_grid.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ],
+                ),
 
                 // Settings button
                 IconButton(

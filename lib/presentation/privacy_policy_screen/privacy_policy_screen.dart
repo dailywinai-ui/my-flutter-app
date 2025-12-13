@@ -27,7 +27,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'Win Daily is built on calm, simplicity, and trust. We believe your wins belong to you — not to advertisers or third parties. This Privacy Policy explains what information we collect, why we collect it, and how we protect it.',
               ),
               SizedBox(height: 3.h),
-              _buildSectionHeader(theme, '2. Information We Collect'),
+              _buildSectionHeader(theme, '2. Information We Collect', iconPath: 'assets/images/privacy_data_flow.svg'),
               _buildSectionContent(
                 theme,
                 'We collect only what\'s necessary to help you track your wins and improve your experience.',
@@ -66,7 +66,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'We do not collect sensitive personal data such as health information, contacts, or precise location.',
               ),
               SizedBox(height: 3.h),
-              _buildSectionHeader(theme, '3. How We Use Your Information'),
+             _buildSectionHeader(theme, '3. How We Use Your Information', iconPath: 'assets/images/privacy_boundary.svg'),
               _buildSectionContent(theme, 'We use your data to:'),
               _buildBulletPoint(
                 theme,
@@ -87,7 +87,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'We do not sell or share your personal data with advertisers or external marketers.',
               ),
               SizedBox(height: 3.h),
-              _buildSectionHeader(theme, '4. Data Storage and Security'),
+              _buildSectionHeader(theme, '4. Data Storage and Security', iconPath: 'assets/images/privacy_protection_network.svg'),
               _buildBulletPoint(
                 theme,
                 'Your data is encrypted during transmission and at rest.',
@@ -101,7 +101,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'You can request your data or delete your account anytime.',
               ),
               SizedBox(height: 3.h),
-              _buildSectionHeader(theme, '5. Your Rights'),
+              _buildSectionHeader(theme, '5. Your Rights', iconPath: 'assets/images/privacy_user_control.svg'),
               _buildSectionContent(theme, 'You have the right to:'),
               _buildBulletPoint(theme, 'Access, edit, or delete your data'),
               _buildBulletPoint(theme, 'Withdraw consent for notifications'),
@@ -140,16 +140,30 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(ThemeData theme, String title) {
+  Widget _buildSectionHeader(ThemeData theme, String title, {String? iconPath}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 2.h),
-      child: Text(
-        title,
-        style: theme.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.w700,
-          color: theme.colorScheme.primary,
-          fontSize: 18.sp,
-        ),
+      child: Row(
+        children: [
+          if (iconPath != null) ...[
+            Image.asset(
+              iconPath,
+              width: 30,
+              height: 30,
+            ),
+            SizedBox(width: 12),
+          ],
+          Expanded(
+            child: Text(
+              title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: theme.colorScheme.primary,
+                fontSize: 18.sp,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
