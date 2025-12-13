@@ -65,12 +65,22 @@ class _ReflectionCountWidgetState extends State<ReflectionCountWidget>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'This month',
-            style: WDDLDesignSystem.h2.copyWith(
-              color: WDDLDesignSystem.primary,
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'This month',
+                  style: WDDLDesignSystem.h2.copyWith(
+                    color: WDDLDesignSystem.primary,
+                  ),
+                ),
+                Image.asset(
+                  'assets/images/insights_constellation.svg',
+                  width: 40,
+                  height: 40,
+                ),
+              ],
             ),
-          ),
           SizedBox(height: 16),
 
           // Large number badge

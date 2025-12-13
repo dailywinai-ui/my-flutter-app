@@ -24,7 +24,11 @@ class MoodTrendWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Mood trend (30 days)', style: WDDLDesignSystem.h2),
+              Text('Mood trend (30 days)', style: WDDLDesignSystem.h2),Image.asset(
+                  'assets/images/insights_mood_wave.svg',
+                  width: 60,
+                  height: 30,
+                ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(

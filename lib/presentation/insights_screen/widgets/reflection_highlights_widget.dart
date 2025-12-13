@@ -20,8 +20,19 @@ class ReflectionHighlightsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Highlights from your reflections', style: WDDLDesignSystem.h2),
-          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text('Highlights from your reflections', style: WDDLDesignSystem.h2),
+              ),
+              Image.asset(
+                'assets/images/insights_highlights.svg',
+                width: 35,
+                height: 35,
+              ),
+            ],
+          ),
 
           // Reflection sentences
           if (topReflectionSentences.isNotEmpty) ...[

@@ -547,7 +547,14 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    children: [
+              Image.asset(
+                'assets/images/onboarding/slide3_sprout.svg',
+                width: 100,
+                height: 100,
+              ),
+              const SizedBox(height: 24),
+  const SizedBox(height: 24),
           // Fixed: Reflection prompts + emoji row visualization with proper spacing
           Container(
             width: double.infinity,

@@ -31,7 +31,17 @@ class WinsThisWeekWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Wins this week', style: WDDLDesignSystem.h2),
+           Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Wins this week', style: WDDLDesignSystem.h2),
+                  Image.asset(
+                    'assets/images/insights_weekly_pattern.svg',
+                    width: 50,
+                    height: 25,
+                  ),
+                ],
+              ),
             SizedBox(height: 16),
 
             // 7-day mini bar chart

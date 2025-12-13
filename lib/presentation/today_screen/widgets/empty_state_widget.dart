@@ -70,11 +70,11 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget>
                     color: theme.colorScheme.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: CustomIconWidget(
-                    iconName: 'emoji_events',
-                    color: theme.colorScheme.primary,
-                    size: 8.w,
-                  ),
+                  child: Image.asset(
+                      'assets/images/today_temporal_flow.svg',
+                      width: 60,
+                      height: 60,
+                    ),
                 ),
               );
             },

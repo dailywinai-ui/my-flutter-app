@@ -28,9 +28,17 @@ class CategoriesWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Where you\'re winning', style: WDDLDesignSystem.h2),
-          SizedBox(height: 16),
-
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Where you\'re winning', style: WDDLDesignSystem.h2),
+                Image.asset(
+                  'assets/images/insights_tag_network.svg',
+                  width: 40,
+                  height: 40,
+                ),
+              ],
+            ),
           // Top tag chips
           Wrap(
             spacing: 8,
