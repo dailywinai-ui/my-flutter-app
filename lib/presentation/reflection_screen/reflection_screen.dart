@@ -323,7 +323,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       child: TextField(
                         controller: _reflectionController,
                         maxLines: null,
-                        expands: true,
+                        minLines: 5,
                         style: WDDLDesignSystem.body,
                         decoration: InputDecoration(
                           hintText: 'Today, I realized that…',
