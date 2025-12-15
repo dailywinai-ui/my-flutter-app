@@ -245,8 +245,14 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
+                         IconButton(
+                            icon: Icon(Icons.arrow_back, color: WDDLDesignSystem.primary),
+                            onPressed: () => Navigator.pop(context),
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                          ),
                           // WDDL H2 typography (18px, weight 500)
                           Text(
                             'Take a moment to reflect',
