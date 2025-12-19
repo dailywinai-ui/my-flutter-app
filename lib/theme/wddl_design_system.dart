@@ -11,7 +11,7 @@ class WDDLDesignSystem {
   static const Color sageLight = Color(0xFFE8F0ED);
   static const Color sageBorder = Color(0xFFB8CFC7);
   
-  static const Color beige = Color(0xFFEBE8E3);
+  static const Color beige = Color(0xFFF8F8F8);
   static const Color beigeLight = Color(0xFFF5F3F0);
   
   static const Color white = Color(0xFFFFFFFF);

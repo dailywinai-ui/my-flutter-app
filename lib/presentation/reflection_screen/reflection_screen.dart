@@ -245,14 +245,8 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:[
-                         IconButton(
-                            icon: Icon(Icons.arrow_back, color: WDDLDesignSystem.primary),
-                            onPressed: () => Navigator.pop(context),
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
-                          ),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           // WDDL H2 typography (18px, weight 500)
                           Text(
                             'Take a moment to reflect',
@@ -301,11 +295,20 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Large text box with WDDL styling
-                    Text(
-                      'Write your reflection...',
-                      style: WDDLDesignSystem.h2,
-                    ),
-                    SizedBox(height: WDDLDesignSystem.componentGap),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Write your reflection...',
+                            style: WDDLDesignSystem.h2,
+                          ),
+                          Image.asset(
+                            'assets/images/reflection_thought_network.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                        ],
+                      ),
 
                     Container(
                       height: 140.0,
@@ -329,7 +332,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       child: TextField(
                         controller: _reflectionController,
                         maxLines: null,
-                        minLines: 5,
+                        expands: true,
                         style: WDDLDesignSystem.body,
                         decoration: InputDecoration(
                           hintText: 'Today, I realized that…',
@@ -353,11 +356,21 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       padding: const EdgeInsets.only(
                         top: 16.0,
                       ), // 16px top padding
-                      child: Text(
-                        'Reflection Prompts',
-                        style: WDDLDesignSystem.h2,
-                      ),
-                    ),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Reflection Prompts',
+                              style: WDDLDesignSystem.h2,
+                            ),
+                            Image.asset(
+                              'assets/images/reflection_inquiry_pattern.svg',
+                              width: 35,
+                              height: 35,
+                            ),
+                          ],
+                        ),
+                        ),
                     SizedBox(height: WDDLDesignSystem.componentGap),
 
                     Wrap(
@@ -457,11 +470,21 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       padding: const EdgeInsets.only(
                         top: 24.0,
                       ), // 24px top padding
-                      child: Text(
-                        'How are you feeling?',
-                        style: WDDLDesignSystem.h2,
-                      ),
-                    ),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'How are you feeling?',
+                              style: WDDLDesignSystem.h2,
+                            ),
+                            Image.asset(
+                              'assets/images/reflection_mood_spectrum.svg',
+                              width: 80,
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                        ),
                     SizedBox(height: WDDLDesignSystem.componentGap),
 
                     ReflectionMoodSelectorWidget(
