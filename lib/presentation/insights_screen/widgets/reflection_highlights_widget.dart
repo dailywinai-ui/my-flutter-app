@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:win_daily/theme/wddl_design_system.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ReflectionHighlightsWidget extends StatelessWidget {
   final List<String> topReflectionSentences;
@@ -26,7 +27,7 @@ class ReflectionHighlightsWidget extends StatelessWidget {
               Expanded(
                 child: Text('Highlights from your reflections', style: WDDLDesignSystem.h2),
               ),
-              Image.asset(
+              SvgPicture.asset(
                 'assets/images/insights_highlights.svg',
                 width: 35,
                 height: 35,

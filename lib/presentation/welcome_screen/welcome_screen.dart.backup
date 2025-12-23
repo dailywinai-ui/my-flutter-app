@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:win_daily/routes/app_routes.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -19,31 +18,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.dispose();
   }
 
-  Future<void> _continue() async {
-    final name = _nameController.text.trim();
-    
-    if (name.isNotEmpty) {
-      try {
-        final userId = Supabase.instance.client.auth.currentUser?.id;
-        if (userId != null) {
-          await Supabase.instance.client.from('user_profiles').upsert({
-            'user_id': userId,
-            'first_name': name,
-            'updated_at': DateTime.now().toIso8601String(),
-          });
-        }
-      } catch (e) {
-        // Silently fail - user can update name later in settings
-      }
-    }
-    
-    if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        AppRoutes.today,
-        (route) => false,
-      );
-    }
+  void _continue() {
+    // For now, just navigate - we'll add saving later
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.today,
+      (route) => false,
+    );
   }
 
   @override

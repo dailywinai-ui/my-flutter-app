@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_icon_widget.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EmptyStateWidget extends StatefulWidget {
   const EmptyStateWidget({super.key});
@@ -70,7 +71,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget>
                     color: theme.colorScheme.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(
+                  child: SvgPicture.asset(
                       'assets/images/today_temporal_flow.svg',
                       width: 60,
                       height: 60,

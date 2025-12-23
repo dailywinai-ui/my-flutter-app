@@ -8,6 +8,7 @@ import '../../services/wins_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import './widgets/reflection_mood_selector_widget.dart';
 import './widgets/reflection_success_modal.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ReflectionScreen extends StatefulWidget {
   const ReflectionScreen({super.key});
@@ -302,7 +303,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                             'Write your reflection...',
                             style: WDDLDesignSystem.h2,
                           ),
-                          Image.asset(
+                          SvgPicture.asset(
                             'assets/images/reflection_thought_network.svg',
                             width: 40,
                             height: 40,
@@ -363,7 +364,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                               'Reflection Prompts',
                               style: WDDLDesignSystem.h2,
                             ),
-                            Image.asset(
+                            SvgPicture.asset(
                               'assets/images/reflection_inquiry_pattern.svg',
                               width: 35,
                               height: 35,
@@ -477,7 +478,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                               'How are you feeling?',
                               style: WDDLDesignSystem.h2,
                             ),
-                            Image.asset(
+                            SvgPicture.asset(
                               'assets/images/reflection_mood_spectrum.svg',
                               width: 80,
                               height: 20,

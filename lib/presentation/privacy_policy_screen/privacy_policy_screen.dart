@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../widgets/custom_app_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -146,7 +147,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       child: Row(
         children: [
           if (iconPath != null) ...[
-            Image.asset(
+            SvgPicture.asset(
               iconPath,
               width: 30,
               height: 30,

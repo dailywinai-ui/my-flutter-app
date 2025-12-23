@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:win_daily/theme/wddl_design_system.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ReflectionCountWidget extends StatefulWidget {
   final int totalReflections;
@@ -74,7 +75,7 @@ class _ReflectionCountWidgetState extends State<ReflectionCountWidget>
                     color: WDDLDesignSystem.primary,
                   ),
                 ),
-                Image.asset(
+                SvgPicture.asset(
                   'assets/images/insights_constellation.svg',
                   width: 40,
                   height: 40,

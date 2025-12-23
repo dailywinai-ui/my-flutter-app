@@ -7,6 +7,7 @@ import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../widgets/custom_bottom_bar.dart';
 import '../../widgets/custom_icon_widget.dart';
 import './widgets/calendar_view_widget.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -174,7 +175,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('History', style: WDDLDesignSystem.h2),
-                    Image.asset(
+                    SvgPicture.asset(
                       'assets/images/history_pattern_grid.svg',
                       width: 40,
                       height: 40,

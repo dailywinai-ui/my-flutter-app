@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:win_daily/theme/wddl_design_system.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MoodTrendWidget extends StatelessWidget {
   final List<double?> moodScoresLast30;
@@ -24,7 +25,7 @@ class MoodTrendWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Mood trend (30 days)', style: WDDLDesignSystem.h2),Image.asset(
+              Text('Mood trend (30 days)', style: WDDLDesignSystem.h2),SvgPicture.asset(
                   'assets/images/insights_mood_wave.svg',
                   width: 60,
                   height: 30,

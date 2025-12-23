@@ -285,7 +285,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   margin: WDDLDesignSystem.screenPadding,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF96C8CF), // Background #96C8CF
+                    color: WDDLDesignSystem.sageLight, // Background #96C8CF
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(

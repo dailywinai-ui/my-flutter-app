@@ -7,6 +7,7 @@ import '../../services/auth_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
 import './widgets/forgot_password_modal.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({super.key});
@@ -293,11 +294,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                     // Horizontal wordmark logo (140px wide)
                                     SizedBox(
                                       width: 140,
-                                      child: Image.asset(
+                                      child: SvgPicture.asset(
                                         'assets/images/the_node_logo.svg',
                                         width: 140,
                                         fit: BoxFit.contain,
-                                        filterQuality: FilterQuality.high,
                                         errorBuilder: (
                                           context,
                                           error,

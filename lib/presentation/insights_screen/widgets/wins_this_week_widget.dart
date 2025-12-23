@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 
 import 'package:win_daily/theme/wddl_design_system.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WinsThisWeekWidget extends StatelessWidget {
   final List<int> winsByDayLast7;
@@ -35,7 +36,7 @@ class WinsThisWeekWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Wins this week', style: WDDLDesignSystem.h2),
-                  Image.asset(
+                  SvgPicture.asset(
                     'assets/images/insights_weekly_pattern.svg',
                     width: 50,
                     height: 25,

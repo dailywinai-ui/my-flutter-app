@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:win_daily/theme/wddl_design_system.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoriesWidget extends StatelessWidget {
   final List<Map<String, dynamic>> tagCounts;
@@ -32,7 +33,7 @@ class CategoriesWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Where you\'re winning', style: WDDLDesignSystem.h2),
-                Image.asset(
+                SvgPicture.asset(
                   'assets/images/insights_tag_network.svg',
                   width: 40,
                   height: 40,

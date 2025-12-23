@@ -8,6 +8,7 @@ import '../../services/auth_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
 import './widgets/onboarding_success_modal.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingIntroScreen extends StatefulWidget {
   const OnboardingIntroScreen({super.key});
@@ -347,12 +348,11 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                   width: 120,
                   height: 120,
                   margin: const EdgeInsets.only(bottom: 32),
-                  child: Image.asset(
+                  child: SvgPicture.asset(
                     'assets/images/onboarding/slide1_arc.svg',
                     width: 120,
                     height: 120,
                     fit: BoxFit.contain,
-                    filterQuality: FilterQuality.high,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         decoration: BoxDecoration(
@@ -439,7 +439,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                           child: Container(
                             width: 32,
                             height: 32,
-                            child: Image.asset(
+                            child: SvgPicture.asset(
                               'assets/images/onboarding/slide2_checkmark.svg',
                               width: 32,
                               height: 32,
@@ -548,7 +548,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
     children: [
-              Image.asset(
+              SvgPicture.asset(
                 'assets/images/onboarding/slide3_sprout.svg',
                 width: 100,
                 height: 100,
