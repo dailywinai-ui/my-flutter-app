@@ -1,16 +1,5 @@
-<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-  <!-- Outer circle -->
-  <circle cx="40" cy="40" r="35" fill="none" stroke="#6B8B7F" stroke-width="2"/>
-  <!-- Central node -->
-  <circle cx="40" cy="40" r="8" fill="#7A9D8E"/>
-  <!-- Connection dots -->
-  <circle cx="40" cy="15" r="4" fill="#B8CFC7"/>
-  <circle cx="65" cy="40" r="4" fill="#B8CFC7"/>
-  <circle cx="40" cy="65" r="4" fill="#B8CFC7"/>
-  <circle cx="15" cy="40" r="4" fill="#B8CFC7"/>
-  <!-- Connection lines -->
-  <line x1="40" y1="48" x2="40" y2="61" stroke="#E8F0ED" stroke-width="2"/>
-  <line x1="48" y1="40" x2="61" y2="40" stroke="#E8F0ED" stroke-width="2"/>
-  <line x1="40" y1="32" x2="40" y2="19" stroke="#E8F0ED" stroke-width="2"/>
-  <line x1="32" y1="40" x2="19" y2="40" stroke="#E8F0ED" stroke-width="2"/>
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <text x="100" y="40" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="24" font-weight="500" fill="#6B8B7F" text-anchor="middle">
+    the node
+  </text>
 </svg>
