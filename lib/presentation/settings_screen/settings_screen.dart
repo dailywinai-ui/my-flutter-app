@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/app_export.dart';
 import '../../services/auth_service.dart';
 import '../../services/wins_service.dart';
@@ -293,11 +294,10 @@ class _SettingsScreenState extends State<SettingsScreen>
                       // Theme-aware horizontal lockup (no glow)
                       Container(
                         height: 40,
-                        child: Image.asset(
+                        child: SvgPicture.asset(
                           BrandAssets.settingsFooterLogo(context),
                           height: 40,
                           fit: BoxFit.contain,
-                          filterQuality: FilterQuality.high,
                           errorBuilder: (context, error, stackTrace) {
                             return Row(
                               mainAxisSize: MainAxisSize.min,
