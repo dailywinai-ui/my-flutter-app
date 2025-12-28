@@ -443,71 +443,79 @@ class _AddWinModalState extends State<AddWinModal>
                   ),
                 ),
 
-                // Content Area - Tightened conversational flow
+                // Content Area
                 Expanded(
                   child: SingleChildScrollView(
                     padding: WDDLDesignSystem.screenPadding,
                     child: Column(
                       children: [
-                        const SizedBox(height: 12), // Reduced from 24
-                        // Input field
-                        GestureDetector(
-                          onTap: () {
-                            _titleFocusNode.requestFocus();
-                          },
-                          child: Container(
-                            height: 180,
-                            decoration: BoxDecoration(
-                              color: WDDLDesignSystem.inputBackground,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: WDDLDesignSystem.inputBorder,
-                                width: 1,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withAlpha(13),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                            child: TextField(
-                              controller: _titleController,
-                              focusNode: _titleFocusNode,
-                              onChanged: (value) {
-                                HapticFeedback.selectionClick();
-                                _onTitleChanged();
-                              },
+                        const SizedBox(height: 24),
+
+                        // WDDL Input field styling
+                        Stack(
+                          children: [
+                            GestureDetector(
                               onTap: () {
                                 _titleFocusNode.requestFocus();
                               },
-                              maxLines: null,
-                              expands: true,
-                              textAlignVertical: TextAlignVertical.top,
-                              style: WDDLDesignSystem.bodyLarge.copyWith(
-                                fontWeight: FontWeight.w500,
-                                height: 1.4,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: _isEditMode
-                                    ? 'Update your accomplishment...'
-                                    : 'Exercised for 30 minutes, finished a task, or had a great conversation — what\'s your win?',
-                                hintStyle: WDDLDesignSystem.bodyLarge.copyWith(
-                                  color: const Color(0xFF9AA0A6),
-                                  height: 1.4,
+                              child: Container(
+                                height: 180,
+                                decoration: BoxDecoration(
+                                  color: WDDLDesignSystem.inputBackground,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: WDDLDesignSystem.inputBorder,
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withAlpha(13),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
                                 ),
-                                border: InputBorder.none,
-                                contentPadding: const EdgeInsets.all(16),
+                                child: TextField(
+                                  controller: _titleController,
+                                  focusNode: _titleFocusNode,
+                                  onChanged: (value) {
+                                    HapticFeedback.selectionClick();
+                                    _onTitleChanged();
+                                  },
+                                  onTap: () {
+                                    _titleFocusNode.requestFocus();
+                                  },
+                                  maxLines: null,
+                                  expands: true,
+                                  textAlignVertical: TextAlignVertical.top,
+                                  style: WDDLDesignSystem.bodyLarge.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.4,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: _isEditMode
+                                        ? 'Update your accomplishment...'
+                                        : 'Exercised for 30 minutes, finished a task, or had a great conversation — what\'s your win?',
+                                    hintStyle:
+                                        WDDLDesignSystem.bodyLarge.copyWith(
+                                      color: const Color(0xFF9AA0A6),
+                                      height: 1.4,
+                                    ),
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.all(16),
+                                  ),
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  keyboardType: TextInputType.multiline,
+                                  textInputAction: TextInputAction.newline,
+                                  autofocus: true,
+                                  enableInteractiveSelection: true,
+                                ),
                               ),
-                              textCapitalization: TextCapitalization.sentences,
-                              keyboardType: TextInputType.multiline,
-                              textInputAction: TextInputAction.newline,
-                              autofocus: true,
-                              enableInteractiveSelection: true,
                             ),
-                          ),
+                          ],
                         ),
+
                         // Error text
                         if (_titleError != null) ...[
                           const SizedBox(height: 8),
@@ -521,58 +529,79 @@ class _AddWinModalState extends State<AddWinModal>
                             ),
                           ),
                         ],
-                        // Save button directly under input
-                        const SizedBox(height: 16),
-                        ScaleTransition(
-                          scale: _tapAnimation,
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 48,
-                            child: ElevatedButton(
-                              onPressed: (_titleController.text.trim().isNotEmpty && !_isSaving && (_isEditMode ? _hasUnsavedChanges : true))
-                                  ? _saveWin
-                                  : null,
-                              style: WDDLDesignSystem.primaryButton.copyWith(
-                                backgroundColor: WidgetStateProperty.all(WDDLDesignSystem.primary),
-                                shadowColor: WidgetStateProperty.all(Colors.black.withAlpha(26)),
-                                elevation: WidgetStateProperty.all(2.0),
-                              ),
-                              child: _isSaving
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(strokeWidth: 2),
-                                    )
-                                  : const Text('Save'),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
+
+                        // Minimal spacing for better scroll behavior
+                        const SizedBox(height: 24),
                       ],
                     ),
                   ),
                 ),
-                // Footer - step indicator
+
+                // Bottom Save Button Area with WDDL styling
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: WDDLDesignSystem.background,
-                    border: Border(
-                      top: BorderSide(
-                        color: WDDLDesignSystem.inputBorder.withValues(alpha: 0.5),
-                        width: 1,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(26),
+                        blurRadius: 6,
+                        offset: const Offset(0, -2),
                       ),
-                    ),
+                    ],
                   ),
-                  child: !_isEditMode
-                      ? Text(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Calm subtext under CTA
+                      if (!_isEditMode)
+                        Text(
                           'Next: reflect on your win',
-                          style: WDDLDesignSystem.hint.copyWith(fontSize: 13),
+                          style: WDDLDesignSystem.hint,
                           textAlign: TextAlign.center,
-                        )
-                      : const SizedBox.shrink(),
-                ),
+                        ),
+                      if (!_isEditMode) const SizedBox(height: 12),
 
+                      // WDDL Button styling (height 48px, radius 12px, tap scale 0.98)
+                      ScaleTransition(
+                        scale: _tapAnimation,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: (_titleController.text
+                                            .trim()
+                                            .isNotEmpty &&
+                                        !_isSaving &&
+                                        (_isEditMode
+                                            ? _hasUnsavedChanges
+                                            : true))
+                                ? _saveWin
+                                : null,
+                            style: WDDLDesignSystem.primaryButton.copyWith(
+                              backgroundColor: WidgetStateProperty.all(
+                                WDDLDesignSystem.primary,
+                              ),
+                              shadowColor: WidgetStateProperty.all(
+                                Colors.black.withAlpha(26),
+                              ),
+                              elevation: WidgetStateProperty.all(2.0),
+                            ),
+                            child: _isSaving
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2),
+                                  )
+                                : const Text('Save'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: WDDLDesignSystem.sectionGap),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

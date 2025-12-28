@@ -31,6 +31,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             'first_name': name,
             'updated_at': DateTime.now().toIso8601String(),
           });
+          
+          // Wait a moment for the database to propagate
+          await Future.delayed(const Duration(milliseconds: 500));
         }
       } catch (e) {
         // Silently fail - user can update name later in settings
