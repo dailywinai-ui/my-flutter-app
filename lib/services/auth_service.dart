@@ -123,7 +123,7 @@ class AuthService {
           await _client
               .from('user_profiles')
               .select()
-              .eq('user_id', currentUser!.id)
+              .eq('id', currentUser!.id)
               .single();
 
       return UserProfile.fromJson(response);
@@ -158,7 +158,7 @@ class AuthService {
           await _client
               .from('user_profiles')
               .update(updateData)
-              .eq('user_id', currentUser!.id)
+              .eq('id', currentUser!.id)
               .select()
               .single();
 
@@ -176,7 +176,7 @@ class AuthService {
       }
 
       // Delete user profile (this will cascade delete related data)
-      await _client.from('user_profiles').delete().eq('user_id', currentUser!.id);
+      await _client.from('user_profiles').delete().eq('id', currentUser!.id);
 
       // Sign out
       await signOut();

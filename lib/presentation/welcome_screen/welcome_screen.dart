@@ -27,7 +27,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         final userId = Supabase.instance.client.auth.currentUser?.id;
         if (userId != null) {
           await Supabase.instance.client.from('user_profiles').upsert({
-            'user_id': userId,
+            'id': userId,
             'first_name': name,
             'updated_at': DateTime.now().toIso8601String(),
           });
