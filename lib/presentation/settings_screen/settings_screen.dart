@@ -8,6 +8,7 @@ import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_bottom_bar.dart';
+import 'widgets/profile_settings_widget.dart';
 import '../../widgets/custom_icon_widget.dart';
 import './widgets/about_section_widget.dart';
 import './widgets/data_management_widget.dart';
@@ -181,6 +182,23 @@ class _SettingsScreenState extends State<SettingsScreen>
                 ),
 
                 // WDDL section gap (32px)
+
+                // Profile section
+                Padding(
+                  padding: WDDLDesignSystem.screenPadding,
+                  child: Text(
+                    'Profile',
+                    style: WDDLDesignSystem.body.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: WDDLDesignSystem.secondary,
+                    ),
+                  ),
+                ),
+                SizedBox(height: WDDLDesignSystem.componentGap),
+                const ProfileSettingsWidget(),
+                SizedBox(height: WDDLDesignSystem.sectionGap),
+
                 SizedBox(height: WDDLDesignSystem.sectionGap),
 
                 // Notification section with WDDL styling
