@@ -26,14 +26,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       try {
         final userId = Supabase.instance.client.auth.currentUser?.id;
         if (userId != null) {
-          await Supabase.instance.client.from('user_profiles').upsert(
-            {
-              'id': userId,
-              'first_name': name,
-              'updated_at': DateTime.now().toIso8601String(),
-            },
-            onConflict: 'id',
-          );
+          await Supabase.instance.client
+              .from('user_profiles')
+              .update({
+                'first_name': name,
+                'updated_at': DateTime.now().toIso8601String(),
+              })
+              .eq('id', userId);
           
           // Wait a moment for the database to propagate
           await Future.delayed(const Duration(milliseconds: 500));
