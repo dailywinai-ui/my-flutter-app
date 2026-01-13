@@ -1,5 +1,7 @@
+import 'package:win_daily/widgets/responsive_app_logo.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 
 import '../../core/app_export.dart';
 import '../../routes/app_routes.dart';
@@ -7,7 +9,7 @@ import '../../services/auth_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
 import './widgets/forgot_password_modal.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({super.key});
@@ -291,33 +293,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                 opacity: _fadeAnimation.value,
                                 child: Column(
                                   children: [
-                                    // Horizontal wordmark logo (140px wide)
-                                    SizedBox(
-                                      width: 140,
-                                      child: SvgPicture.asset(
-                                        'assets/images/the_node_logo.svg',
-                                        width: 140,
-                                        fit: BoxFit.contain,
-                                        errorBuilder: (
-                                          context,
-                                          error,
-                                          stackTrace,
-                                        ) {
-                                          return Text(
-                                            'Win Daily',
-                                            style: TextStyle(
-                                              fontSize: 28,
-                                              fontWeight: FontWeight.bold,
-                                              color:
-                                                  isDark
-                                                      ? Colors.white
-                                                      : const Color(0xFF6B8B7F),
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                    // Responsive wordmark logo (scales automatically)
+                                    const ResponsiveAppLogo(),
+
 
                                     const SizedBox(
                                       height: 12,
