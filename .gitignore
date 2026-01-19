@@ -47,3 +47,8 @@ app.*.map.json
 # Local backups
 backups/
 *.bak
+
+# Local secrets / env
+env.json
+run_app.sh
+
