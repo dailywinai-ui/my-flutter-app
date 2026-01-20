@@ -1,142 +1,294 @@
-# Flutter
+# Win Daily (Flutter)
+Win Daily is a Flutter app backed by Supabase. It helps busy professionals capture **one win per day** to reduce forgetfulness, build momentum, and create a living archive of their progress.
+**Primary branch:** `redesign-sage-green`
 
-A modern Flutter-based mobile application utilizing the latest mobile development technologies and tools for building responsive cross-platform applications.
+## What the app does
+Win Daily makes it easy to:
+- Sign in / sign up
+- Log a daily “win”
+- Review wins over time (history/reflection)
+- Update basic profile/settings
 
-## 📋 Prerequisites
+### Why it exists / problem it solves
+When life gets busy, progress becomes invisible. Win Daily helps you pause, recognize your progress, and stay an active participant in your own life by keeping a lightweight record of your wins.
 
-- Flutter SDK (^3.29.2)
-- Dart SDK
-- Android Studio / VS Code with Flutter extensions
-- Android SDK / Xcode (for iOS development)
+### Key features (at a glance)
+- ✅ Supabase Auth (sign in / sign up)
+- ✅ Daily win logging
+- ✅ History view
+- ✅ Settings/Profile
+- ✅ TestFlight distribution for iOS testing
 
-## 🛠️ Installation
+## Prerequisites / Requirements
+### Required software
+- Flutter SDK (stable recommended)
+- Dart (bundled with Flutter)
+- Git
 
-1. Install dependencies:
+### Platform requirements
+- **iOS local builds:** macOS + Xcode
+- **Android builds:** Android Studio + SDK
+- **Web:** any OS with a modern browser
+
+Verify:
 ```bash
+flutter --version
+flutter doctor
+ecurity / Key Handling (Read this first)
+
+This repo intentionally does not commit secrets.
+
+❌ Do not commit env.json, keys, tokens, or credentials.
+
+❌ Do not paste keys into PRs, issues, or logs.
+
+✅ env.json is local-only and gitignored.
+
+✅ If keys are ever exposed, notify the maintainer so keys can be rotated.
+Redaction rule: Anything that looks like a token (often starts with eyJ...) must be redacted before sharing.
+
+Installation / Setup (Local Development)
+1) Clone and checkout the correct branch
+git clone https://github.com/dailywinai-ui/my-flutter-app.git
+cd my-flutter-app
+git checkout redesign-sage-green
+
+2) Install dependencies
+flutter clean
 flutter pub get
-```
 
-2. Run the application:
+Environment Configuration (Supabase)
 
-To run the app with environment variables defined in an env.json file, follow the steps mentioned below:
-1. Through CLI
-    ```bash
-    flutter run --dart-define-from-file=env.json
-    ```
-2. For VSCode
-    - Open .vscode/launch.json (create it if it doesn't exist).
-    - Add or modify your launch configuration to include --dart-define-from-file:
-    ```json
-    {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "name": "Launch",
-                "request": "launch",
-                "type": "dart",
-                "program": "lib/main.dart",
-                "args": [
-                    "--dart-define-from-file",
-                    "env.json"
-                ]
-            }
-        ]
-    }
-    ```
-3. For IntelliJ / Android Studio
-    - Go to Run > Edit Configurations.
-    - Select your Flutter configuration or create a new one.
-    - Add the following to the "Additional arguments" field:
-    ```bash
-    --dart-define-from-file=env.json
-    ```
+Authentication and data access require Supabase runtime values:
 
-## 📁 Project Structure
+SUPABASE_URL
 
-```
-flutter_app/
-├── android/            # Android-specific configuration
-├── ios/                # iOS-specific configuration
-├── lib/
-│   ├── core/           # Core utilities and services
-│   │   └── utils/      # Utility classes
-│   ├── presentation/   # UI screens and widgets
-│   │   └── splash_screen/ # Splash screen implementation
-│   ├── routes/         # Application routing
-│   ├── theme/          # Theme configuration
-│   ├── widgets/        # Reusable UI components
-│   └── main.dart       # Application entry point
-├── assets/             # Static assets (images, fonts, etc.)
-├── pubspec.yaml        # Project dependencies and configuration
-└── README.md           # Project documentation
-```
+SUPABASE_ANON_KEY (anon public key)
 
-## 🧩 Adding Routes
+Create local env file
+cp env.example.json env.json
 
-To add new routes to the application, update the `lib/routes/app_routes.dart` file:
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:package_name/presentation/home_screen/home_screen.dart';
+Edit env.json with values provided privately by the maintainer:
 
-class AppRoutes {
-  static const String initial = '/';
-  static const String home = '/home';
-
-  static Map<String, WidgetBuilder> routes = {
-    initial: (context) => const SplashScreen(),
-    home: (context) => const HomeScreen(),
-    // Add more routes as needed
-  }
+{
+  "SUPABASE_URL": "https://<project-ref>.supabase.co",
+  "SUPABASE_ANON_KEY": "<anon-public-key>"
 }
-```
 
-## 🎨 Theming
 
-This project includes a comprehensive theming system with both light and dark themes:
+Notes:
 
-```dart
-// Access the current theme
-ThemeData theme = Theme.of(context);
+Keep quotes "" — JSON strings require quotes.
 
-// Use theme colors
-Color primaryColor = theme.colorScheme.primary;
-```
+Use the anon public key (never service role in client apps).
 
-The theme configuration includes:
-- Color schemes for light and dark modes
-- Typography styles
-- Button themes
-- Input decoration themes
-- Card and dialog themes
+Usage
+Run (Web)
 
-## 📱 Responsive Design
+Recommended for local review/debug:
 
-The app is built with responsive design using the Sizer package:
+./run_web.sh
 
-```dart
-// Example of responsive sizing
-Container(
-  width: 50.w, // 50% of screen width
-  height: 20.h, // 20% of screen height
-  child: Text('Responsive Container'),
-)
-```
-## 📦 Deployment
 
-Build the application for production:
+run_web.sh reads env.json and runs Flutter with the correct --dart-define values.
 
-```bash
-# For Android
-flutter build apk --release
+Run (iOS) (macOS only)
+flutter run
 
-# For iOS
-flutter build ios --release
-```
 
-## 🙏 Acknowledgments
-- Built with [Rocket.new](https://rocket.new)
-- Powered by [Flutter](https://flutter.dev) & [Dart](https://dart.dev)
-- Styled with Material Design
+If you want explicit env passing (optional):
 
-Built with ❤️ on Rocket.new
+flutter run \
+  --dart-define=SUPABASE_URL="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_URL'])")" \
+  --dart-define=SUPABASE_ANON_KEY="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_ANON_KEY'])")"
+
+Run (Android)
+flutter devices
+flutter run -d android \
+  --dart-define=SUPABASE_URL="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_URL'])")" \
+  --dart-define=SUPABASE_ANON_KEY="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_ANON_KEY'])")"
+
+Developer Reviewer Setup
+Recommended: TestFlight
+
+TestFlight is the most reliable functional verification path:
+
+real device behavior
+
+consistent builds
+
+avoids local signing/provisioning friction
+
+If you are a reviewer:
+
+Accept App Store Connect invite
+
+Install from TestFlight
+
+Validate core flows (see checklist below)
+
+Local debugging (for developers)
+
+Local debugging is supported; Supabase must be configured via env.json (see above).
+
+✅ What to Test (Reviewer Checklist)
+
+Please run through these flows and report issues with clear repro steps and relevant logs (redact keys/tokens).
+
+Install + Launch
+
+App launches cleanly (no blank screen / error overlay)
+
+Splash/auth routing behaves correctly
+
+Authentication
+
+Sign in using demo credentials (shared privately), or sign up (if enabled)
+
+Validation: invalid email / short password shows proper errors
+
+Log out → log back in
+
+Core feature: Daily Wins
+
+Create a Win
+
+Win appears on Today screen immediately
+
+Win appears in History
+
+Force close app → reopen → data persists
+
+Settings / Profile
+
+Update profile fields (if present)
+
+Privacy policy link opens correctly (if present)
+
+Sign out works
+
+Password recovery (optional but recommended)
+
+Trigger “Forgot password”
+
+Confirm reset flow behaves as expected
+
+When reporting issues, include:
+
+device + OS version (or web + browser)
+
+build number (TestFlight)
+
+steps to reproduce
+
+relevant logs (redact tokens/keys)
+
+Project Structure (high-level)
+
+lib/ — Flutter source
+
+main.dart — app entry + Supabase initialization
+
+services/ — Auth/Supabase services
+
+presentation/ — screens/views
+
+widgets/ — shared widgets
+
+utils/ — helpers/utilities
+
+assets/ — images/SVGs
+
+ios/, android/ — native platform folders
+
+codemagic.yaml — CI/CD configuration
+
+env.example.json — env template (safe)
+
+env.json — local env (gitignored)
+
+run_web.sh — local web launcher (safe)
+
+Technologies Used
+
+Flutter / Dart
+
+Supabase (Auth + database)
+
+flutter_svg
+
+shared_preferences
+
+Codemagic (CI/CD)
+
+TestFlight (iOS testing)
+
+Troubleshooting / FAQ
+“Supabase not initialized”
+
+Errors like:
+
+“You must initialize the supabase instance before calling Supabase.instance”
+
+“SUPABASE_URL and SUPABASE_ANON_KEY must be defined…”
+Fix:
+
+ensure env.json exists with real values
+
+run via ./run_web.sh
+
+“ClientFailed to fetch … auth/v1/...”
+
+Causes:
+
+wrong Supabase URL/key
+
+project paused/inactive
+
+network/DNS issue
+Fix:
+
+verify project is active
+
+verify URL/key match the same project
+
+Web build fails with “No space left on device”
+
+Fix:
+
+df -h
+flutter clean
+rm -rf build .dart_tool
+rm -rf /tmp/flutter_tools.*
+
+Testing
+flutter analyze
+flutter test
+
+Deployment / Releases
+
+iOS builds produced via Codemagic
+
+Distributed via TestFlight
+
+App Store submission handled in App Store Connect
+
+Contributing (optional)
+
+Create a branch from redesign-sage-green
+
+Keep PRs small and focused
+
+Follow Flutter lint/style
+
+Do not commit secrets (env.json, tokens, etc.)
+
+License
+
+TBD. If pre-launch, keep this repo private and treat as proprietary until you choose a license.
+
+Contact / Support
+
+Maintainer: Christine
+Repo issues: GitHub Issues (preferred)
