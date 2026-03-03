@@ -101,7 +101,7 @@ class _ProfileSettingsWidgetState extends State<ProfileSettingsWidget> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              if (!_isEditing && _currentName != null)
+              if (!_isEditing)
                 TextButton(
                   onPressed: () => setState(() => _isEditing = true),
                   child: Text(
