@@ -97,7 +97,7 @@ class _ReflectionSuccessModalState extends State<ReflectionSuccessModal>
 
                   // Success message
                   Text(
-                    'Reflection saved 🌿',
+                    'Reflection saved',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF6B8B7F),

@@ -69,7 +69,7 @@ class _WinCardWidgetState extends State<WinCardWidget> {
                   child: Text(
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       color: theme.colorScheme.onSurface,
                     ),
                     maxLines: 2,
@@ -159,7 +159,7 @@ class _WinCardWidgetState extends State<WinCardWidget> {
         moodColor = const Color(0xFF2B6CB0); // Blue
         break;
       default:
-        moodColor = theme.colorScheme.secondary;
+        moodColor = WDDLDesignSystem.sageMedium;
     }
 
     return Container(
