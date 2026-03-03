@@ -32,54 +32,56 @@ class WinsThisWeekWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Wins this week', style: WDDLDesignSystem.h2),
-                  SvgPicture.asset(
-                    'assets/images/insights_weekly_pattern.svg',
-                    width: 50,
-                    height: 25,
-                  ),
-                ],
-              ),
-            SizedBox(height: 16),
-
-            // 7-day mini bar chart
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Wins this week', style: WDDLDesignSystem.h2),
+                SvgPicture.asset(
+                  'assets/images/insights_weekly_pattern.svg',
+                  width: 50,
+                  height: 25,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
             SizedBox(
               height: 60,
               child: BarChart(
                 BarChartData(
-                  maxY:
-                      (winsByDayLast7.isEmpty
-                              ? 1
-                              : winsByDayLast7.reduce((a, b) => a > b ? a : b))
-                          .toDouble() +
-                      1,
+                  maxY: (winsByDayLast7.isEmpty
+                          ? 1
+                          : winsByDayLast7.reduce((a, b) => a > b ? a : b))
+                      .toDouble() + 1,
                   gridData: FlGridData(show: false),
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                       getTitlesWidget: (value, meta) {
-  final now = DateTime.now();
-  final dayIndex = value.toInt();
-  if (dayIndex < 0 || dayIndex > 6) return const SizedBox.shrink();
-  final date = now.subtract(Duration(days: 6 - dayIndex));
-  const abbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  final label = abbr[date.weekday - 1];
-  final isToday = dayIndex == 6;
-  return Text(
-    label,
-    style: WDDLDesignSystem.body.copyWith(
-      fontSize: 12,
-      color: isToday
-          ? WDDLDesignSystem.primary
-          : WDDLDesignSystem.textSecondary,
-      fontWeight: isToday ? FontWeight.w600 : FontWeight.w400,
-    ),
-  );
-},
+                        getTitlesWidget: (value, meta) {
+                          final now = DateTime.now();
+                          final dayIndex = value.toInt();
+                          if (dayIndex < 0 || dayIndex > 6) {
+                            return const SizedBox.shrink();
+                          }
+                          final date = now.subtract(Duration(days: 6 - dayIndex));
+                          const abbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                          final label = abbr[date.weekday - 1];
+                          final isToday = dayIndex == 6;
+                          return Text(
+                            label,
+                            style: WDDLDesignSystem.body.copyWith(
+                              fontSize: 12,
+                              color: isToday
+                                  ? WDDLDesignSystem.primary
+                                  : WDDLDesignSystem.textSecondary,
+                              fontWeight: isToday
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
@@ -91,33 +93,28 @@ class WinsThisWeekWidget extends StatelessWidget {
                     ),
                   ),
                   borderData: FlBorderData(show: false),
-                  barGroups:
-                      winsByDayLast7.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final count = entry.value;
-                        return BarChartGroupData(
-                          x: index,
-                          barRods: [
-                            BarChartRodData(
-                              toY: count.toDouble(),
-                              color:
-                                  count > 0
-                                      ? WDDLDesignSystem.success
-                                      : WDDLDesignSystem.textSecondary
-                                          .withValues(alpha: 0.3),
-                              width: 16,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                  barGroups: winsByDayLast7.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final count = entry.value;
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: count.toDouble(),
+                          color: count > 0
+                              ? WDDLDesignSystem.success
+                              : WDDLDesignSystem.textSecondary
+                                  .withValues(alpha: 0.3),
+                          width: 16,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ],
+                    );
+                  }).toList(),
                 ),
               ),
             ),
-
-            SizedBox(height: 16),
-
-            // Completion pill
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -136,9 +133,7 @@ class WinsThisWeekWidget extends StatelessWidget {
                 ),
               ),
             ),
-
-            SizedBox(height: 8),
-
+            const SizedBox(height: 8),
             Text(
               'showing up beats perfection.',
               style: WDDLDesignSystem.body.copyWith(
