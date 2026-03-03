@@ -61,30 +61,25 @@ class WinsThisWeekWidget extends StatelessWidget {
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          const days = [
-                            'Mon',
-                            'Tue',
-                            'Wed',
-                            'Thu',
-                            'Fri',
-                            'Sat',
-                            'Sun',
-                          ];
-                          if (value.toInt() >= 0 &&
-                              value.toInt() < days.length) {
-                            return Text(
-                              days[value.toInt()],
-                              style: WDDLDesignSystem.body.copyWith(
-                                fontSize: 12,
-                                color: WDDLDesignSystem.textSecondary,
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
+                       getTitlesWidget: (value, meta) {
+  final now = DateTime.now();
+  final dayIndex = value.toInt();
+  if (dayIndex < 0 || dayIndex > 6) return const SizedBox.shrink();
+  final date = now.subtract(Duration(days: 6 - dayIndex));
+  const abbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  final label = abbr[date.weekday - 1];
+  final isToday = dayIndex == 6;
+  return Text(
+    label,
+    style: WDDLDesignSystem.body.copyWith(
+      fontSize: 12,
+      color: isToday
+          ? WDDLDesignSystem.primary
+          : WDDLDesignSystem.textSecondary,
+      fontWeight: isToday ? FontWeight.w600 : FontWeight.w400,
+    ),
+  );
+},
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),

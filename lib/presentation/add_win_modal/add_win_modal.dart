@@ -20,12 +20,10 @@ class _AddWinModalState extends State<AddWinModal>
 
   String? _titleError;
   bool _isSaving = false;
-  bool _showConfetti = false;
   bool _hasUnsavedChanges = false;
   bool _showMicroAnimation = false;
   String? _defaultGoalId;
 
-  // Edit mode variables
   bool _isEditMode = false;
   Map<String, dynamic>? _existingWin;
   String? _originalTitle;
@@ -42,7 +40,6 @@ class _AddWinModalState extends State<AddWinModal>
     super.initState();
     _titleController.addListener(_onTitleChanged);
 
-    // WDDL fade-in animation (opacity 0→1 in 0.6s)
     _fadeAnimationController = AnimationController(
       duration: WDDLDesignSystem.fadeInDuration,
       vsync: this,
@@ -54,7 +51,6 @@ class _AddWinModalState extends State<AddWinModal>
       ),
     );
 
-    // Initialize micro animation
     _microAnimationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -66,7 +62,6 @@ class _AddWinModalState extends State<AddWinModal>
       ),
     );
 
-    // WDDL tap feedback animation (scale 0.98, 150ms)
     _tapAnimationController = AnimationController(
       duration: WDDLDesignSystem.tapFeedbackDuration,
       vsync: this,
@@ -78,15 +73,11 @@ class _AddWinModalState extends State<AddWinModal>
       ),
     );
 
-    // Check if this is edit mode and load data
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkEditMode();
       _fadeAnimationController.forward();
-      // Request focus immediately after modal is built
       Future.microtask(() {
-        if (mounted) {
-          _titleFocusNode.requestFocus();
-        }
+        if (mounted) _titleFocusNode.requestFocus();
       });
     });
 
@@ -112,7 +103,6 @@ class _AddWinModalState extends State<AddWinModal>
         _originalTitle = arguments['title'] ?? '';
         _titleController.text = _originalTitle ?? '';
 
-        // Set micro animation if there's existing text
         if (_titleController.text.isNotEmpty) {
           _showMicroAnimation = true;
           _microAnimationController.forward();
@@ -121,14 +111,11 @@ class _AddWinModalState extends State<AddWinModal>
     }
   }
 
-  /// Load the first available major goal to use as default
   Future<void> _loadDefaultGoal() async {
     try {
       final goals = await WinsService.instance.getMajorGoals(activeOnly: true);
       if (goals.isNotEmpty) {
-        setState(() {
-          _defaultGoalId = goals.first.id;
-        });
+        setState(() => _defaultGoalId = goals.first.id);
       }
     } catch (e) {
       print('No major goals found: $e');
@@ -137,7 +124,6 @@ class _AddWinModalState extends State<AddWinModal>
 
   void _onTitleChanged() {
     setState(() {
-      // Check if there are unsaved changes
       final currentText = _titleController.text.trim();
       if (_isEditMode) {
         _hasUnsavedChanges = currentText != (_originalTitle ?? '');
@@ -149,7 +135,6 @@ class _AddWinModalState extends State<AddWinModal>
         _titleError = null;
       }
 
-      // Show micro animation when user starts typing
       if (_titleController.text.isNotEmpty && !_showMicroAnimation) {
         _showMicroAnimation = true;
         _microAnimationController.forward();
@@ -161,22 +146,16 @@ class _AddWinModalState extends State<AddWinModal>
   }
 
   bool _validateForm() {
-    setState(() {
-      _titleError = null;
-    });
+    setState(() => _titleError = null);
 
     if (_titleController.text.trim().isEmpty) {
-      setState(() {
-        _titleError = 'Please enter what you accomplished today';
-      });
+      setState(() => _titleError = 'Please enter what you accomplished today');
       _titleFocusNode.requestFocus();
       return false;
     }
 
     if (_titleController.text.trim().length < 3) {
-      setState(() {
-        _titleError = 'Please enter at least 3 characters';
-      });
+      setState(() => _titleError = 'Please enter at least 3 characters');
       _titleFocusNode.requestFocus();
       return false;
     }
@@ -184,22 +163,15 @@ class _AddWinModalState extends State<AddWinModal>
     return true;
   }
 
-  /// Create a default goal if none exists
   Future<String> _ensureDefaultGoal() async {
-    if (_defaultGoalId != null) {
-      return _defaultGoalId!;
-    }
+    if (_defaultGoalId != null) return _defaultGoalId!;
 
     try {
       final defaultGoal = await WinsService.instance.createMajorGoal(
         title: 'General Progress',
         description: 'Default goal for tracking daily wins',
       );
-
-      setState(() {
-        _defaultGoalId = defaultGoal.id;
-      });
-
+      setState(() => _defaultGoalId = defaultGoal.id);
       return defaultGoal.id;
     } catch (e) {
       throw Exception('Failed to create default goal: $e');
@@ -209,48 +181,35 @@ class _AddWinModalState extends State<AddWinModal>
   Future<void> _saveWin() async {
     if (!_validateForm() || _isSaving) return;
 
-    // WDDL tap feedback
-    _tapAnimationController.forward().then((_) {
-      _tapAnimationController.reverse();
-    });
-
-    setState(() {
-      _isSaving = true;
-    });
-
+    _tapAnimationController.forward().then((_) => _tapAnimationController.reverse());
+    setState(() => _isSaving = true);
     FocusScope.of(context).unfocus();
 
     try {
-      String winId;
-
       if (_isEditMode && _existingWin != null) {
-        // Update existing win
+        // FIX: Edit mode — just update the win and pop back, no reflection screen
         await _updateExistingWin();
-        winId = _existingWin!['id'] as String;
+        HapticFeedback.mediumImpact();
+        _showSuccessModal();
+        await Future.delayed(const Duration(milliseconds: 800));
+        if (mounted) {
+          Navigator.of(context).pop(true); // Return true so Today screen refreshes
+        }
       } else {
-        // Create new win
+        // New win — save then navigate to reflection screen
         final dailyWin = await _createNewWin();
-        winId = dailyWin.id;
-      }
-
-      HapticFeedback.mediumImpact();
-
-      // WDDL success modal (fade 0.4s)
-      _showSuccessModal();
-
-      // Wait for 1 second then navigate to reflection screen for both cases
-      await Future.delayed(const Duration(seconds: 1));
-
-      if (mounted) {
-        // Navigate to reflection screen for both new and edited wins
-        Navigator.of(context).pushReplacementNamed(
-          '/reflection-screen',
-          arguments: {'winId': winId},
-        );
+        HapticFeedback.mediumImpact();
+        _showSuccessModal();
+        await Future.delayed(const Duration(seconds: 1));
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed(
+            '/reflection-screen',
+            arguments: {'winId': dailyWin.id},
+          );
+        }
       }
     } catch (e) {
       print('Failed to save win: $e');
-
       Fluttertoast.showToast(
         msg: "Failed to save win. Please try again.",
         toastLength: Toast.LENGTH_SHORT,
@@ -260,17 +219,12 @@ class _AddWinModalState extends State<AddWinModal>
         fontSize: 14.sp,
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _isSaving = false;
-        });
-      }
+      if (mounted) setState(() => _isSaving = false);
     }
   }
 
   Future<dynamic> _createNewWin() async {
     final goalId = await _ensureDefaultGoal();
-
     return await WinsService.instance.createDailyWin(
       description: _titleController.text.trim(),
       goalId: goalId,
@@ -317,7 +271,7 @@ class _AddWinModalState extends State<AddWinModal>
               SizedBox(height: WDDLDesignSystem.componentGap),
               Text(
                 _isEditMode
-                    ? 'Win updated — You\'re becoming someone who shows up daily.'
+                    ? 'Win updated.'
                     : WDDLDesignSystem.winLoggedMessage,
                 style: WDDLDesignSystem.bodyLarge.copyWith(
                   fontWeight: FontWeight.w600,
@@ -339,9 +293,7 @@ class _AddWinModalState extends State<AddWinModal>
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Discard changes?'),
-        content: const Text(
-          'You have unsaved changes. Are you sure you want to leave?',
-        ),
+        content: const Text('You have unsaved changes. Are you sure you want to leave?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -349,9 +301,7 @@ class _AddWinModalState extends State<AddWinModal>
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(
-              foregroundColor: WDDLDesignSystem.error,
-            ),
+            style: TextButton.styleFrom(foregroundColor: WDDLDesignSystem.error),
             child: const Text('Discard'),
           ),
         ],
@@ -363,12 +313,9 @@ class _AddWinModalState extends State<AddWinModal>
 
   void _handleCancel() async {
     HapticFeedback.lightImpact();
-
     if (_hasUnsavedChanges) {
       final shouldClose = await _onWillPop();
-      if (shouldClose && mounted) {
-        Navigator.of(context).pop();
-      }
+      if (shouldClose && mounted) Navigator.of(context).pop();
     } else {
       Navigator.of(context).pop();
     }
@@ -381,9 +328,7 @@ class _AddWinModalState extends State<AddWinModal>
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
           final shouldPop = await _onWillPop();
-          if (shouldPop && context.mounted) {
-            Navigator.of(context).pop();
-          }
+          if (shouldPop && context.mounted) Navigator.of(context).pop();
         }
       },
       child: FadeTransition(
@@ -394,7 +339,6 @@ class _AddWinModalState extends State<AddWinModal>
           body: SafeArea(
             child: Column(
               children: [
-                // Header with WDDL 48px top padding
                 Container(
                   padding: EdgeInsets.only(
                     top: WDDLDesignSystem.headerTopPadding,
@@ -420,7 +364,6 @@ class _AddWinModalState extends State<AddWinModal>
                         ],
                       ),
                       SizedBox(height: WDDLDesignSystem.sectionGap),
-                      // WDDL H1 typography (22-24px, weight 600)
                       Text(
                         _isEditMode
                             ? 'Edit your win'
@@ -429,7 +372,6 @@ class _AddWinModalState extends State<AddWinModal>
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
-                      // WDDL body typography with calm-tech microcopy
                       Text(
                         _isEditMode
                             ? 'Update your accomplishment'
@@ -442,19 +384,14 @@ class _AddWinModalState extends State<AddWinModal>
                     ],
                   ),
                 ),
-
-                // Content Area - Tightened conversational flow
                 Expanded(
                   child: SingleChildScrollView(
                     padding: WDDLDesignSystem.screenPadding,
                     child: Column(
                       children: [
-                        const SizedBox(height: 12), // Reduced from 24
-                        // Input field
+                        const SizedBox(height: 12),
                         GestureDetector(
-                          onTap: () {
-                            _titleFocusNode.requestFocus();
-                          },
+                          onTap: () => _titleFocusNode.requestFocus(),
                           child: Container(
                             height: 180,
                             decoration: BoxDecoration(
@@ -479,9 +416,7 @@ class _AddWinModalState extends State<AddWinModal>
                                 HapticFeedback.selectionClick();
                                 _onTitleChanged();
                               },
-                              onTap: () {
-                                _titleFocusNode.requestFocus();
-                              },
+                              onTap: () => _titleFocusNode.requestFocus(),
                               maxLines: null,
                               expands: true,
                               textAlignVertical: TextAlignVertical.top,
@@ -508,20 +443,17 @@ class _AddWinModalState extends State<AddWinModal>
                             ),
                           ),
                         ),
-                        // Error text
                         if (_titleError != null) ...[
                           const SizedBox(height: 8),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               _titleError!,
-                              style: WDDLDesignSystem.body.copyWith(
-                                color: WDDLDesignSystem.error,
-                              ),
+                              style: WDDLDesignSystem.body
+                                  .copyWith(color: WDDLDesignSystem.error),
                             ),
                           ),
                         ],
-                        // Save button directly under input
                         const SizedBox(height: 16),
                         ScaleTransition(
                           scale: _tapAnimation,
@@ -529,19 +461,24 @@ class _AddWinModalState extends State<AddWinModal>
                             width: double.infinity,
                             height: 48,
                             child: ElevatedButton(
-                              onPressed: (_titleController.text.trim().isNotEmpty && !_isSaving && (_isEditMode ? _hasUnsavedChanges : true))
+                              onPressed: (_titleController.text.trim().isNotEmpty &&
+                                      !_isSaving &&
+                                      (_isEditMode ? _hasUnsavedChanges : true))
                                   ? _saveWin
                                   : null,
                               style: WDDLDesignSystem.primaryButton.copyWith(
-                                backgroundColor: WidgetStateProperty.all(WDDLDesignSystem.primary),
-                                shadowColor: WidgetStateProperty.all(Colors.black.withAlpha(26)),
+                                backgroundColor: WidgetStateProperty.all(
+                                    WDDLDesignSystem.primary),
+                                shadowColor: WidgetStateProperty.all(
+                                    Colors.black.withAlpha(26)),
                                 elevation: WidgetStateProperty.all(2.0),
                               ),
                               child: _isSaving
                                   ? const SizedBox(
                                       width: 20,
                                       height: 20,
-                                      child: CircularProgressIndicator(strokeWidth: 2),
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2),
                                     )
                                   : const Text('Save'),
                             ),
@@ -552,27 +489,27 @@ class _AddWinModalState extends State<AddWinModal>
                     ),
                   ),
                 ),
-                // Footer - step indicator
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: WDDLDesignSystem.background,
-                    border: Border(
-                      top: BorderSide(
-                        color: WDDLDesignSystem.inputBorder.withValues(alpha: 0.5),
-                        width: 1,
+                // FIX: Only show "Next: reflect" hint for new wins, not edits
+                if (!_isEditMode)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: WDDLDesignSystem.background,
+                      border: Border(
+                        top: BorderSide(
+                          color: WDDLDesignSystem.inputBorder
+                              .withValues(alpha: 0.5),
+                          width: 1,
+                        ),
                       ),
                     ),
+                    child: Text(
+                      'Next: reflect on your win',
+                      style: WDDLDesignSystem.hint.copyWith(fontSize: 13),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  child: !_isEditMode
-                      ? Text(
-                          'Next: reflect on your win',
-                          style: WDDLDesignSystem.hint.copyWith(fontSize: 13),
-                          textAlign: TextAlign.center,
-                        )
-                      : const SizedBox.shrink(),
-                ),
-
               ],
             ),
           ),
