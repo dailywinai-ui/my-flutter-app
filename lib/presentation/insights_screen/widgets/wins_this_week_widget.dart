@@ -66,7 +66,7 @@ class WinsThisWeekWidget extends StatelessWidget {
                           final date = now.subtract(Duration(days: 6 - dayIndex));
                           const abbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                           final label = abbr[date.weekday - 1];
-                          final isToday = dayIndex == 6;
+                          final isToday = date.year == now.year && date.month == now.month && date.day == now.day;
                           return Text(
                             label,
                             style: WDDLDesignSystem.body.copyWith(

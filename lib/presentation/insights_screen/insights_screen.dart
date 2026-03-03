@@ -97,7 +97,8 @@ class _InsightsScreenState extends State<InsightsScreen>
     final now = DateTime.now();
 
     _winsByDayLast7 = List.filled(7, 0);
-    final last7Days = List.generate(7, (i) => now.subtract(Duration(days: 6 - i)));
+    final monday = now.subtract(Duration(days: now.weekday - 1));
+    final last7Days = List.generate(7, (i) => monday.add(Duration(days: i)));
 
     _winsByDay = List.filled(14, 0);
     final last14Days = List.generate(14, (i) => now.subtract(Duration(days: 13 - i)));
