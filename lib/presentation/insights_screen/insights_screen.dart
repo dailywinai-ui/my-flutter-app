@@ -23,7 +23,6 @@ class _InsightsScreenState extends State<InsightsScreen>
   int _totalWins = 0;
   bool _hasEnoughWins = false;
 
-  // Data for insights cards
   List<int> _winsByDayLast7 = [];
   List<int> _winsByDay = [];
   List<double?> _moodScoresLast30 = [];
@@ -80,7 +79,6 @@ class _InsightsScreenState extends State<InsightsScreen>
         _isLoading = false;
       });
 
-      // Start fade-in animation
       _fadeController.forward();
     } catch (error) {
       setState(() => _isLoading = false);
@@ -98,75 +96,51 @@ class _InsightsScreenState extends State<InsightsScreen>
   void _calculateInsightData(List<dynamic> wins) {
     final now = DateTime.now();
 
-    // Calculate wins by day for last 7 days (Monday to Sunday)
     _winsByDayLast7 = List.filled(7, 0);
-    final last7Days = List.generate(
-      7,
-      (i) => now.subtract(Duration(days: 6 - i)),
-    );
+    final last7Days = List.generate(7, (i) => now.subtract(Duration(days: 6 - i)));
 
-    // Calculate wins by day for last 14 days (for sparkline)
     _winsByDay = List.filled(14, 0);
-    final last14Days = List.generate(
-      14,
-      (i) => now.subtract(Duration(days: 13 - i)),
-    );
+    final last14Days = List.generate(14, (i) => now.subtract(Duration(days: 13 - i)));
 
-    // Calculate mood scores for last 30 days
     _moodScoresLast30 = List.filled(30, null);
-    final last30Days = List.generate(
-      30,
-      (i) => now.subtract(Duration(days: 29 - i)),
-    );
+    final last30Days = List.generate(30, (i) => now.subtract(Duration(days: 29 - i)));
 
-    // Process wins
     for (final win in wins) {
       final winDate = DateTime.parse(win.winDate.toString());
 
-      // Last 7 days
       for (int i = 0; i < 7; i++) {
-        final checkDate = last7Days[i];
-        if (_isSameDay(winDate, checkDate)) {
+        if (_isSameDay(winDate, last7Days[i])) {
           _winsByDayLast7[i]++;
           break;
         }
       }
 
-      // Last 14 days
       for (int i = 0; i < 14; i++) {
-        final checkDate = last14Days[i];
-        if (_isSameDay(winDate, checkDate)) {
+        if (_isSameDay(winDate, last14Days[i])) {
           _winsByDay[i] = 1;
           break;
         }
       }
 
-      // Last 30 days mood
       for (int i = 0; i < 30; i++) {
-        final checkDate = last30Days[i];
-        if (_isSameDay(winDate, checkDate)) {
+        if (_isSameDay(winDate, last30Days[i])) {
           _moodScoresLast30[i] = (win.moodRating ?? 3).toDouble();
           break;
         }
       }
     }
 
-    // Calculate total reflections this month
     _totalReflections = _calculateTotalReflections(wins);
 
-    // Calculate completion rate (days with wins in last 7 days)
     final daysWithWins = _winsByDayLast7.where((count) => count > 0).length;
     _completionRate = ((daysWithWins / 7) * 100).round();
 
-    // Calculate average mood
     final validMoods =
         _moodScoresLast30.where((mood) => mood != null).cast<double>();
-    _averageMood =
-        validMoods.isEmpty
-            ? 3.0
-            : validMoods.reduce((a, b) => a + b) / validMoods.length;
+    _averageMood = validMoods.isEmpty
+        ? 3.0
+        : validMoods.reduce((a, b) => a + b) / validMoods.length;
 
-    // Generate tag counts (simplified)
     _tagCounts = [
       {"tag": "#focus", "count": (wins.length * 0.4).round()},
       {"tag": "#health", "count": (wins.length * 0.3).round()},
@@ -174,24 +148,18 @@ class _InsightsScreenState extends State<InsightsScreen>
       {"tag": "#gratitude", "count": (wins.length * 0.1).round()},
     ];
 
-    // Generate reflection highlights
-    _topReflectionSentences =
-        wins
-            .where(
-              (win) =>
-                  win.reflection != null &&
-                  (win.reflection as String).isNotEmpty,
-            )
-            .take(3)
-            .map((win) {
-              String reflection = win.reflection as String;
-              return reflection.length > 120
-                  ? '${reflection.substring(0, 120)}...'
-                  : reflection;
-            })
-            .toList();
+    _topReflectionSentences = wins
+        .where((win) =>
+            win.reflection != null && (win.reflection as String).isNotEmpty)
+        .take(3)
+        .map((win) {
+          String reflection = win.reflection as String;
+          return reflection.length > 120
+              ? '${reflection.substring(0, 120)}...'
+              : reflection;
+        })
+        .toList();
 
-    // Generate top keywords
     _top3Keywords = ["focus", "gratitude", "energy"];
   }
 
@@ -205,27 +173,18 @@ class _InsightsScreenState extends State<InsightsScreen>
     if (wins.isEmpty) return 0;
 
     final sortedWins = List.from(wins);
-    sortedWins.sort(
-      (a, b) => DateTime.parse(
-        b.winDate.toString(),
-      ).compareTo(DateTime.parse(a.winDate.toString())),
-    );
+    sortedWins.sort((a, b) => DateTime.parse(b.winDate.toString())
+        .compareTo(DateTime.parse(a.winDate.toString())));
 
     int total = 0;
     DateTime currentDate = DateTime.now();
 
     for (final win in sortedWins) {
       final winDate = DateTime.parse(win.winDate.toString());
-      final checkDate = DateTime(
-        currentDate.year,
-        currentDate.month,
-        currentDate.day,
-      );
-      final winDateNormalized = DateTime(
-        winDate.year,
-        winDate.month,
-        winDate.day,
-      );
+      final checkDate =
+          DateTime(currentDate.year, currentDate.month, currentDate.day);
+      final winDateNormalized =
+          DateTime(winDate.year, winDate.month, winDate.day);
 
       if (winDateNormalized.isAtSameMomentAs(checkDate)) {
         total++;
@@ -239,15 +198,13 @@ class _InsightsScreenState extends State<InsightsScreen>
   }
 
   void _onWinsThisWeekTap() {
-    Navigator.pushNamed(
-      context,
-      '/history-screen',
-      arguments: {'filter': 'This Week'},
-    );
+    Navigator.pushNamed(context, '/history-screen',
+        arguments: {'filter': 'This Week'});
   }
 
   void _onTagTap(String tag) {
-    Navigator.pushNamed(context, '/history-screen', arguments: {'filter': tag});
+    Navigator.pushNamed(context, '/history-screen',
+        arguments: {'filter': tag});
   }
 
   @override
@@ -266,10 +223,9 @@ class _InsightsScreenState extends State<InsightsScreen>
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
-          child:
-              _isLoading
-                  ? _buildLoadingState()
-                  : !_hasEnoughWins
+          child: _isLoading
+              ? _buildLoadingState()
+              : !_hasEnoughWins
                   ? _buildEmptyState()
                   : _buildInsightsContent(),
         ),
@@ -286,9 +242,8 @@ class _InsightsScreenState extends State<InsightsScreen>
           SizedBox(height: WDDLDesignSystem.componentGap),
           Text(
             'Analyzing your progress...',
-            style: WDDLDesignSystem.body.copyWith(
-              color: WDDLDesignSystem.textSecondary,
-            ),
+            style: WDDLDesignSystem.body
+                .copyWith(color: WDDLDesignSystem.textSecondary),
           ),
         ],
       ),
@@ -296,6 +251,10 @@ class _InsightsScreenState extends State<InsightsScreen>
   }
 
   Widget _buildEmptyState() {
+    final String bodyText = _totalWins > 0
+        ? 'You have $_totalWins win${_totalWins == 1 ? '' : 's'} so far. Keep showing up daily — insights unlock at 3.'
+        : 'You need at least 3 wins to unlock your insights dashboard.';
+
     return Padding(
       padding: WDDLDesignSystem.screenPadding,
       child: Column(
@@ -315,34 +274,24 @@ class _InsightsScreenState extends State<InsightsScreen>
                 ),
               ],
             ),
-            child: Center(child: Text('🌿', style: TextStyle(fontSize: 48))),
+            child: const Center(
+                child: Text('🌿', style: TextStyle(fontSize: 48))),
           ),
-          SizedBox(height: 32),
+          const SizedBox(height: 32),
           Text(
             'Log a few wins to see insights bloom 🌿',
             style: WDDLDesignSystem.h1,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
-            'You need at least 3 wins to unlock your insights dashboard.',
-            style: WDDLDesignSystem.body.copyWith(
-              color: WDDLDesignSystem.textSecondary,
-            ),
+            bodyText,
+            style: WDDLDesignSystem.body
+                .copyWith(color: WDDLDesignSystem.textSecondary),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/add-win-modal').then((result) {
-                if (result == true) {
-                  _loadInsights();
-                }
-              });
-            },
-            style: WDDLDesignSystem.primaryButton,
-            child: Text('Log Your First Win'),
-          ),
+          // FIX: No button here — one win per day is the rule.
+          // User logs from the Today screen only.
         ],
       ),
     );
@@ -350,23 +299,18 @@ class _InsightsScreenState extends State<InsightsScreen>
 
   Widget _buildInsightsContent() {
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(24, 48, 24, 48),
+      padding: const EdgeInsets.fromLTRB(24, 48, 24, 48),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           Text('Insights', style: WDDLDesignSystem.h1),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'See your progress at a glance.',
-            style: WDDLDesignSystem.body.copyWith(
-              color: WDDLDesignSystem.textSecondary,
-            ),
+            style: WDDLDesignSystem.body
+                .copyWith(color: WDDLDesignSystem.textSecondary),
           ),
-
-          SizedBox(height: 32),
-
-          // Card 1 - This Month
+          const SizedBox(height: 32),
           _buildCardWithAnimation(
             delay: 0,
             child: ReflectionCountWidget(
@@ -374,10 +318,7 @@ class _InsightsScreenState extends State<InsightsScreen>
               winsByDay: _winsByDay,
             ),
           ),
-
-          SizedBox(height: 24),
-
-          // Card 2 - Wins This Week
+          const SizedBox(height: 24),
           _buildCardWithAnimation(
             delay: 100,
             child: WinsThisWeekWidget(
@@ -386,10 +327,7 @@ class _InsightsScreenState extends State<InsightsScreen>
               onTap: _onWinsThisWeekTap,
             ),
           ),
-
-          SizedBox(height: 24),
-
-          // Card 3 - Mood Trend
+          const SizedBox(height: 24),
           _buildCardWithAnimation(
             delay: 200,
             child: MoodTrendWidget(
@@ -397,18 +335,13 @@ class _InsightsScreenState extends State<InsightsScreen>
               averageMood: _averageMood,
             ),
           ),
-
-          SizedBox(height: 24),
-
-          // Card 4 - Categories/Tags
+          const SizedBox(height: 24),
           _buildCardWithAnimation(
             delay: 300,
-            child: CategoriesWidget(tagCounts: _tagCounts, onTagTap: _onTagTap),
+            child:
+                CategoriesWidget(tagCounts: _tagCounts, onTagTap: _onTagTap),
           ),
-
-          SizedBox(height: 24),
-
-          // Card 5 - Reflection Highlights
+          const SizedBox(height: 24),
           _buildCardWithAnimation(
             delay: 400,
             child: ReflectionHighlightsWidget(
@@ -416,11 +349,8 @@ class _InsightsScreenState extends State<InsightsScreen>
               top3Keywords: _top3Keywords,
             ),
           ),
-
-          SizedBox(height: 32),
-
-          // Footer - Rotating Nudge
-          RotatingNudgeWidget(),
+          const SizedBox(height: 32),
+          const RotatingNudgeWidget(),
         ],
       ),
     );

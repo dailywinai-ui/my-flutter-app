@@ -9,6 +9,7 @@ import '../../models/user_profile.dart';
 import '../../services/wins_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../widgets/custom_icon_widget.dart';
+import '../../widgets/custom_bottom_bar.dart'; // FIX: import bottom bar
 import './widgets/empty_state_widget.dart';
 import './widgets/floating_action_button_widget.dart';
 import './widgets/tab_navigation_widget.dart';
@@ -25,6 +26,8 @@ class _TodayScreenState extends State<TodayScreen>
     with TickerProviderStateMixin {
   UserProfile? _userProfile;
   int _currentTabIndex = 0;
+  // FIX: track bottom nav index — Today is index 0
+  int _currentBottomNavIndex = 0;
   bool _isLoading = false;
   Map<String, dynamic>? _todayWin;
   late AnimationController _confettiController;
@@ -40,7 +43,6 @@ class _TodayScreenState extends State<TodayScreen>
       vsync: this,
     );
 
-    // WDDL fade-in animation (opacity 0→1 in 0.6s)
     _fadeAnimationController = AnimationController(
       duration: WDDLDesignSystem.fadeInDuration,
       vsync: this,
@@ -63,7 +65,6 @@ class _TodayScreenState extends State<TodayScreen>
     super.dispose();
   }
 
-  /// Load today's win for the authenticated user from Supabase
   Future<void> _loadUserProfile() async {
     try {
       final profile = await AuthService.instance.getUserProfile();
@@ -73,7 +74,7 @@ class _TodayScreenState extends State<TodayScreen>
         });
       }
     } catch (e) {
-      // Silently fail - greeting will just not have name
+      // Silently fail
     }
   }
 
@@ -81,10 +82,8 @@ class _TodayScreenState extends State<TodayScreen>
     setState(() => _isLoading = true);
 
     try {
-      // Get today's wins from Supabase
       final todaysWins = await WinsService.instance.getTodaysWins();
 
-      // Convert the first win to display format if any exists
       Map<String, dynamic>? winData;
       if (todaysWins.isNotEmpty) {
         final win = todaysWins.first;
@@ -128,7 +127,6 @@ class _TodayScreenState extends State<TodayScreen>
   void _onTabChanged(int index) {
     setState(() => _currentTabIndex = index);
 
-    // Navigate to other screens based on tab selection
     switch (index) {
       case 1:
         Navigator.pushNamed(context, '/history-screen');
@@ -137,7 +135,23 @@ class _TodayScreenState extends State<TodayScreen>
         Navigator.pushNamed(context, '/insights-screen');
         break;
       default:
-        // Stay on today screen
+        break;
+    }
+  }
+
+  // FIX: bottom nav handler — uses pushReplacementNamed to avoid stacking
+  void _onBottomNavTap(int index) {
+    if (index == _currentBottomNavIndex) return;
+    setState(() => _currentBottomNavIndex = index);
+
+    switch (index) {
+      case 1:
+        Navigator.pushReplacementNamed(context, '/history-screen');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/insights-screen');
+        break;
+      default:
         break;
     }
   }
@@ -146,7 +160,6 @@ class _TodayScreenState extends State<TodayScreen>
     HapticFeedback.mediumImpact();
     Navigator.pushNamed(context, '/add-win-modal').then((result) {
       if (result == true) {
-        // Win was successfully added
         _playConfettiAnimation();
         _loadTodayWin();
       }
@@ -172,8 +185,6 @@ class _TodayScreenState extends State<TodayScreen>
   }
 
   void _showWinOptionsBottomSheet() {
-    final theme = Theme.of(context);
-
     showModalBottomSheet(
       context: context,
       backgroundColor: WDDLDesignSystem.surface,
@@ -191,9 +202,7 @@ class _TodayScreenState extends State<TodayScreen>
                   width: 12.w,
                   height: 0.5.h,
                   decoration: BoxDecoration(
-                    color: WDDLDesignSystem.textSecondary.withValues(
-                      alpha: 0.3,
-                    ),
+                    color: WDDLDesignSystem.textSecondary.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -207,11 +216,8 @@ class _TodayScreenState extends State<TodayScreen>
                   title: Text('Edit Win', style: WDDLDesignSystem.bodyLarge),
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.pushNamed(
-                      context,
-                      '/add-win-modal',
-                      arguments: _todayWin,
-                    );
+                    Navigator.pushNamed(context, '/add-win-modal',
+                        arguments: _todayWin);
                   },
                 ),
                 ListTile(
@@ -220,10 +226,8 @@ class _TodayScreenState extends State<TodayScreen>
                     color: WDDLDesignSystem.primary,
                     size: 24,
                   ),
-                  title: Text(
-                    'Share Win Card',
-                    style: WDDLDesignSystem.bodyLarge,
-                  ),
+                  title: Text('Share Win Card',
+                      style: WDDLDesignSystem.bodyLarge),
                   onTap: () {
                     Navigator.pop(context);
                     _shareWinCard();
@@ -237,9 +241,8 @@ class _TodayScreenState extends State<TodayScreen>
                   ),
                   title: Text(
                     'Delete Win',
-                    style: WDDLDesignSystem.bodyLarge.copyWith(
-                      color: WDDLDesignSystem.error,
-                    ),
+                    style: WDDLDesignSystem.bodyLarge
+                        .copyWith(color: WDDLDesignSystem.error),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -257,26 +260,23 @@ class _TodayScreenState extends State<TodayScreen>
 
   void _shareWinCard() {
     HapticFeedback.lightImpact();
-    // Implement win card sharing functionality
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Win card shared successfully!'),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
 
   void _showDeleteConfirmation() {
-    final theme = Theme.of(context);
-
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text('Delete Win?', style: WDDLDesignSystem.h2),
           content: Text(
             'This action cannot be undone. Your win will be permanently deleted.',
@@ -292,9 +292,8 @@ class _TodayScreenState extends State<TodayScreen>
                 Navigator.pop(context);
                 _deleteWin();
               },
-              style: TextButton.styleFrom(
-                foregroundColor: WDDLDesignSystem.error,
-              ),
+              style:
+                  TextButton.styleFrom(foregroundColor: WDDLDesignSystem.error),
               child: const Text('Delete'),
             ),
           ],
@@ -305,13 +304,10 @@ class _TodayScreenState extends State<TodayScreen>
 
   void _deleteWin() async {
     if (_todayWin == null) return;
-
     HapticFeedback.lightImpact();
 
     try {
-      // Delete from Supabase
       await WinsService.instance.deleteDailyWin(_todayWin!['id']);
-
       setState(() => _todayWin = null);
 
       if (mounted) {
@@ -320,8 +316,7 @@ class _TodayScreenState extends State<TodayScreen>
             content: const Text('Win deleted successfully'),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+                borderRadius: BorderRadius.circular(12)),
           ),
         );
       }
@@ -333,8 +328,7 @@ class _TodayScreenState extends State<TodayScreen>
             backgroundColor: WDDLDesignSystem.error,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+                borderRadius: BorderRadius.circular(12)),
           ),
         );
       }
@@ -344,51 +338,41 @@ class _TodayScreenState extends State<TodayScreen>
   String _getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
-      return _userProfile?.firstName != null ? 'Good morning, ${_userProfile!.firstName}!' : 'Good morning';
+      return _userProfile?.firstName != null
+          ? 'Good morning, ${_userProfile!.firstName}!'
+          : 'Good morning';
     } else if (hour < 17) {
-      return _userProfile?.firstName != null ? 'Good afternoon, ${_userProfile!.firstName}!' : 'Good afternoon';
+      return _userProfile?.firstName != null
+          ? 'Good afternoon, ${_userProfile!.firstName}!'
+          : 'Good afternoon';
     } else {
-      return _userProfile?.firstName != null ? 'Good evening, ${_userProfile!.firstName}!' : 'Good evening';
+      return _userProfile?.firstName != null
+          ? 'Good evening, ${_userProfile!.firstName}!'
+          : 'Good evening';
     }
   }
 
   String _formatDate(DateTime date) {
     final months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
     ];
-
     final weekdays = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
+      'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+      'Friday', 'Saturday', 'Sunday',
     ];
-
-    final weekday = weekdays[date.weekday - 1];
-    final month = months[date.month - 1];
-    final day = date.day;
-
-    return '$weekday, $month $day';
+    return '${weekdays[date.weekday - 1]}, ${months[date.month - 1]} ${date.day}';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WDDLDesignSystem.background,
+      // FIX: Add CustomBottomBar so it appears on Today screen consistently
+      bottomNavigationBar: CustomBottomBar(
+        currentIndex: _currentBottomNavIndex,
+        onTap: _onBottomNavTap,
+      ),
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
@@ -403,37 +387,27 @@ class _TodayScreenState extends State<TodayScreen>
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          // Header with WDDL 48px top padding
                           SizedBox(height: WDDLDesignSystem.headerTopPadding),
                           Padding(
                             padding: WDDLDesignSystem.screenPadding,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Greeting with WDDL hint styling
-                                Text(
-                                  _getGreeting(),
-                                  style: WDDLDesignSystem.hint,
-                                ),
-                                SizedBox(height: 8),
-                                // Date with WDDL H1 styling (22-24px)
-                                Text(
-                                  _formatDate(DateTime.now()),
-                                  style: WDDLDesignSystem.h1,
-                                ),
+                                Text(_getGreeting(),
+                                    style: WDDLDesignSystem.hint),
+                                const SizedBox(height: 8),
+                                Text(_formatDate(DateTime.now()),
+                                    style: WDDLDesignSystem.h1),
                               ],
                             ),
                           ),
-                          // Refined top padding after greeting/date section (32px)
                           SizedBox(
-                            height: WDDLDesignSystem.greetingDateTopPadding,
-                          ),
-                          // Tab navigation
+                              height:
+                                  WDDLDesignSystem.greetingDateTopPadding),
                           TabNavigationWidget(
                             currentIndex: _currentTabIndex,
                             onTabChanged: _onTabChanged,
                           ),
-                          // Light divider line between date and list of wins (8% opacity #6B8B7F)
                           Container(
                             height: 1,
                             margin: EdgeInsets.symmetric(
@@ -447,17 +421,18 @@ class _TodayScreenState extends State<TodayScreen>
                     ),
                     SliverFillRemaining(
                       hasScrollBody: false,
-                      child:
-                          _isLoading
-                              ? _buildLoadingState()
-                              : _todayWin != null
+                      child: _isLoading
+                          ? _buildLoadingState()
+                          : _todayWin != null
                               ? _buildWinState()
                               : _buildEmptyState(),
                     ),
                   ],
                 ),
               ),
-              FloatingActionButtonWidget(onPressed: _onLogWinPressed),
+              // FIX: Only show FAB if no win has been logged today
+              if (_todayWin == null)
+                FloatingActionButtonWidget(onPressed: _onLogWinPressed),
             ],
           ),
         ),
@@ -474,9 +449,8 @@ class _TodayScreenState extends State<TodayScreen>
           SizedBox(height: WDDLDesignSystem.componentGap),
           Text(
             'Loading your progress...',
-            style: WDDLDesignSystem.body.copyWith(
-              color: WDDLDesignSystem.textSecondary,
-            ),
+            style: WDDLDesignSystem.body
+                .copyWith(color: WDDLDesignSystem.textSecondary),
           ),
         ],
       ),
@@ -488,7 +462,6 @@ class _TodayScreenState extends State<TodayScreen>
       padding: WDDLDesignSystem.screenPadding,
       child: Column(
         children: [
-          // Animate new win card with fade-in from 90% opacity and slight upward shift
           WDDLDesignSystem.newWinCardAnimation(
             child: WinCardWidget(
               winData: _todayWin!,
@@ -497,7 +470,6 @@ class _TodayScreenState extends State<TodayScreen>
             ),
           ),
           SizedBox(height: WDDLDesignSystem.componentGap),
-          // Toast with refined styling (#84C69B 10% opacity, text #6B8B7F, 8px blur)
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -509,12 +481,12 @@ class _TodayScreenState extends State<TodayScreen>
                   color: WDDLDesignSystem.success,
                   size: 24,
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     WDDLDesignSystem.winLoggedMessage,
                     style: WDDLDesignSystem.body.copyWith(
-                      color: WDDLDesignSystem.primary, // Text color #6B8B7F
+                      color: WDDLDesignSystem.primary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -522,9 +494,7 @@ class _TodayScreenState extends State<TodayScreen>
               ],
             ),
           ),
-          // Increased gap between last card/toast and floating action button (48px)
           SizedBox(height: WDDLDesignSystem.lastCardToFabGap),
-          // Reduced bottom safe area padding (40px)
           SizedBox(height: WDDLDesignSystem.bottomSafeArea),
         ],
       ),
@@ -538,9 +508,7 @@ class _TodayScreenState extends State<TodayScreen>
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           EmptyStateWidget(),
-          // Increased gap between last element and floating action button (48px)
           SizedBox(height: WDDLDesignSystem.lastCardToFabGap),
-          // Reduced bottom safe area padding (40px)
           SizedBox(height: WDDLDesignSystem.bottomSafeArea),
         ],
       ),
