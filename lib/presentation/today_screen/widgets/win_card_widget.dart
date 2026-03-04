@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 import '../../../widgets/custom_icon_widget.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class WinCardWidget extends StatefulWidget {
   final Map<String, dynamic> winData;
