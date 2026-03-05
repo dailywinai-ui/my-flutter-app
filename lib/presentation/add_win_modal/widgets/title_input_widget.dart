@@ -118,7 +118,7 @@ class _TitleInputWidgetState extends State<TitleInputWidget> {
                 child: AnimatedOpacity(
                   opacity: _showMicroAnimation ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 300),
-                  child: const Text('🌿', style: TextStyle(fontSize: 20)),
+                  child: const Icon(Icons.edit, color: Color(0xFF7A9D8E), size: 20),
                 ),
               ),
           ],

@@ -131,7 +131,7 @@ class _InsightsScreenState extends State<InsightsScreen>
       }
     }
 
-    _totalReflections = _calculateTotalReflections(wins);
+    _totalReflections = wins.where((win) { final winDate = DateTime.parse(win.winDate.toString()); return winDate.year == now.year && winDate.month == now.month; }).length;
 
     final daysWithWins = _winsByDayLast7.where((count) => count > 0).length;
     _completionRate = ((daysWithWins / 7) * 100).round();
@@ -276,11 +276,11 @@ class _InsightsScreenState extends State<InsightsScreen>
               ],
             ),
             child: const Center(
-                child: Text('🌿', style: TextStyle(fontSize: 48))),
+                child: Icon(Icons.bar_chart, color: Color(0xFF7A9D8E), size: 48)),
           ),
           const SizedBox(height: 32),
           Text(
-            'Log a few wins to see insights bloom 🌿',
+            'Log a few wins to see insights bloom',
             style: WDDLDesignSystem.h1,
             textAlign: TextAlign.center,
           ),

@@ -562,7 +562,7 @@ class _SettingsScreenState extends State<SettingsScreen>
             onTap: () async {
               final Uri emailUri = Uri(
                 scheme: 'mailto',
-                path: 'support@windaily.ca',
+                path: 'hello@windaily.ca',
                 query: 'subject=Win Daily Support Request',
               );
               

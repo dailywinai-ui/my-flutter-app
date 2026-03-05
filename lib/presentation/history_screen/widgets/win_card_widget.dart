@@ -91,9 +91,12 @@ class WinCardWidget extends StatelessWidget {
                         SizedBox(height: 0.5.h),
                         Text(
                           win['title'] as String? ?? 'Untitled Win',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          // TO:
+style: WDDLDesignSystem.bodyLarge.copyWith(
+  fontWeight: FontWeight.w500,
+  color: WDDLDesignSystem.textPrimary,
+  height: 1.5,
+),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -132,8 +135,8 @@ class WinCardWidget extends StatelessWidget {
         moodColor = WDDLDesignSystem.warning;
         break;
       case 3:
-        moodColor = theme.colorScheme.secondary;
-        break;
+         moodColor = WDDLDesignSystem.sageMedium;
+  break;
       case 4:
         moodColor = WDDLDesignSystem.success;
         break;
@@ -141,7 +144,7 @@ class WinCardWidget extends StatelessWidget {
         moodColor = WDDLDesignSystem.sageMedium;
         break;
       default:
-        moodColor = theme.colorScheme.secondary;
+         moodColor = WDDLDesignSystem.sageMedium;
     }
 
     return Container(

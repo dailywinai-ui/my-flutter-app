@@ -395,7 +395,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                         child: Column(
                           children: [
                             Text(
-                              'No win logged today 🌿',
+                              'No win logged today',
                               style: WDDLDesignSystem.body.copyWith(
                                 fontWeight: FontWeight.w500,
                                 color: WDDLDesignSystem.textPrimary,

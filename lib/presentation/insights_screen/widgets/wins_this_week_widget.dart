@@ -63,7 +63,8 @@ class WinsThisWeekWidget extends StatelessWidget {
                           if (dayIndex < 0 || dayIndex > 6) {
                             return const SizedBox.shrink();
                           }
-                          final date = now.subtract(Duration(days: 6 - dayIndex));
+                          final monday = now.subtract(Duration(days: now.weekday - 1));
+                          final date = monday.add(Duration(days: dayIndex));
                           const abbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                           final label = abbr[date.weekday - 1];
                           final isToday = date.year == now.year && date.month == now.month && date.day == now.day;

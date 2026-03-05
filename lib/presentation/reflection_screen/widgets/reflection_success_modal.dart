@@ -89,7 +89,7 @@ class _ReflectionSuccessModalState extends State<ReflectionSuccessModal>
                       shape: BoxShape.circle,
                     ),
                     child: Center(
-                      child: Text('🌿', style: TextStyle(fontSize: 8.w)),
+                      child: Icon(Icons.check, color: Color(0xFF7A9D8E), size: 32),
                     ),
                   ),
 
