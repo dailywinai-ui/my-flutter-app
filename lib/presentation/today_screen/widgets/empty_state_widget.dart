@@ -91,7 +91,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget>
           ),
           SizedBox(height: 1.h),
           Text(
-            'Tap below to log your first one.',
+            'Log it, move on, live your life.',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

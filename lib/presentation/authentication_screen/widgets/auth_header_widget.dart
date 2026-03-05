@@ -131,7 +131,7 @@ class _AuthHeaderWidgetState extends State<AuthHeaderWidget>
 
         // Header text with WDDL specifications
         Text(
-          'Ready to win your day?',
+          'Redefining what it means to win your day.',
           style: WDDLDesignSystem.h1.copyWith(
             fontSize: 22,
             fontWeight: FontWeight.w600,

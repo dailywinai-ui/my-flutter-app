@@ -163,7 +163,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                     ),
                     SizedBox(width: 2.w),
                     Text(
-                      'Log Your First Win',
+                      'Your wins will appear here.',
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
