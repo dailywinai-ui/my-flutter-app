@@ -193,7 +193,7 @@ class _AddWinModalState extends State<AddWinModal>
         _showSuccessModal();
         await Future.delayed(const Duration(milliseconds: 800));
         if (mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil('/today-screen', (route) => false);
+          Navigator.of(context).pop(true);
         }
       } else {
         // New win — save then navigate to reflection screen
