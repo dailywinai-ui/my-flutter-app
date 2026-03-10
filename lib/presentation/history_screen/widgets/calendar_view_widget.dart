@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/app_export.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
-import './progress_halo_widget.dart';
-import './rotating_quote_widget.dart';
 
 class CalendarViewWidget extends StatefulWidget {
   final List<Map<String, dynamic>> wins;
@@ -24,15 +23,15 @@ class CalendarViewWidget extends StatefulWidget {
 }
 
 class _CalendarViewWidgetState extends State<CalendarViewWidget>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late DateTime _focusedDay;
   DateTime? _selectedDay;
   List<Map<String, dynamic>> _selectedDayWins = [];
-  late AnimationController _dateSelectionController;
+  bool _hasInteracted = false;
+
+  late AnimationController _cardController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  late AnimationController _dayTapController;
-  late Animation<double> _pulseAnimation;
 
   @override
   void initState() {
@@ -41,52 +40,31 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
     _selectedDay = widget.selectedDay ?? DateTime.now();
     _updateSelectedDayWins();
 
-    // Date selection animation: fade in win card below (opacity 0→1, Y=+8→0, duration 0.3s)
-    _dateSelectionController = AnimationController(
-      duration: Duration(milliseconds: 300),
+    _cardController = AnimationController(
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _dateSelectionController, curve: Curves.easeOut),
-    );
-
+    _fadeAnimation = CurvedAnimation(parent: _cardController, curve: Curves.easeOut);
     _slideAnimation = Tween<Offset>(
-      begin: Offset(0, 8),
+      begin: const Offset(0, 0.03),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _dateSelectionController, curve: Curves.easeOut),
-    );
+    ).animate(CurvedAnimation(parent: _cardController, curve: Curves.easeOut));
 
-    // Pulse animation for active day tap
-    _dayTapController = AnimationController(
-      duration: Duration(milliseconds: 200),
-      vsync: this,
-    );
-
-    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
-      CurvedAnimation(parent: _dayTapController, curve: Curves.easeInOut),
-    );
-
-    _dateSelectionController.forward();
+    _cardController.forward();
   }
 
   @override
   void dispose() {
-    _dateSelectionController.dispose();
-    _dayTapController.dispose();
+    _cardController.dispose();
     super.dispose();
   }
 
   void _updateSelectedDayWins() {
-    if (_selectedDay != null) {
-      _selectedDayWins = widget.wins.where((win) {
-        final winDate = DateTime.parse(win['date'] as String);
-        return isSameDay(winDate, _selectedDay!);
-      }).toList();
-    } else {
-      _selectedDayWins = [];
-    }
+    if (_selectedDay == null) { _selectedDayWins = []; return; }
+    _selectedDayWins = widget.wins.where((win) {
+      final winDate = DateTime.parse(win['date'] as String);
+      return isSameDay(winDate, _selectedDay!);
+    }).toList();
   }
 
   List<Map<String, dynamic>> _getWinsForDay(DateTime day) {
@@ -96,130 +74,141 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
     }).toList();
   }
 
-  // Calculate user streak (simplified version - shows days with wins in current month)
-  int _calculateStreak() {
-    final now = DateTime.now();
-    final thisMonth = DateTime(now.year, now.month);
-    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
-
+  int _calculateConsecutiveStreak() {
     int streak = 0;
-    for (int i = 0; i < daysInMonth; i++) {
-      final day = thisMonth.add(Duration(days: i));
-      final hasWin = _getWinsForDay(day).isNotEmpty;
-      if (hasWin) streak++;
+    DateTime check = DateTime.now();
+    while (true) {
+      if (_getWinsForDay(check).isNotEmpty) {
+        streak++;
+        check = check.subtract(const Duration(days: 1));
+      } else break;
     }
     return streak;
+  }
+
+  int _countThisMonth() {
+    final now = DateTime.now();
+    return widget.wins.where((win) {
+      final d = DateTime.parse(win['date'] as String);
+      return d.year == now.year && d.month == now.month;
+    }).length;
+  }
+
+  String _formatSelectedDate(DateTime day) {
+    const months = ['January','February','March','April','May','June',
+      'July','August','September','October','November','December'];
+    const weekdays = ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    final isToday = isSameDay(day, DateTime.now());
+    if (isToday) return 'Today · ${months[day.month - 1]} ${day.day}';
+    return '${weekdays[day.weekday]} · ${months[day.month - 1]} ${day.day}';
+  }
+
+  String _getMonthYearString(DateTime date) {
+    const months = ['January','February','March','April','May','June',
+      'July','August','September','October','November','December'];
+    return '${months[date.month - 1]} ${date.year}';
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.wins.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: WDDLDesignSystem.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 80, height: 80,
+                decoration: BoxDecoration(color: WDDLDesignSystem.sageBg, shape: BoxShape.circle),
+                child: Icon(Icons.calendar_month_rounded, size: 36, color: WDDLDesignSystem.sage),
               ),
-              child: Center(
-                child: CustomIconWidget(
-                  iconName: 'calendar_month',
-                  size: 48,
-                  color: WDDLDesignSystem.primary.withValues(alpha: 0.6),
-                ),
-              ),
-            ),
-            SizedBox(height: WDDLDesignSystem.sectionGap),
-            Text(
-              'Your calendar will fill as you log wins.',
-              style: WDDLDesignSystem.h2,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Start building your streak today.',
-              style: WDDLDesignSystem.body.copyWith(
-                color: WDDLDesignSystem.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              const SizedBox(height: 20),
+              Text('Your calendar will fill as you log wins.',
+                  style: WDDLDesignSystem.h2, textAlign: TextAlign.center),
+              const SizedBox(height: 8),
+              Text('Start today.',
+                  style: WDDLDesignSystem.body.copyWith(color: WDDLDesignSystem.inkMuted),
+                  textAlign: TextAlign.center),
+            ],
+          ),
         ),
       );
     }
 
-    final streak = _calculateStreak();
+    final monthCount = _countThisMonth();
+    final streak = _calculateConsecutiveStreak();
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Month header with elevated styling and optional streak ribbon
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+
+          // ── Month header + streak pill ─────────────────────
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Subtle divider line above month header
-              Container(
-                height: 1,
-                color: WDDLDesignSystem.dividerColor,
-                margin: EdgeInsets.only(bottom: 16),
-              ),
-
-              // Month header ("October 2025") - elevated with 18px semi-bold font, color #6B8B7F
-              Text(
-                _getMonthYearString(_focusedDay),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Semi-bold
-                  color: WDDLDesignSystem.textPrimary, // Dark sage #6B8B7F
-                  height: 1.5,
-                ),
-              ),
-
-              // Optional streak ribbon below month title
-              if (streak > 0) ...[
-                SizedBox(height: 8),
-                Container(
-                  child: Text(
-                    'Reflections this month: $streak',
-                    style: GoogleFonts.inter(
-                      fontSize: 14, // Font size 14px as specified
-                      fontWeight: FontWeight.w600, // Weight 600 as specified
-                      color: WDDLDesignSystem.textPrimary.withValues(
-                        alpha: 0.85, // Dark sage #6B8B7F at 85% opacity
-                      ),
-                      shadows: [
-                        Shadow(
-                          offset: Offset(0, 1), // 0 1px offset
-                          blurRadius: 2, // 2px blur
-                          color: Colors.black.withValues(
-                            alpha: 0.08,
-                          ), // rgba(0,0,0,0.08)
-                        ),
-                      ],
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _getMonthYearString(_focusedDay),
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 22, fontWeight: FontWeight.w600,
+                      color: WDDLDesignSystem.ink,
                     ),
                   ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '$monthCount ${monthCount == 1 ? 'win' : 'wins'} this month',
+                    style: WDDLDesignSystem.caption.copyWith(
+                      color: WDDLDesignSystem.inkMuted, letterSpacing: 0.3,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              if (streak > 0)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: WDDLDesignSystem.sageBg,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.local_fire_department_rounded,
+                          size: 13, color: WDDLDesignSystem.sage),
+                      const SizedBox(width: 4),
+                      Text(
+                        '$streak day${streak == 1 ? '' : 's'}',
+                        style: WDDLDesignSystem.caption.copyWith(
+                          color: WDDLDesignSystem.sage, fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-
-              SizedBox(height: 16),
             ],
           ),
 
-          // Add 8px bottom padding below calendar grid for breathing room
-          SizedBox(height: 8),
+          const SizedBox(height: 16),
 
-          // Calendar with proper WDDL styling
+          // ── Calendar ───────────────────────────────────────
           Container(
-            decoration: WDDLDesignSystem.cardDecoration.copyWith(
-              color: WDDLDesignSystem.surface,
-              borderRadius: BorderRadius.circular(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: WDDLDesignSystem.beigeDark, width: 1),
+              boxShadow: [
+                BoxShadow(
+                  color: WDDLDesignSystem.ink.withValues(alpha: 0.04),
+                  blurRadius: 16, offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
             child: TableCalendar<Map<String, dynamic>>(
               firstDay: DateTime.utc(2020, 1, 1),
               lastDay: DateTime.utc(2030, 12, 31),
@@ -229,219 +218,248 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
               startingDayOfWeek: StartingDayOfWeek.monday,
               selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
               onDaySelected: (selectedDay, focusedDay) async {
-                if (!isSameDay(_selectedDay, selectedDay)) {
-                  // Pulse animation on tap
-                  HapticFeedback.lightImpact();
-                  _dayTapController.forward().then(
-                        (_) => _dayTapController.reverse(),
-                      );
-
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                  _updateSelectedDayWins();
-                  widget.onDaySelected(selectedDay);
-
-                  // Restart fade-in animation for new selection
-                  _dateSelectionController.reset();
-                  await _dateSelectionController.forward();
-                }
+                HapticFeedback.lightImpact();
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                  _hasInteracted = true;
+                });
+                _updateSelectedDayWins();
+                widget.onDaySelected(selectedDay);
+                _cardController.reset();
+                await _cardController.forward();
               },
               onPageChanged: (focusedDay) {
-                setState(() {
-                  _focusedDay = focusedDay;
-                });
+                setState(() => _focusedDay = focusedDay);
               },
-              calendarStyle: CalendarStyle(
+              calendarBuilders: CalendarBuilders(
+                // Default day — bold if has win
+                defaultBuilder: (context, day, focusedDay) {
+                  final hasWin = _getWinsForDay(day).isNotEmpty;
+                  return Center(
+                    child: Text('${day.day}',
+                      style: WDDLDesignSystem.body.copyWith(
+                        color: hasWin ? WDDLDesignSystem.ink : WDDLDesignSystem.inkMuted,
+                        fontWeight: hasWin ? FontWeight.w700 : FontWeight.w400,
+                      ),
+                    ),
+                  );
+                },
+                // Today — sage outline ring
+                todayBuilder: (context, day, focusedDay) {
+                  final hasWin = _getWinsForDay(day).isNotEmpty;
+                  return Center(
+                    child: Container(
+                      width: 36, height: 36,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: WDDLDesignSystem.sage, width: 1.5),
+                      ),
+                      child: Center(
+                        child: Text('${day.day}',
+                          style: WDDLDesignSystem.body.copyWith(
+                            color: WDDLDesignSystem.sage,
+                            fontWeight: hasWin ? FontWeight.w700 : FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                // Selected — filled sage, white number
+                selectedBuilder: (context, day, focusedDay) {
+                  return Center(
+                    child: Container(
+                      width: 36, height: 36,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF7D9180),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text('${day.day}',
+                          style: WDDLDesignSystem.body.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                // Win dot — white when selected (visible on sage), sage otherwise
+                markerBuilder: (context, day, events) {
+                  if (events.isEmpty) return const SizedBox.shrink();
+                  final isSelected = isSameDay(day, _selectedDay);
+                  return Positioned(
+                    bottom: 6,
+                    child: Container(
+                      width: 4, height: 4,
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.white.withValues(alpha: 0.8)
+                            : WDDLDesignSystem.sage,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              calendarStyle: const CalendarStyle(
                 outsideDaysVisible: false,
-                weekendTextStyle: WDDLDesignSystem.body,
-                holidayTextStyle: WDDLDesignSystem.body,
-
-                // Highlight active day with filled background #7A9D8E (10% opacity), border #7A9D8E
-                selectedDecoration: BoxDecoration(
-                  color: WDDLDesignSystem.secondary.withValues(
-                    alpha: 0.1,
-                  ), // Sage green #7A9D8E 10% opacity
-                  border: Border.all(
-                    color: WDDLDesignSystem.secondary, // Sage green #7A9D8E border
-                    width: 2,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-
-                todayDecoration: BoxDecoration(
-                  color: WDDLDesignSystem.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-
-                markerDecoration: BoxDecoration(
-                  color: WDDLDesignSystem.success,
-                  shape: BoxShape.circle,
-                ),
                 markersMaxCount: 1,
-                markerSize: 6.0,
+                markerSize: 4,
               ),
               headerStyle: HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
-                titleTextStyle: WDDLDesignSystem.h2,
-                leftChevronIcon: CustomIconWidget(
-                  iconName: 'chevron_left',
-                  color: WDDLDesignSystem.primary,
-                  size: 24,
+                titleTextStyle: WDDLDesignSystem.caption.copyWith(
+                  color: WDDLDesignSystem.inkMuted, fontWeight: FontWeight.w500,
                 ),
-                rightChevronIcon: CustomIconWidget(
-                  iconName: 'chevron_right',
-                  color: WDDLDesignSystem.primary,
-                  size: 24,
+                headerPadding: const EdgeInsets.only(bottom: 8),
+                leftChevronIcon: Icon(Icons.chevron_left_rounded,
+                    color: WDDLDesignSystem.sage, size: 20),
+                rightChevronIcon: Icon(Icons.chevron_right_rounded,
+                    color: WDDLDesignSystem.sage, size: 20),
+                leftChevronPadding: const EdgeInsets.all(4),
+                rightChevronPadding: const EdgeInsets.all(4),
+              ),
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekdayStyle: WDDLDesignSystem.eyebrow.copyWith(
+                  color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.6),
+                  fontSize: 10,
+                ),
+                weekendStyle: WDDLDesignSystem.eyebrow.copyWith(
+                  color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.4),
+                  fontSize: 10,
                 ),
               ),
             ),
           ),
 
-          // Increase bottom padding under calendar to 48px for breathing room
-          SizedBox(height: 48),
-
-          // Add 24px gap between calendar grid and progress halo
-          SizedBox(height: 24),
-
-          // Progress halo animation
-          ProgressHaloWidget(streakCount: streak),
-
-          // Add 16px gap between halo and rotating quote
-          SizedBox(height: 16),
-
-          // Rotating quote component
-          RotatingQuoteWidget(),
-
-          // Add 32px margin before any following section (list of wins)
-          SizedBox(height: 32),
-
-          // Selected day wins with animation
-          if (_selectedDayWins.isNotEmpty) ...[
-            // Use Column instead of Expanded to allow scrolling
-            AnimatedBuilder(
-              animation: _fadeAnimation,
-              builder: (context, child) {
-                return FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: Transform.translate(
-                    offset: _slideAnimation.value,
-                    child: Column(
-                      children: [
-                        for (int index = 0;
-                            index < _selectedDayWins.length;
-                            index++)
-                          Container(
-                            margin: EdgeInsets.only(bottom: 8),
-                            padding: EdgeInsets.all(16),
-                            decoration: WDDLDesignSystem.cardDecoration,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _selectedDayWins[index]['title'] as String? ??
-                                      '',
-                                  style: WDDLDesignSystem.body.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                if ((_selectedDayWins[index]['reflection']
-                                            as String? ??
-                                        '')
-                                    .isNotEmpty) ...[
-                                  SizedBox(height: 8),
-                                  Text(
-                                    _selectedDayWins[index]['reflection']
-                                        as String,
-                                    style: WDDLDesignSystem.body.copyWith(
-                                      color: WDDLDesignSystem.textSecondary,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                      ],
+          // ── Hint — fades out after first tap ──────────────
+          AnimatedOpacity(
+            opacity: _hasInteracted ? 0.0 : 1.0,
+            duration: const Duration(milliseconds: 400),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.touch_app_rounded, size: 11,
+                      color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.4)),
+                  const SizedBox(width: 4),
+                  Text('Tap any day to read your win',
+                    style: WDDLDesignSystem.caption.copyWith(
+                      color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.4),
+                      fontSize: 11,
                     ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
-          ] else if (_selectedDay != null) ...[
-            // Empty state card when no win logged for selected date
-            AnimatedBuilder(
-              animation: _fadeAnimation,
-              builder: (context, child) {
-                return FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: Transform.translate(
-                    offset: _slideAnimation.value,
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: WDDLDesignSystem.cardDecoration.copyWith(
-                        color: WDDLDesignSystem.surface,
-                        border: Border.all(
-                          color: WDDLDesignSystem.textSecondary.withValues(
-                            alpha: 0.1,
-                          ),
-                          width: 1,
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              'No win logged today',
-                              style: WDDLDesignSystem.body.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: WDDLDesignSystem.textPrimary,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Your reflection journey starts here.',
-                              style: WDDLDesignSystem.body.copyWith(
-                                color: WDDLDesignSystem.textSecondary,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+          ),
 
-          // Add bottom padding to ensure content doesn't get cut off
-          SizedBox(height: 100),
+          const SizedBox(height: 20),
+
+          // ── Win card — immediately below calendar ──────────
+          if (_selectedDay != null)
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: _selectedDayWins.isNotEmpty
+                    ? _buildWinCard(_selectedDayWins.first)
+                    : _hasInteracted
+                        ? _buildEmptyDayCard()
+                        : const SizedBox.shrink(),
+              ),
+            ),
+
+          const SizedBox(height: 80),
         ],
       ),
     );
   }
 
-  String _getMonthYearString(DateTime date) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return '${months[date.month - 1]} ${date.year}';
+  Widget _buildWinCard(Map<String, dynamic> win) {
+    final title = (win['title'] as String?) ?? '';
+    final reflection = (win['reflection'] as String?) ?? '';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        // Sage left border = visual anchor to selected calendar day
+        border: Border(
+          left: BorderSide(color: WDDLDesignSystem.sage, width: 3),
+          top: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+          right: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+          bottom: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: WDDLDesignSystem.ink.withValues(alpha: 0.04),
+            blurRadius: 12, offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _formatSelectedDate(_selectedDay!).toUpperCase(),
+            style: WDDLDesignSystem.eyebrow.copyWith(color: WDDLDesignSystem.sage),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 20, fontWeight: FontWeight.w600,
+              color: WDDLDesignSystem.ink, height: 1.35,
+            ),
+          ),
+          if (reflection.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(
+              reflection,
+              style: WDDLDesignSystem.body.copyWith(
+                color: WDDLDesignSystem.inkMuted, fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyDayCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border(
+          left: BorderSide(color: WDDLDesignSystem.beigeDark, width: 3),
+          top: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+          right: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+          bottom: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _formatSelectedDate(_selectedDay!).toUpperCase(),
+            style: WDDLDesignSystem.eyebrow.copyWith(color: WDDLDesignSystem.inkMuted),
+          ),
+          const SizedBox(height: 8),
+          Text('Nothing logged this day.',
+            style: WDDLDesignSystem.body.copyWith(color: WDDLDesignSystem.inkMuted),
+          ),
+        ],
+      ),
+    );
   }
 }
