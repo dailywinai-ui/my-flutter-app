@@ -1,199 +1,227 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Win Daily Calm-Tech Design Language (WDDL) - SAGE GREEN REDESIGN
+/// Win Daily Calm-Tech Design Language (WDDL) — Website-Aligned Tokens
+/// Colors sourced directly from windaily.ca CSS variables
 class WDDLDesignSystem {
   WDDLDesignSystem._();
 
-  // SAGE GREEN + BEIGE COLOR PALETTE
-  static const Color sageDark = Color(0xFF6B8B7F);
-  static const Color sageMedium = Color(0xFF7A9D8E);
-  static const Color sageLight = Color(0xFFE8F0ED);
-  static const Color sageBorder = Color(0xFFB8CFC7);
-  
-  static const Color beige = Color(0xFFF8F8F8);
-  static const Color beigeLight = Color(0xFFF5F3F0);
-  
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color inputBackground = Color(0xFFF0EDE8);
-  
-  static const Color textPrimary = Color(0xFF3D4A5C);
-  static const Color textSecondary = Color(0xFF6B7885);
-  static const Color textTertiary = Color(0xFFA8A5A0);
-  
-  static const Color borderLight = Color(0xFFE5E2DD);
-  static const Color borderMedium = Color(0xFFD9D5CF);
-  
-  // Input specific
-  static const Color inputBorder = borderLight;
-  
+  // ─── EXACT WEBSITE COLOR TOKENS ───────────────────────────────────────────
+  static const Color sage        = Color(0xFF7D9180); // --sage (primary brand)
+  static const Color sageLight   = Color(0xFFA8BCAC); // --sage-light
+  static const Color sagePale    = Color(0xFFD4DFD6); // --sage-pale
+  static const Color sageBg      = Color(0xFFCFE3D8); // --sage-bg (hero bands)
+  static const Color beige       = Color(0xFFF0EBE3); // --beige
+  static const Color beigeDark   = Color(0xFFE0D8CC); // --beige-dark
+  static const Color ink         = Color(0xFF2C2C27); // --ink (primary text)
+  static const Color inkMuted    = Color(0xFF6B6B60); // --ink-muted
+  static const Color cream       = Color(0xFFFAF8F4); // --cream (page bg)
+
+  // Semantic aliases (used throughout screens)
+  static const Color primary     = sage;
+  static const Color secondary   = sageLight;
+  static const Color background  = cream;
+  static const Color surface     = Color(0xFFFFFFFF);
+  static const Color textPrimary = ink;
+  static const Color textSecondary = inkMuted;
+  static const Color textTertiary  = Color(0xFFABAB9E);
+
+  // Legacy aliases (keeps existing code compiling)
+  static const Color sageDark    = Color(0xFF6B7F73); // slightly darker sage
+  static const Color sageMedium  = sage;
+  static const Color sageBorder  = sagePale; // was #B8CFC7, now mapped to sagePale
+  static const Color borderLight = beigeDark;
+  static const Color borderMedium = Color(0xFFD4D0C8);
+  static const Color inputBackground = Color(0xFFF5F2EE);
+  static const Color inputBorder = beigeDark;
+  static const Color white       = Color(0xFFFFFFFF);
+  static const Color beigeLight  = cream;
+
+  // Status colors
   static const Color success = Color(0xFF84C69B);
-  static const Color error = Color(0xFFE76F51);
+  static const Color error   = Color(0xFFE76F51);
   static const Color warning = Color(0xFFE9B872);
-  
-  // Legacy compatibility
-  static const Color primary = sageMedium;
-  static const Color secondary = sageDark;
-  static const Color background = beige;
-  static const Color surface = white;
 
-  // SPACING
-  static const double headerTopPadding = 48.0;
-  static const double sectionGap = 32.0;
-  static const double componentGap = 16.0;
-  static const double bottomSafeArea = 40.0;
+  // ─── SPACING ──────────────────────────────────────────────────────────────
+  static const double headerTopPadding       = 48.0;
+  static const double sectionGap            = 32.0;
+  static const double componentGap          = 16.0;
+  static const double bottomSafeArea        = 40.0;
   static const double greetingDateTopPadding = 32.0;
-  static const double dateToWinCardGap = 16.0;
-  static const double lastCardToFabGap = 48.0;
+  static const double dateToWinCardGap      = 16.0;
+  static const double lastCardToFabGap      = 48.0;
 
-  // TYPOGRAPHY
-  static TextStyle get displayLarge => GoogleFonts.inter(
-    fontSize: 32, fontWeight: FontWeight.w600, color: textPrimary, height: 1.4,
+  // ─── TYPOGRAPHY ───────────────────────────────────────────────────────────
+  // Display / Headings → Cormorant Garamond (serif, editorial)
+  // Body / UI          → DM Sans (clean, calm)
+
+  static TextStyle get displayLarge => GoogleFonts.cormorantGaramond(
+    fontSize: 36, fontWeight: FontWeight.w600, color: ink, height: 1.2,
+    fontStyle: FontStyle.italic,
   );
 
-  static TextStyle get h1 => GoogleFonts.inter(
-    fontSize: 22, fontWeight: FontWeight.w600, color: textPrimary, height: 1.5,
+  static TextStyle get h1Large => GoogleFonts.cormorantGaramond(
+    fontSize: 28, fontWeight: FontWeight.w600, color: ink, height: 1.3,
   );
 
-  static TextStyle get h1Large => GoogleFonts.inter(
-    fontSize: 24, fontWeight: FontWeight.w600, color: textPrimary, height: 1.5,
+  static TextStyle get h1 => GoogleFonts.cormorantGaramond(
+    fontSize: 24, fontWeight: FontWeight.w600, color: ink, height: 1.3,
   );
 
-  static TextStyle get h2 => GoogleFonts.inter(
-    fontSize: 18, fontWeight: FontWeight.w500, color: textPrimary, height: 1.5,
+  static TextStyle get h2 => GoogleFonts.cormorantGaramond(
+    fontSize: 20, fontWeight: FontWeight.w500, color: ink, height: 1.4,
   );
 
-  static TextStyle get body => GoogleFonts.inter(
-    fontSize: 14, fontWeight: FontWeight.w400, color: textPrimary, height: 1.5,
+  static TextStyle get h2Italic => GoogleFonts.cormorantGaramond(
+    fontSize: 20, fontWeight: FontWeight.w500, color: ink, height: 1.4,
+    fontStyle: FontStyle.italic,
   );
 
-  static TextStyle get bodyLarge => GoogleFonts.inter(
-    fontSize: 16, fontWeight: FontWeight.w400, color: textPrimary, height: 1.5,
+  // Body text → DM Sans
+  static TextStyle get body => GoogleFonts.dmSans(
+    fontSize: 14, fontWeight: FontWeight.w400, color: ink, height: 1.6,
   );
 
-  static TextStyle get hint => GoogleFonts.inter(
-    fontSize: 13, fontWeight: FontWeight.w400, color: textSecondary, height: 1.5,
+  static TextStyle get bodyLarge => GoogleFonts.dmSans(
+    fontSize: 16, fontWeight: FontWeight.w400, color: ink, height: 1.6,
   );
 
-  static TextStyle get caption => GoogleFonts.inter(
+  static TextStyle get hint => GoogleFonts.dmSans(
+    fontSize: 13, fontWeight: FontWeight.w400, color: inkMuted, height: 1.5,
+  );
+
+  static TextStyle get caption => GoogleFonts.dmSans(
     fontSize: 12, fontWeight: FontWeight.w400, color: textTertiary, height: 1.4,
   );
 
-  // BUTTON STYLES
-  static ButtonStyle get primaryButton => ElevatedButton.styleFrom(
-    backgroundColor: sageMedium,
-    foregroundColor: white,
-    minimumSize: const Size(double.infinity, 48),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    elevation: 0,
-    textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
-  );
-  
-  static ButtonStyle get secondaryButton => OutlinedButton.styleFrom(
-    foregroundColor: sageDark,
-    side: BorderSide(color: sageBorder, width: 2),
-    minimumSize: const Size(double.infinity, 48),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
-  );
-  
-  static ButtonStyle get textButton => TextButton.styleFrom(
-    foregroundColor: sageDark,
-    textStyle: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w500),
+  // Journal textarea → Cormorant italic (feels like writing)
+  static TextStyle get journalText => GoogleFonts.cormorantGaramond(
+    fontSize: 18, fontWeight: FontWeight.w400, color: ink, height: 1.7,
+    fontStyle: FontStyle.italic,
   );
 
-  // INPUT DECORATION
+  // Eyebrow labels → DM Sans small caps style
+  static TextStyle get eyebrow => GoogleFonts.dmSans(
+    fontSize: 11, fontWeight: FontWeight.w600, color: inkMuted, height: 1.4,
+    letterSpacing: 1.5,
+  );
+
+  // ─── BUTTON STYLES ────────────────────────────────────────────────────────
+  static ButtonStyle get primaryButton => ElevatedButton.styleFrom(
+    backgroundColor: sage,
+    foregroundColor: white,
+    minimumSize: const Size(double.infinity, 50),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    elevation: 0,
+    textStyle: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.w600),
+  );
+
+  static ButtonStyle get secondaryButton => OutlinedButton.styleFrom(
+    foregroundColor: sage,
+    side: const BorderSide(color: sagePale, width: 1.5),
+    minimumSize: const Size(double.infinity, 50),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    textStyle: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.w500),
+  );
+
+  static ButtonStyle get textButton => TextButton.styleFrom(
+    foregroundColor: sage,
+    textStyle: GoogleFonts.dmSans(fontSize: 14, fontWeight: FontWeight.w500),
+  );
+
+  // ─── INPUT DECORATION ─────────────────────────────────────────────────────
   static InputDecoration get inputDecoration => InputDecoration(
     filled: true,
     fillColor: white,
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: borderLight, width: 2),
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: beigeDark, width: 1),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: borderLight, width: 2),
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: beigeDark, width: 1),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: sageMedium, width: 2),
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: sage, width: 1.5),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: error, width: 2),
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: error, width: 1),
     ),
-    contentPadding: const EdgeInsets.all(16),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     hintStyle: hint,
   );
 
-  // CARD DECORATION
+  // ─── CARD DECORATIONS ─────────────────────────────────────────────────────
   static BoxDecoration get cardDecoration => BoxDecoration(
     color: white,
-    borderRadius: BorderRadius.circular(16),
-    border: Border.all(color: borderLight, width: 1),
+    borderRadius: BorderRadius.circular(14),
+    border: Border.all(color: beigeDark, width: 1),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withValues(alpha: 0.04),
-        blurRadius: 8,
+        color: const Color(0xFF2C2C27).withValues(alpha: 0.04),
+        blurRadius: 12,
         offset: const Offset(0, 2),
       ),
     ],
+  );
+
+  static BoxDecoration get sageBgCardDecoration => BoxDecoration(
+    color: sageBg,
+    borderRadius: BorderRadius.circular(14),
   );
 
   static BoxDecoration get toastDecoration => BoxDecoration(
-    color: success.withValues(alpha: 0.1),
-    borderRadius: BorderRadius.circular(12),
-    border: Border.all(color: success.withValues(alpha: 0.2), width: 1),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black.withValues(alpha: 0.05),
-        blurRadius: 8,
-        offset: const Offset(0, 2),
-      ),
-    ],
+    color: sagePale.withValues(alpha: 0.5),
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(color: sagePale, width: 1),
   );
 
-  static Color get dividerColor => sageBorder.withValues(alpha: 0.3);
-
-  // ANIMATIONS
-  static const Duration fadeInDuration = Duration(milliseconds: 600);
-  static const Duration tapFeedbackDuration = Duration(milliseconds: 150);
-  static const Duration successModalDuration = Duration(milliseconds: 400);
-  static const Duration winCardFadeInDuration = Duration(milliseconds: 400);
-
-  static const Curve fadeInCurve = Curves.easeOut;
-  static const Curve tapFeedbackCurve = Curves.easeInOut;
-  static const Curve winCardAnimationCurve = Curves.easeOut;
-
-  // MICROCOPY
-  static const String winLoggedMessage = 'Win logged';
-  static const String reflectionSavedMessage = 
-      'Reflection saved — You\'re building self-awareness one day at a time.';
-
-  static const List<String> calmTechMessages = [
-    'You\'re building momentum',
-    'Small steps, big identity.',
-    'One win at a time.',
-    'You\'re becoming someone who shows up daily.',
-    'Progress, not perfection.',
-  ];
-
-  // TAB STYLES
+  // ─── TAB STYLES ───────────────────────────────────────────────────────────
   static BoxDecoration get activeTabDecoration => BoxDecoration(
-    color: sageLight,
-    borderRadius: BorderRadius.circular(12),
-    border: Border.all(color: sageMedium, width: 1),
+    color: sagePale,
+    borderRadius: BorderRadius.circular(8),
   );
 
   static BoxDecoration get inactiveTabDecoration => BoxDecoration(
     color: Colors.transparent,
-    borderRadius: BorderRadius.circular(12),
+    borderRadius: BorderRadius.circular(8),
   );
 
-  static Color get activeTabTextColor => textPrimary;
-  static Color get inactiveTabTextColor => textSecondary.withValues(alpha: 0.7);
+  static Color get activeTabTextColor => ink;
+  static Color get inactiveTabTextColor => inkMuted;
+  static Color get dividerColor => beigeDark;
 
-  // HELPERS
+  // ─── ANIMATIONS ───────────────────────────────────────────────────────────
+  static const Duration fadeInDuration        = Duration(milliseconds: 600);
+  static const Duration tapFeedbackDuration   = Duration(milliseconds: 150);
+  static const Duration successModalDuration  = Duration(milliseconds: 400);
+  static const Duration winCardFadeInDuration = Duration(milliseconds: 400);
+
+  static const Curve fadeInCurve           = Curves.easeOut;
+  static const Curve tapFeedbackCurve      = Curves.easeInOut;
+  static const Curve winCardAnimationCurve = Curves.easeOut;
+
+  // ─── MICROCOPY ────────────────────────────────────────────────────────────
+  static const String winLoggedMessage = 'Win logged — keep going.';
+  static const String reflectionSavedMessage =
+      'Reflection saved — you\'re building self-awareness one day at a time.';
+
+  static const List<String> calmTechMessages = [
+    'Reflect. Don\'t perform.',
+    'Small steps, big identity.',
+    'One win at a time.',
+    'Log it, move on and live your life.',
+    'An archive of wins you can doomscroll.',
+  ];
+
+  // ─── PADDING ──────────────────────────────────────────────────────────────
+  static EdgeInsets get screenPadding   => const EdgeInsets.symmetric(horizontal: 24);
+  static EdgeInsets get sectionPadding  => const EdgeInsets.only(bottom: sectionGap);
+  static EdgeInsets get componentPadding => const EdgeInsets.only(bottom: componentGap);
+
+  // ─── ANIMATION HELPERS ────────────────────────────────────────────────────
   static Widget fadeInWidget({required Widget child, Duration? duration}) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: 1.0),
@@ -209,9 +237,7 @@ class WDDLDesignSystem {
     double scale = 0.98,
   }) {
     return GestureDetector(
-      onTapDown: (_) => {},
       onTapUp: (_) => onTap(),
-      onTapCancel: () => {},
       child: AnimatedScale(
         scale: 1.0,
         duration: tapFeedbackDuration,
@@ -247,9 +273,4 @@ class WDDLDesignSystem {
       child: child,
     );
   }
-
-  // PADDING
-  static EdgeInsets get screenPadding => const EdgeInsets.symmetric(horizontal: 24);
-  static EdgeInsets get sectionPadding => const EdgeInsets.only(bottom: sectionGap);
-  static EdgeInsets get componentPadding => const EdgeInsets.only(bottom: componentGap);
 }

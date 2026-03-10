@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/app_export.dart';
 import '../../routes/app_routes.dart';
 import '../../services/auth_service.dart';
-import '../../utils/brand_assets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,54 +16,54 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
+  late AnimationController _controller;
+  late Animation<double> _fadeAnim;
+  late Animation<double> _scaleAnim;
 
   @override
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      ),
     );
 
+    _scaleAnim = Tween<double>(begin: 0.92, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.7, curve: Curves.easeOut),
+      ),
+    );
+
+    _controller.forward();
     _initializeApp();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   Future<void> _initializeApp() async {
-    // Start the fade animation
-    _animationController.forward();
-
-    // Wait for animation to complete and check auth state
-    await Future.delayed(const Duration(milliseconds: 1500));
-
+    await Future.delayed(const Duration(milliseconds: 2000));
     if (!mounted) return;
 
     try {
-      // Check if user is already authenticated
       if (AuthService.instance.isSignedIn) {
-        // Wait a bit more to ensure smooth transition
-        await Future.delayed(const Duration(milliseconds: 500));
-        if (!mounted) return;
-
         Navigator.pushReplacementNamed(context, AppRoutes.today);
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.authentication);
       }
-    } catch (error) {
-      // If there's an error checking auth state, go to auth screen
-      print('Error checking auth state: $error');
+    } catch (_) {
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, AppRoutes.authentication);
     }
@@ -71,115 +71,86 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
     return Scaffold(
-      body: Container(
-        // Updated background gradient for theme support
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? [
-                    const Color(0xFF1A1F2A), // bgDarkStart
-                    const Color(0xFF2B3442), // bgDarkEnd
-                  ]
-                : [
-                    const Color(0xFFEBE8E3), // Light mode background
-                    const Color(0xFFFFFFFF), // Light mode surface
-                  ],
-          ),
-        ),
-        child: SafeArea(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Updated logo with theme-aware selection and pulse animation
-                  TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 1.0, end: 1.03),
-                    duration: const Duration(seconds: 4),
-                    curve: Curves.easeInOut,
-                    builder: (context, scale, child) {
-                      return Transform.scale(
-                        scale: scale,
-                        child: Container(
-                          width: 200,
-                          height: 200,
-                          child: SvgPicture.asset(
-                            'assets/images/the_node_logo.svg',
-                            width: 200,
-                            height: 200,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              // Fallback with themed container
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.1)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Icon(
-                                  Icons.emoji_events,
-                                  size: 80,
-                                  color: isDark
-                                      ? Colors.white
-                                      : theme.colorScheme.primary,
-                                ),
-                              );
-                            },
-                          ),
+      backgroundColor: WDDLDesignSystem.cream,
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          return Opacity(
+            opacity: _fadeAnim.value,
+            child: Transform.scale(
+              scale: _scaleAnim.value,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Logo
+                    SvgPicture.asset(
+                      'assets/images/the_node_logo.svg',
+                      width: 180,
+                      height: 180,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, _, __) => Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: WDDLDesignSystem.sagePale,
+                          shape: BoxShape.circle,
                         ),
-                      );
-                    },
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // App name
-                  Text(
-                    'Win Daily',
-                    style: theme.textTheme.headlineLarge?.copyWith(
-                      color: isDark ? Colors.white : Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -1,
-                    ),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  // App tagline with theme-aware color
-                  Text(
-                    'One win at a time.',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: BrandAssets.getTaglineColor(context),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-
-                  SizedBox(height: 8.h),
-
-                  // Loading indicator
-                  SizedBox(
-                    width: 6.w,
-                    height: 6.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.white.withValues(alpha: 0.8),
+                        child: const Icon(
+                          Icons.auto_awesome,
+                          size: 48,
+                          color: WDDLDesignSystem.sage,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 32),
+
+                    // App name — Cormorant
+                    Text(
+                      'Win Daily',
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
+                        color: WDDLDesignSystem.ink,
+                        letterSpacing: -0.5,
+                        height: 1.1,
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // Tagline — DM Sans
+                    Text(
+                      'Reflect. Don\'t perform.',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: WDDLDesignSystem.inkMuted,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+
+                    const SizedBox(height: 64),
+
+                    // Subtle loading dot
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          WDDLDesignSystem.sage.withValues(alpha: 0.5),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
