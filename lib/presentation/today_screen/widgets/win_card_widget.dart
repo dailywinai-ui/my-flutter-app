@@ -138,4 +138,4 @@ class _WinCardWidgetState extends State<WinCardWidget> {
       ),
     );
   }
-}}
+}
