@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../../services/wins_service.dart';
+import '../../widgets/custom_bottom_bar.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 
 class InsightsScreen extends StatefulWidget {
@@ -31,6 +32,7 @@ class _InsightsScreenState extends State<InsightsScreen>
   double _moodTrend = 0; // positive = trending up, negative = down
   List<String> _realReflections = [];
   String _longestGapMessage = '';
+  int _currentBottomNavIndex = 2;
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
@@ -249,6 +251,14 @@ class _InsightsScreenState extends State<InsightsScreen>
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomBottomBar(
+        currentIndex: _currentBottomNavIndex,
+        onTap: (index) {
+          setState(() => _currentBottomNavIndex = index);
+          if (index == 0) Navigator.pushReplacementNamed(context, '/today-screen');
+          if (index == 1) Navigator.pushReplacementNamed(context, '/history-screen');
+        },
       ),
     );
   }

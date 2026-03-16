@@ -79,16 +79,9 @@ class _ReflectionScreenState extends State<ReflectionScreen>
   }
 
   void _selectPrompt(String prompt) {
-    setState(() => _selectedPrompt = prompt);
-    HapticFeedback.lightImpact();
-    final current = _reflectionController.text;
-    final next    = current.isEmpty ? prompt : '$current\n\n$prompt';
-    _reflectionController.text = next;
-    _reflectionController.selection = TextSelection.fromPosition(
-      TextPosition(offset: next.length),
-    );
-  }
-
+  setState(() => _selectedPrompt = prompt);
+  HapticFeedback.lightImpact();
+}
   bool get _hasContent =>
       _reflectionController.text.trim().isNotEmpty || _selectedMood != null;
 

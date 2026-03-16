@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../../core/app_export.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class SearchBarWidget extends StatefulWidget {
   final Function(String) onSearchChanged;
@@ -35,110 +32,79 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
       child: Row(
         children: [
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: theme.cardColor,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: _isSearchActive
-                      ? WDDLDesignSystem.sageMedium
-                      : theme.colorScheme.outline.withValues(alpha: 0.2),
-                  width: _isSearchActive ? 2 : 1,
+                  color: _isSearchActive ? WDDLDesignSystem.sage : WDDLDesignSystem.beigeDark,
+                  width: _isSearchActive ? 1.5 : 1,
                 ),
               ),
               child: TextField(
                 controller: _searchController,
                 focusNode: _focusNode,
                 onChanged: (value) {
+                  setState(() {});
                   widget.onSearchChanged(value);
                 },
                 onTap: () {
                   HapticFeedback.lightImpact();
-                  setState(() {
-                    _isSearchActive = true;
-                  });
+                  setState(() => _isSearchActive = true);
+                },
+                onSubmitted: (_) {
+                  _focusNode.unfocus();
+                  setState(() => _isSearchActive = false);
                 },
                 decoration: InputDecoration(
-                  hintText: 'Search wins...',
-                  hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                  hintText: 'Search wins…',
+                  hintStyle: WDDLDesignSystem.body.copyWith(
+                    color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.5),
                   ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(3.w),
-                    child: CustomIconWidget(
-                      iconName: 'search',
-                      color: _isSearchActive
-                          ? WDDLDesignSystem.sageMedium
-                          : theme.colorScheme.onSurfaceVariant,
-                      size: 20,
-                    ),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: _isSearchActive ? WDDLDesignSystem.sage : WDDLDesignSystem.inkMuted,
+                    size: 20,
                   ),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
                           onPressed: () {
-                            HapticFeedback.lightImpact();
                             _searchController.clear();
                             widget.onSearchChanged('');
                             _focusNode.unfocus();
-                            setState(() {
-                              _isSearchActive = false;
-                            });
+                            setState(() => _isSearchActive = false);
                           },
-                          icon: CustomIconWidget(
-                            iconName: 'clear',
-                            color: theme.colorScheme.onSurfaceVariant,
-                            size: 20,
-                          ),
+                          icon: const Icon(Icons.clear_rounded, color: WDDLDesignSystem.inkMuted, size: 18),
                         )
                       : null,
                   border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 4.w,
-                    vertical: 2.h,
-                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
-                style: theme.textTheme.bodyMedium,
+                style: WDDLDesignSystem.body,
                 textInputAction: TextInputAction.search,
-                onSubmitted: (value) {
-                  _focusNode.unfocus();
-                  setState(() {
-                    _isSearchActive = false;
-                  });
-                },
               ),
             ),
           ),
           if (widget.showFilter) ...[
-            SizedBox(width: 3.w),
+            const SizedBox(width: 8),
             GestureDetector(
               onTap: () {
                 HapticFeedback.lightImpact();
                 widget.onFilterTap?.call();
               },
               child: Container(
-                padding: EdgeInsets.all(3.w),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: theme.cardColor,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                    width: 1,
-                  ),
+                  border: Border.all(color: WDDLDesignSystem.beigeDark),
                 ),
-                child: CustomIconWidget(
-                  iconName: 'tune',
-                  color: theme.colorScheme.primary,
-                  size: 24,
-                ),
+                child: const Icon(Icons.tune_rounded, color: WDDLDesignSystem.sage, size: 22),
               ),
             ),
           ],

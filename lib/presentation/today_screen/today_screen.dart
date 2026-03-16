@@ -101,10 +101,10 @@ class _TodayScreenState extends State<TodayScreen>
     setState(() => _currentTabIndex = index);
     switch (index) {
       case 1:
-        Navigator.pushNamed(context, '/history-screen');
+        Navigator.pushReplacementNamed(context, '/history-screen');
         break;
       case 2:
-        Navigator.pushNamed(context, '/insights-screen');
+        Navigator.pushReplacementNamed(context, '/insights-screen');
         break;
     }
   }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:win_daily/theme/wddl_design_system.dart';
 import 'package:flutter/services.dart';
-import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
-import '../../../core/app_export.dart';
 import './win_card_widget.dart';
 
 class ListViewWidget extends StatefulWidget {
@@ -40,39 +39,24 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 
   Future<void> _handleRefresh() async {
     if (_isRefreshing) return;
-
-    setState(() {
-      _isRefreshing = true;
-    });
-
+    setState(() => _isRefreshing = true);
     HapticFeedback.lightImpact();
-
-    // Simulate refresh delay
     await Future.delayed(const Duration(milliseconds: 500));
-
     widget.onRefresh();
-
-    setState(() {
-      _isRefreshing = false;
-    });
+    setState(() => _isRefreshing = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    if (widget.wins.isEmpty) {
-      return _buildEmptyState(theme);
-    }
-
+    if (widget.wins.isEmpty) return _buildEmptyState();
     return RefreshIndicator(
       onRefresh: _handleRefresh,
-      color: WDDLDesignSystem.sageMedium,
-      backgroundColor: theme.cardColor,
+      color: WDDLDesignSystem.sage,
+      backgroundColor: WDDLDesignSystem.cream,
       child: ListView.builder(
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(vertical: 1.h),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: widget.wins.length,
         itemBuilder: (context, index) {
           final win = widget.wins[index];
@@ -88,89 +72,40 @@ class _ListViewWidgetState extends State<ListViewWidget> {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
-    final suggestions = [
-      "Your wins are waiting to be logged",
-      "Every small step counts",
-      "Start your winning streak today",
-      "Progress over perfection",
-      "One win at a time",
-    ];
-
-    final randomSuggestion =
-        suggestions[DateTime.now().millisecond % suggestions.length];
-
+  Widget _buildEmptyState() {
     return RefreshIndicator(
       onRefresh: _handleRefresh,
-      color: WDDLDesignSystem.sageMedium,
-      backgroundColor: theme.cardColor,
+      color: WDDLDesignSystem.sage,
+      backgroundColor: WDDLDesignSystem.cream,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          height: 60.h,
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
+        child: SizedBox(
+          height: 400,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 20.w,
-                height: 20.w,
-                decoration: BoxDecoration(
-                  color: WDDLDesignSystem.sageMedium.withValues(alpha: 0.1),
+                width: 72,
+                height: 72,
+                decoration: const BoxDecoration(
+                  color: WDDLDesignSystem.sagePale,
                   shape: BoxShape.circle,
                 ),
-                child: Center(
-                  child: CustomIconWidget(
-                    iconName: 'emoji_events',
-                    color: WDDLDesignSystem.sageMedium,
-                    size: 8.w,
-                  ),
-                ),
+                child: const Icon(Icons.auto_awesome_outlined, color: WDDLDesignSystem.sage, size: 32),
               ),
-              SizedBox(height: 3.h),
+              const SizedBox(height: 20),
               Text(
                 'No wins yet',
-                style: theme.textTheme.headlineSmall?.copyWith(
+                style: GoogleFonts.cormorantGaramond(
+                  fontSize: 22,
                   fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.primary,
+                  color: WDDLDesignSystem.ink,
                 ),
-                textAlign: TextAlign.center,
               ),
-              SizedBox(height: 1.h),
+              const SizedBox(height: 8),
               Text(
-                randomSuggestion,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.secondary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 4.h),
-              ElevatedButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.pushNamed(context, '/today-screen');
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomIconWidget(
-                      iconName: 'add',
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    SizedBox(width: 2.w),
-                    Text(
-                      'Your wins will appear here.',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+                'Your wins will appear here.',
+                style: WDDLDesignSystem.body.copyWith(color: WDDLDesignSystem.inkMuted),
               ),
             ],
           ),

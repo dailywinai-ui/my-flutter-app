@@ -15,7 +15,6 @@ class WinCardWidget extends StatelessWidget {
     final String date = winData['date'] ?? '';
     final String title = winData['title'] ?? '';
     final String reflection = winData['reflection'] ?? '';
-    final int mood = winData['mood'] ?? 3;
 
     return Container(
       width: double.infinity,
@@ -66,55 +65,11 @@ class WinCardWidget extends StatelessWidget {
             ),
           ],
 
-          SizedBox(height: 3.h),
 
-          // Mood visualization
-          Row(
-            children: [
-              Text(
-                'Mood: ',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.secondary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: _getMoodColor(mood),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(width: 2.w),
-              Text(
-                mood.toString(),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
 
-  Color _getMoodColor(int mood) {
-    switch (mood) {
-      case 1:
-        return const Color(0xFFE53E3E); // Red
-      case 2:
-        return const Color(0xFFD69E2E); // Orange
-      case 3:
-        return const Color(0xFF4A5568); // Gray
-      case 4:
-        return const Color(0xFF2B6CB0); // Blue
-      case 5:
-        return const Color(0xFF38A169); // Green
-      default:
-        return const Color(0xFF4A5568);
-    }
-  }
+
 }

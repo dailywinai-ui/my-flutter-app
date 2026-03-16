@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../../core/app_export.dart';
-import '../../../widgets/custom_icon_widget.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class FloatingActionButtonWidget extends StatefulWidget {
   final VoidCallback onPressed;
@@ -26,7 +24,7 @@ class _FloatingActionButtonWidgetState extends State<FloatingActionButtonWidget>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
@@ -40,7 +38,6 @@ class _FloatingActionButtonWidgetState extends State<FloatingActionButtonWidget>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      // Align floating button 16px from right and 40px from bottom
       bottom: 40.0,
       right: 16.0,
       child: AnimatedBuilder(
@@ -57,27 +54,25 @@ class _FloatingActionButtonWidgetState extends State<FloatingActionButtonWidget>
                 _animationController.reverse();
                 widget.onPressed();
               },
-              onTapCancel: () {
-                _animationController.reverse();
-              },
+              onTapCancel: () => _animationController.reverse(),
               child: Container(
-                width: 56, // Standard FAB size
+                width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6B8B7F),
+                  color: WDDLDesignSystem.sage,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      color: WDDLDesignSystem.ink.withValues(alpha: 0.15),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                child: const CustomIconWidget(
-                  iconName: 'add',
+                child: const Icon(
+                  Icons.add_rounded,
                   color: Colors.white,
-                  size: 24,
+                  size: 28,
                 ),
               ),
             ),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../../core/app_export.dart';
-import '../../../widgets/custom_icon_widget.dart';
+import 'package:win_daily/theme/wddl_design_system.dart';
 
 class TabNavigationWidget extends StatelessWidget {
   final int currentIndex;
@@ -17,56 +14,26 @@ class TabNavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-          width: 1,
-        ),
+        color: WDDLDesignSystem.beige,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: WDDLDesignSystem.beigeDark, width: 1),
       ),
       child: Row(
         children: [
-          _buildTabItem(
-            context: context,
-            index: 0,
-            title: 'Today',
-            icon: 'today',
-            activeIcon: 'today',
-          ),
-          _buildTabItem(
-            context: context,
-            index: 1,
-            title: 'History',
-            icon: 'history',
-            activeIcon: 'history',
-          ),
-          _buildTabItem(
-            context: context,
-            index: 2,
-            title: 'Insights',
-            icon: 'insights',
-            activeIcon: 'insights',
-          ),
+          _buildTab(context, 0, 'Today', Icons.wb_sunny_outlined, Icons.wb_sunny),
+          _buildTab(context, 1, 'History', Icons.calendar_month_outlined, Icons.calendar_month),
+          _buildTab(context, 2, 'Insights', Icons.bar_chart_outlined, Icons.bar_chart),
         ],
       ),
     );
   }
 
-  Widget _buildTabItem({
-    required BuildContext context,
-    required int index,
-    required String title,
-    required String icon,
-    required String activeIcon,
-  }) {
-    final theme = Theme.of(context);
+  Widget _buildTab(BuildContext context, int index, String title,
+      IconData icon, IconData activeIcon) {
     final isSelected = currentIndex == index;
-
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -76,43 +43,25 @@ class TabNavigationWidget extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-          padding: EdgeInsets.symmetric(vertical: 2.h),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected
-                ? const Color(0xFFE8F0ED) // Lightened active tab background
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(14),
-            border: isSelected
-                ? Border(
-                    bottom: BorderSide(
-                      color: const Color(
-                        0xFF7A9D8E,
-                      ), // Active tab underline color
-                      width: 2.0,
-                    ),
-                  )
-                : null,
+            color: isSelected ? WDDLDesignSystem.sagePale : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              CustomIconWidget(
-                iconName: isSelected ? activeIcon : icon,
-                color: isSelected
-                    ? const Color(0xFF6B8B7F) // Active text color
-                    : const Color(0xFF6E767D)
-                        .withAlpha(179), // Inactive tabs 70% opacity
+              Icon(
+                isSelected ? activeIcon : icon,
+                color: isSelected ? WDDLDesignSystem.sage : WDDLDesignSystem.inkMuted,
                 size: 20,
               ),
-              SizedBox(width: 2.w),
+              const SizedBox(height: 3),
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 13, // Font size
-                  color: isSelected
-                      ? const Color(0xFF6B8B7F) // Active text color
-                      : const Color(0xFF6E767D)
-                          .withAlpha(179), // Inactive tabs 70% opacity
+                  fontSize: 11,
+                  color: isSelected ? WDDLDesignSystem.sage : WDDLDesignSystem.inkMuted,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 ),
               ),
