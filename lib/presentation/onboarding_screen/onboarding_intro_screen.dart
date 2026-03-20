@@ -131,6 +131,10 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
             colorScheme: const ColorScheme.light(
               primary: WDDLDesignSystem.sage,
               onPrimary: Colors.white,
+              secondary: WDDLDesignSystem.sage,
+              onSecondary: Colors.white,
+              secondaryContainer: WDDLDesignSystem.sage,
+              onSecondaryContainer: Colors.white,
               surface: WDDLDesignSystem.cream,
             ),
           ),

@@ -116,14 +116,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                 padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
                 child: Row(
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                          color: WDDLDesignSystem.ink, size: 20),
-                    ),
+                    const SizedBox(width: 48),
                     Expanded(
                       child: Text(
                         'History',
