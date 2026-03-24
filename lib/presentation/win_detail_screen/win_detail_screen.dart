@@ -325,7 +325,7 @@ class _WinDetailScreenState extends State<WinDetailScreen> {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, '/add-win-modal', arguments: currentWin)
         .then((result) {
-      if (result != null && result is Map<String, dynamic>) {
+      if (result != null) {
         _loadUserWins();
       }
     });
