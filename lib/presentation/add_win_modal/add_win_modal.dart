@@ -193,7 +193,8 @@ class _AddWinModalState extends State<AddWinModal>
         _showSuccessModal();
         await Future.delayed(const Duration(milliseconds: 800));
         if (mounted) {
-          Navigator.of(context).pop(true);
+          Navigator.of(context).pop(); // close success dialog
+          Navigator.of(context).pop(true); // close add win modal
         }
       } else {
         // New win — save then navigate to reflection screen
