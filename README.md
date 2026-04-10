@@ -1,294 +1,168 @@
-# Win Daily (Flutter)
-Win Daily is a Flutter app backed by Supabase. It helps busy professionals capture **one win per day** to reduce forgetfulness, build momentum, and create a living archive of their progress.
-**Primary branch:** `redesign-sage-green`
+# Win Daily
+
+Win Daily is a calm journaling app for iOS that helps you notice your own life before it passes you by. One win a day. Private. No streaks, no guilt, no audience. Just an archive of the days you showed up.
+
+**Live on the App Store** → [windaily.ca](https://windaily.ca)
 
 ## What the app does
-Win Daily makes it easy to:
-- Sign in / sign up
-- Log a daily “win”
-- Review wins over time (history/reflection)
-- Update basic profile/settings
 
-### Why it exists / problem it solves
-When life gets busy, progress becomes invisible. Win Daily helps you pause, recognize your progress, and stay an active participant in your own life by keeping a lightweight record of your wins.
+- Log one daily win — what actually happened, not the highlight reel
+- Reflect with optional mood tracking and reflection prompts
+- Browse your history on a calendar view with win dots
+- See insights — stats, mood patterns, and your personal trends
+- Create and share win cards
+- Edit and revisit past wins
 
-### Key features (at a glance)
-- ✅ Supabase Auth (sign in / sign up)
-- ✅ Daily win logging
-- ✅ History view
-- ✅ Settings/Profile
-- ✅ TestFlight distribution for iOS testing
+## Why it exists
 
-## Prerequisites / Requirements
-### Required software
-- Flutter SDK (stable recommended)
+When life gets busy, progress becomes invisible. Social media shows you the finish line — never the gap between the intent and the result. Win Daily captures that gap. The 5-minute run. The hard day you showed up anyway. The conversation that reminded you that you were alive.
+
+Win Daily is a place to reconnect with what makes us human. The everyday moments we often forget but when compounded over time become an archive of a life well lived.
+
+## Tech stack
+
+- **Flutter / Dart** — cross-platform app framework
+- **Supabase** — authentication and database
+- **Codemagic** — CI/CD pipeline
+- **App Store** — iOS distribution (live)
+- **Google Play Store** — Android distribution (coming soon)
+
+## Branching
+
+- `main` — production, always matches the live App Store build
+- `dev` — active development, features and fixes land here first
+
+## Local development
+
+### Prerequisites
+
+- Flutter SDK (stable)
 - Dart (bundled with Flutter)
 - Git
+- macOS + Xcode (for iOS builds)
+- Android Studio + SDK (for Android builds)
 
-### Platform requirements
-- **iOS local builds:** macOS + Xcode
-- **Android builds:** Android Studio + SDK
-- **Web:** any OS with a modern browser
+Verify your setup:
 
-Verify:
 ```bash
 flutter --version
 flutter doctor
-ecurity / Key Handling (Read this first)
+```
 
-This repo intentionally does not commit secrets.
+### Setup
 
-❌ Do not commit env.json, keys, tokens, or credentials.
-
-❌ Do not paste keys into PRs, issues, or logs.
-
-✅ env.json is local-only and gitignored.
-
-✅ If keys are ever exposed, notify the maintainer so keys can be rotated.
-Redaction rule: Anything that looks like a token (often starts with eyJ...) must be redacted before sharing.
-
-Installation / Setup (Local Development)
-1) Clone and checkout the correct branch
+```bash
 git clone https://github.com/dailywinai-ui/my-flutter-app.git
 cd my-flutter-app
-git checkout redesign-sage-green
-
-2) Install dependencies
+git checkout dev
 flutter clean
 flutter pub get
+```
 
-Environment Configuration (Supabase)
+### Environment configuration
 
-Authentication and data access require Supabase runtime values:
+Authentication and data access require Supabase runtime values. Create a local env file:
 
-SUPABASE_URL
-
-SUPABASE_ANON_KEY (anon public key)
-
-Create local env file
+```bash
 cp env.example.json env.json
+```
 
+Edit `env.json` with values provided privately by the maintainer:
 
-Edit env.json with values provided privately by the maintainer:
-
+```json
 {
   "SUPABASE_URL": "https://<project-ref>.supabase.co",
   "SUPABASE_ANON_KEY": "<anon-public-key>"
 }
+```
 
+Use the anon public key — never the service role key in client apps.
 
-Notes:
+### Running the app
 
-Keep quotes "" — JSON strings require quotes.
+**Web (recommended for local review):**
 
-Use the anon public key (never service role in client apps).
-
-Usage
-Run (Web)
-
-Recommended for local review/debug:
-
+```bash
 ./run_web.sh
+```
 
+**iOS (macOS only):**
 
-run_web.sh reads env.json and runs Flutter with the correct --dart-define values.
-
-Run (iOS) (macOS only)
+```bash
 flutter run
+```
 
+**Android:**
 
-If you want explicit env passing (optional):
-
-flutter run \
-  --dart-define=SUPABASE_URL="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_URL'])")" \
-  --dart-define=SUPABASE_ANON_KEY="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_ANON_KEY'])")"
-
-Run (Android)
-flutter devices
+```bash
 flutter run -d android \
   --dart-define=SUPABASE_URL="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_URL'])")" \
   --dart-define=SUPABASE_ANON_KEY="$(python3 -c "import json;print(json.load(open('env.json'))['SUPABASE_ANON_KEY'])")"
+```
 
-Developer Reviewer Setup
-Recommended: TestFlight
+## Security
 
-TestFlight is the most reliable functional verification path:
+This repo intentionally does not commit secrets.
 
-real device behavior
+- `env.json` is local-only and gitignored
+- Do not commit keys, tokens, or credentials
+- Do not paste keys into PRs, issues, or logs
+- If keys are ever exposed, rotate them immediately
+- Anything that looks like a token (often starts with `eyJ...`) must be redacted before sharing
 
-consistent builds
+## Project structure
 
-avoids local signing/provisioning friction
+```
+lib/
+  main.dart              — app entry + Supabase initialization
+  services/              — auth and Supabase services
+  presentation/          — screens and views
+  widgets/               — shared widgets
+  utils/                 — helpers and utilities
+assets/                  — images, SVGs, fonts
+ios/, android/           — native platform folders
+codemagic.yaml           — CI/CD configuration
+env.example.json         — env template (safe to commit)
+env.json                 — local env (gitignored)
+run_web.sh               — local web launcher
+```
 
-If you are a reviewer:
+## Deployment
 
-Accept App Store Connect invite
+- iOS builds produced via Codemagic
+- Distributed through the App Store
+- Android builds via Codemagic (in progress)
 
-Install from TestFlight
+## Troubleshooting
 
-Validate core flows (see checklist below)
+**"Supabase not initialized"**
 
-Local debugging (for developers)
+Ensure `env.json` exists with real values and run via `./run_web.sh`.
 
-Local debugging is supported; Supabase must be configured via env.json (see above).
+**"Failed to fetch auth/v1/..."**
 
-✅ What to Test (Reviewer Checklist)
+Verify your Supabase project is active and the URL/key match the same project.
 
-Please run through these flows and report issues with clear repro steps and relevant logs (redact keys/tokens).
+**"No space left on device"**
 
-Install + Launch
-
-App launches cleanly (no blank screen / error overlay)
-
-Splash/auth routing behaves correctly
-
-Authentication
-
-Sign in using demo credentials (shared privately), or sign up (if enabled)
-
-Validation: invalid email / short password shows proper errors
-
-Log out → log back in
-
-Core feature: Daily Wins
-
-Create a Win
-
-Win appears on Today screen immediately
-
-Win appears in History
-
-Force close app → reopen → data persists
-
-Settings / Profile
-
-Update profile fields (if present)
-
-Privacy policy link opens correctly (if present)
-
-Sign out works
-
-Password recovery (optional but recommended)
-
-Trigger “Forgot password”
-
-Confirm reset flow behaves as expected
-
-When reporting issues, include:
-
-device + OS version (or web + browser)
-
-build number (TestFlight)
-
-steps to reproduce
-
-relevant logs (redact tokens/keys)
-
-Project Structure (high-level)
-
-lib/ — Flutter source
-
-main.dart — app entry + Supabase initialization
-
-services/ — Auth/Supabase services
-
-presentation/ — screens/views
-
-widgets/ — shared widgets
-
-utils/ — helpers/utilities
-
-assets/ — images/SVGs
-
-ios/, android/ — native platform folders
-
-codemagic.yaml — CI/CD configuration
-
-env.example.json — env template (safe)
-
-env.json — local env (gitignored)
-
-run_web.sh — local web launcher (safe)
-
-Technologies Used
-
-Flutter / Dart
-
-Supabase (Auth + database)
-
-flutter_svg
-
-shared_preferences
-
-Codemagic (CI/CD)
-
-TestFlight (iOS testing)
-
-Troubleshooting / FAQ
-“Supabase not initialized”
-
-Errors like:
-
-“You must initialize the supabase instance before calling Supabase.instance”
-
-“SUPABASE_URL and SUPABASE_ANON_KEY must be defined…”
-Fix:
-
-ensure env.json exists with real values
-
-run via ./run_web.sh
-
-“ClientFailed to fetch … auth/v1/...”
-
-Causes:
-
-wrong Supabase URL/key
-
-project paused/inactive
-
-network/DNS issue
-Fix:
-
-verify project is active
-
-verify URL/key match the same project
-
-Web build fails with “No space left on device”
-
-Fix:
-
-df -h
+```bash
 flutter clean
 rm -rf build .dart_tool
 rm -rf /tmp/flutter_tools.*
+```
 
-Testing
-flutter analyze
-flutter test
+## Contributing
 
-Deployment / Releases
+1. Create a branch from `dev`
+2. Keep PRs small and focused
+3. Follow Flutter lint/style
+4. Do not commit secrets
 
-iOS builds produced via Codemagic
+## License
 
-Distributed via TestFlight
+Proprietary. All rights reserved.
 
-App Store submission handled in App Store Connect
+## Contact
 
-Contributing (optional)
-
-Create a branch from redesign-sage-green
-
-Keep PRs small and focused
-
-Follow Flutter lint/style
-
-Do not commit secrets (env.json, tokens, etc.)
-
-License
-
-TBD. If pre-launch, keep this repo private and treat as proprietary until you choose a license.
-
-Contact / Support
-
-Maintainer: Christine
-Repo issues: GitHub Issues (preferred)
+Maintainer: Christine Izerek
+Website: [windaily.ca](https://windaily.ca)
