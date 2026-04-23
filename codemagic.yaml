@@ -58,18 +58,30 @@ workflows:
         auth: integration
         submit_to_testflight: true
         submit_to_app_store: false
-        android-release:
+
+  android-workflow:
     name: Android Release Build
     max_build_duration: 60
+    instance_type: mac_mini_m1
     environment:
+      vars:
+        SUPABASE_URL: "https://vmjcsflnqoqqvlmqnnyk.supabase.co"
+        SUPABASE_ANON_KEY: ""
       flutter: stable
-
     scripts:
       - name: Get Flutter packages
         script: flutter pub get
-
       - name: Build Android App Bundle
-        script: flutter build appbundle --release
-
+        script: |
+          flutter build appbundle --release \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
     artifacts:
       - build/app/outputs/bundle/release/*.aab
+    publishing:
+      email:
+        recipients:
+          - hello@windaily.ca
+        notify:
+          success: true
+          failure: true
