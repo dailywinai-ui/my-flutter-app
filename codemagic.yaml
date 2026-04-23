@@ -66,7 +66,7 @@ workflows:
     environment:
       vars:
         SUPABASE_URL: "https://vmjcsflnqoqqvlmqnnyk.supabase.co"
-        SUPABASE_ANON_KEY: ""
+        SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtamNzZmxucW9xcXZsbXFubnlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1NjUzNDcsImV4cCI6MjA3NDE0MTM0N30.n5kHPhFjIBXic3pIHSk7sVa1xpzHfEYH5kpgTqMNu58"
       flutter: stable
     scripts:
       - name: Get Flutter packages
@@ -74,8 +74,8 @@ workflows:
       - name: Build Android App Bundle
         script: |
           flutter build appbundle --release \
-            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
-            --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+            --dart-define=SUPABASE_URL="https://vmjcsflnqoqqvlmqnnyk.supabase.co" \
+            --dart-define=SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtamNzZmxucW9xcXZsbXFubnlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1NjUzNDcsImV4cCI6MjA3NDE0MTM0N30.n5kHPhFjIBXic3pIHSk7sVa1xpzHfEYH5kpgTqMNu58"
     artifacts:
       - build/app/outputs/bundle/release/*.aab
     publishing:
