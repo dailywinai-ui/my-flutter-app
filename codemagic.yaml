@@ -30,7 +30,13 @@ workflows:
           find . -name "Podfile" -execdir pod install \;
       - name: Increment build number
         script: |
-          BUILD_NUMBER=$(($(app-store-connect get-latest-testflight-build-number "$APP_ID") + 1))
+          LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_ID")
+          echo "Latest TestFlight build number: $LATEST"
+          if [ -z "$LATEST" ] || [ "$LATEST" -le 0 ]; then
+            echo "ERROR: Could not fetch latest build number from App Store Connect. Got: '$LATEST'"
+            exit 1
+          fi
+          BUILD_NUMBER=$((LATEST + 1))
           echo "Setting build number to $BUILD_NUMBER"
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/Runner/Info.plist
       - name: Generate Flutter xcconfig files
