@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import './services/auth_service.dart';
+import './services/notification_service.dart';
 import './services/supabase_service.dart';
 import './widgets/custom_error_widget.dart';
 import 'core/app_export.dart';
@@ -25,6 +26,9 @@ void main() async {
     debugPrint('❌ Failed to initialize Supabase: $e');
     // Continue with the app even if Supabase fails to initialize
   }
+
+  // Initialize local notifications (requests permission on first enable, schedules saved reminder)
+  await NotificationService.instance.initialize();
 
   // Set up deep link listener ONLY if Supabase initialized successfully
   if (supabaseInitialized) {

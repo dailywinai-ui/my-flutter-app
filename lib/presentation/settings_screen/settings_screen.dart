@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/app_export.dart';
 import '../../services/auth_service.dart';
+import '../../services/notification_service.dart';
 import '../../services/wins_service.dart';
 import 'package:win_daily/theme/wddl_design_system.dart';
 import '../../utils/brand_assets.dart';
@@ -41,6 +42,18 @@ class _SettingsScreenState extends State<SettingsScreen>
       CurvedAnimation(parent: _fadeController, curve: WDDLDesignSystem.fadeInCurve),
     );
     _fadeController.forward();
+    _loadNotificationPrefs();
+  }
+
+  Future<void> _loadNotificationPrefs() async {
+    final enabled = await NotificationService.instance.isEnabled();
+    final time = await NotificationService.instance.getSavedTime();
+    if (mounted) {
+      setState(() {
+        _isNotificationEnabled = enabled;
+        _notificationTime = time ?? (enabled ? const TimeOfDay(hour: 20, minute: 0) : null);
+      });
+    }
   }
 
   @override
@@ -50,17 +63,31 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _onNotificationToggle(bool enabled) async {
+    if (enabled) {
+      final granted = await NotificationService.instance.requestPermission();
+      if (!granted) return;
+    }
+
+    final time = _notificationTime ?? const TimeOfDay(hour: 20, minute: 0);
     setState(() {
       _isNotificationEnabled = enabled;
-      if (!enabled) _notificationTime = null;
-      else if (_notificationTime == null) {
-        _notificationTime = const TimeOfDay(hour: 20, minute: 0);
-      }
+      _notificationTime = enabled ? time : null;
     });
+
+    await NotificationService.instance.scheduleOrCancel(
+      enabled: enabled,
+      time: enabled ? time : null,
+    );
   }
 
   Future<void> _onTimeChanged(TimeOfDay? time) async {
     setState(() => _notificationTime = time);
+    if (time != null && _isNotificationEnabled) {
+      await NotificationService.instance.scheduleOrCancel(
+        enabled: true,
+        time: time,
+      );
+    }
   }
 
   void _onBottomNavTap(int index) {
