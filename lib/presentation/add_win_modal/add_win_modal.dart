@@ -368,7 +368,7 @@ class _AddWinModalState extends State<AddWinModal>
                       Text(
                         _isEditMode
                             ? 'Edit your win'
-                            : 'What did you accomplish today?',
+                            : 'What do you want to remember about today?',
                         style: WDDLDesignSystem.h1,
                         textAlign: TextAlign.center,
                       ),

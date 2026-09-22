@@ -204,7 +204,7 @@ class WDDLDesignSystem {
   static const Curve winCardAnimationCurve = Curves.easeOut;
 
   // ─── MICROCOPY ────────────────────────────────────────────────────────────
-  static const String winLoggedMessage = 'Win logged — keep going.';
+  static const String winLoggedMessage = 'Saved. Your future self says thanks.';
   static const String reflectionSavedMessage =
       'Reflection saved — you\'re building self-awareness one day at a time.';
 

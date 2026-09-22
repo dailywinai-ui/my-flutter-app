@@ -283,7 +283,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
 
           // Headline
           Text(
-            'An archive of wins\nyou can doomscroll.',
+            'Remember your life.',
             style: GoogleFonts.cormorantGaramond(
               fontSize: 28,
               fontWeight: FontWeight.w600,

@@ -49,7 +49,7 @@ class _TitleInputWidgetState extends State<TitleInputWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'What did you accomplish today?',
+          'What do you want to remember about today?',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,

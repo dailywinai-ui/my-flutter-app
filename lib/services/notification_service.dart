@@ -101,7 +101,7 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       _notificationId,
-      'Time to log your wins',
+      'What do you want to remember about today?',
       'Take a moment to reflect on what went well today.',
       scheduled,
       const NotificationDetails(
