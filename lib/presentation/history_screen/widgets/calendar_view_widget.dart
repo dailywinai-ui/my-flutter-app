@@ -347,7 +347,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
                   Icon(Icons.touch_app_rounded, size: 11,
                       color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.4)),
                   const SizedBox(width: 4),
-                  Text('Tap any day to read your win',
+                  Text('Tap any day to revisit it.',
                     style: WDDLDesignSystem.caption.copyWith(
                       color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.4),
                       fontSize: 11,

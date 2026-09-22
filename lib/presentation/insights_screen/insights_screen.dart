@@ -608,7 +608,7 @@ class _InsightsScreenState extends State<InsightsScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _eyebrow('FROM YOUR REFLECTIONS'),
+          _eyebrow('IN YOUR OWN WORDS'),
           const SizedBox(height: 12),
           ..._realReflections.map((sentence) => Padding(
             padding: const EdgeInsets.only(bottom: 12),
