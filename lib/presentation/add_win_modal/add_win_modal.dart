@@ -428,7 +428,7 @@ class _AddWinModalState extends State<AddWinModal>
                               decoration: InputDecoration(
                                 hintText: _isEditMode
                                     ? 'Update your accomplishment...'
-                                    : 'Exercised for 30 minutes, finished a task, or had a great conversation — what\'s your win?',
+                                    : 'Exercised for 30 minutes, finished a task, or had a great conversation. What\'s your win?',
                                 hintStyle: WDDLDesignSystem.bodyLarge.copyWith(
                                   color: const Color(0xFF9AA0A6),
                                   height: 1.4,

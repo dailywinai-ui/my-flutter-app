@@ -139,7 +139,7 @@ class MoodTrendWidget extends StatelessWidget {
           SizedBox(height: 12),
 
           Text(
-            'not every day is a high — showing up counts.',
+            'not every day is a high. Showing up counts.',
             style: WDDLDesignSystem.body.copyWith(
               color: WDDLDesignSystem.textSecondary,
               fontStyle: FontStyle.italic,
