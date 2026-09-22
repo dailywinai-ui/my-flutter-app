@@ -230,8 +230,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                             // Headline outside card — Cormorant italic
                             Text(
                               _isSignUpMode
-                                  ? 'Start your archive.'
-                                  : 'An archive of wins\nyou can doomscroll.',
+                                  ? 'Remember your life.'
+                                  : 'Remember your life.',
                               style: GoogleFonts.cormorantGaramond(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w500,
@@ -246,8 +246,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
 
                             Text(
                               _isSignUpMode
-                                  ? 'Log what actually happened — not the highlight reel.'
-                                  : 'Reflect honestly. Log what mattered. Carry it forward.',
+                                  ? 'One win a day, so your weeks stop disappearing.'
+                                  : 'Welcome back. Your archive missed you.',
                               style: WDDLDesignSystem.body.copyWith(
                                 color: WDDLDesignSystem.inkMuted,
                               ),
@@ -401,7 +401,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                           )
                                         : Text(
                                             _isSignUpMode
-                                                ? 'Start winning →'
+                                                ? 'Start remembering →'
                                                 : 'Welcome back →',
                                             style: GoogleFonts.dmSans(
                                               fontSize: 15,
