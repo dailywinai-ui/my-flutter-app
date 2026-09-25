@@ -33,6 +33,7 @@ class _TodayScreenState extends State<TodayScreen>
   bool _isLoading = false;
   Map<String, dynamic>? _todayWin;
   Map<String, dynamic>? _memoryWin;
+  Set<int> _weekDots = {};
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
@@ -100,6 +101,7 @@ class _TodayScreenState extends State<TodayScreen>
   Future<void> _refreshData() async {
     HapticFeedback.lightImpact();
     await _loadTodayWin();
+    await _loadMemoryWin();
   }
 
   void _onTabChanged(int index) {
@@ -330,11 +332,21 @@ class _TodayScreenState extends State<TodayScreen>
                                     height: 1.2,
                                   ),
                                 ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  _getDayPrompt(),
+                                  style: WDDLDesignSystem.body.copyWith(
+                                    color: WDDLDesignSystem.inkMuted,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                _buildWeekDots(),
                               ],
                             ),
                           ),
 
-                          const SizedBox(height: 28),
+                          const SizedBox(height: 24),
 
                           // Tab navigation
                           TabNavigationWidget(
@@ -418,12 +430,25 @@ class _TodayScreenState extends State<TodayScreen>
       final wins = await WinsService.instance.getDailyWins(limit: 1000);
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
+      final monday = today.subtract(Duration(days: now.weekday - 1));
+      final weekDots = <int>{};
+      for (final w in wins) {
+        final d = DateTime(w.winDate.year, w.winDate.month, w.winDate.day);
+        if (!d.isBefore(monday) && !d.isAfter(today)) {
+          weekDots.add(w.winDate.weekday);
+        }
+      }
       final past = wins.where((w) {
         final d = DateTime(w.winDate.year, w.winDate.month, w.winDate.day);
         return d.isBefore(today);
       }).toList();
       if (past.isEmpty) {
-        if (mounted) setState(() => _memoryWin = null);
+        if (mounted) {
+          setState(() {
+            _memoryWin = null;
+            _weekDots = weekDots;
+          });
+        }
         return;
       }
       final dayIndex = now.difference(DateTime(now.year, 1, 1)).inDays;
@@ -440,6 +465,7 @@ class _TodayScreenState extends State<TodayScreen>
             "type": "daily_win",
             "ago": _agoLabel(pick.winDate),
           };
+          _weekDots = weekDots;
         });
       }
     } catch (_) {}
@@ -508,6 +534,39 @@ class _TodayScreenState extends State<TodayScreen>
           ],
         ),
       ),
+    );
+  }
+
+  String _getDayPrompt() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'What would make today worth remembering?';
+    if (hour < 17) return 'Notice what is going right.';
+    return 'What went right today?';
+  }
+
+  Widget _buildWeekDots() {
+    final todayWeekday = DateTime.now().weekday;
+    return Row(
+      children: List.generate(7, (i) {
+        final weekday = i + 1;
+        final logged = _weekDots.contains(weekday);
+        final isToday = weekday == todayWeekday;
+        return Container(
+          margin: EdgeInsets.only(right: i == 6 ? 0 : 10),
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: logged ? WDDLDesignSystem.sage : Colors.transparent,
+            border: Border.all(
+              color: isToday
+                  ? WDDLDesignSystem.sage
+                  : WDDLDesignSystem.beigeDark,
+              width: isToday ? 1.5 : 1,
+            ),
+          ),
+        );
+      }),
     );
   }
 
