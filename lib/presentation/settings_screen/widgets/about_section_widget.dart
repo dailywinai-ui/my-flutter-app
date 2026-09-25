@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/app_export.dart';
 
-class AboutSectionWidget extends StatelessWidget {
+class AboutSectionWidget extends StatefulWidget {
   const AboutSectionWidget({super.key});
+
+  @override
+  State<AboutSectionWidget> createState() => _AboutSectionWidgetState();
+}
+
+class _AboutSectionWidgetState extends State<AboutSectionWidget> {
+  String _versionLabel = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (mounted) {
+        setState(() =>
+            _versionLabel = '${info.version} (Build ${info.buildNumber})');
+      }
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +78,7 @@ class AboutSectionWidget extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              '1.0.0 (Build 1)',
+              _versionLabel,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.secondary,
               ),
