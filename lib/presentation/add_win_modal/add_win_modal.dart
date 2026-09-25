@@ -199,7 +199,9 @@ class _AddWinModalState extends State<AddWinModal>
     setState(() => _titleError = null);
 
     if (_titleController.text.trim().isEmpty) {
-      setState(() => _titleError = 'Please enter what you accomplished today');
+      setState(() => _titleError = _isBackfillMode
+          ? 'Please enter the win you remember'
+          : 'Please enter what you accomplished today');
       _titleFocusNode.requestFocus();
       return false;
     }
