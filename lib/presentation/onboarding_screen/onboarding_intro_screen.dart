@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +24,10 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
   final PageController _pageController = PageController();
   int _currentPage = 0;
   bool _isLoading = false;
+
+  final TextEditingController _memoryController = TextEditingController();
+  int _memoryDaysAgo = 30;
+  bool _memorySaved = false;
 
   late AnimationController _fadeController;
   late AnimationController _checkmarkController;
@@ -55,6 +61,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
 
   @override
   void dispose() {
+    _memoryController.dispose();
     _pageController.dispose();
     _fadeController.dispose();
     _checkmarkController.dispose();
@@ -70,7 +77,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
   }
 
   void _nextPage() {
-    if (_currentPage < 2) {
+    if (_currentPage < 3) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeOut,
@@ -82,7 +89,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
 
   void _skipToEnd() {
     _pageController.animateToPage(
-      2,
+      3,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeOut,
     );
@@ -188,7 +195,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                     _buildProgressDots(),
                     SizedBox(
                       width: 60,
-                      child: _currentPage < 2
+                      child: _currentPage < 3
                           ? Align(
                               alignment: Alignment.centerRight,
                               child: GestureDetector(
@@ -216,6 +223,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
                     _buildSlide1(),
                     _buildSlide2(),
                     _buildSlide3(),
+                    _buildSlide4(),
                   ],
                 ),
               ),
@@ -223,7 +231,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
               // Bottom CTA
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-                child: _currentPage < 2
+                child: _currentPage < 3
                     ? _buildNextButton()
                     : _buildGetStartedSection(),
               ),
@@ -237,7 +245,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
   Widget _buildProgressDots() {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(3, (i) {
+      children: List.generate(4, (i) {
         final isActive = i == _currentPage;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 250),
@@ -533,6 +541,192 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
       ),
       child: Center(child: Text(emoji, style: const TextStyle(fontSize: 19))),
     );
+  }
+
+
+  Widget _buildSlide4() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 24),
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: WDDLDesignSystem.sageBg.withValues(alpha: 0.6),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.history_rounded,
+                  size: 34, color: WDDLDesignSystem.sage),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Let\'s start your archive.',
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                color: WDDLDesignSystem.ink,
+                height: 1.2,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 14),
+            Text(
+              'What\'s one good thing from the past month? The ones you still remember are worth keeping.',
+              style: WDDLDesignSystem.bodyLarge.copyWith(
+                color: WDDLDesignSystem.inkMuted,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _memoryController,
+              maxLines: 3,
+              minLines: 2,
+              onChanged: (_) => setState(() {}),
+              style: WDDLDesignSystem.body.copyWith(
+                color: WDDLDesignSystem.ink,
+              ),
+              decoration: InputDecoration(
+                hintText: 'A win you still remember...',
+                hintStyle: WDDLDesignSystem.body.copyWith(
+                  color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.6),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.all(16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: WDDLDesignSystem.beigeDark),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: WDDLDesignSystem.beigeDark),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                      color: WDDLDesignSystem.sage, width: 1.5),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'About when was this?',
+                style: WDDLDesignSystem.body.copyWith(
+                  color: WDDLDesignSystem.inkMuted,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                _buildWhenChip('Last week', 7),
+                _buildWhenChip('Last month', 30),
+                _buildWhenChip('A few months ago', 90),
+                _buildWhenChip('Last year', 365),
+              ],
+            ),
+            const SizedBox(height: 20),
+            if (_memorySaved)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.check_rounded,
+                      color: WDDLDesignSystem.sage, size: 18),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Saved to your archive.',
+                    style: WDDLDesignSystem.body.copyWith(
+                      color: WDDLDesignSystem.sage,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              )
+            else
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _memoryController.text.trim().isEmpty
+                      ? null
+                      : _saveMemoryDraft,
+                  style: WDDLDesignSystem.primaryButton,
+                  child: Text(
+                    'Save to my archive',
+                    style: GoogleFonts.dmSans(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 14),
+            if (!_memorySaved)
+              GestureDetector(
+                onTap: _completeOnboarding,
+                child: Text(
+                  'Skip for now',
+                  style: WDDLDesignSystem.body.copyWith(
+                    color: WDDLDesignSystem.inkMuted,
+                    decoration: TextDecoration.underline,
+                    decorationColor:
+                        WDDLDesignSystem.inkMuted.withValues(alpha: 0.4),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWhenChip(String label, int days) {
+    final selected = _memoryDaysAgo == days;
+    return GestureDetector(
+      onTap: () => setState(() => _memoryDaysAgo = days),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: selected
+              ? WDDLDesignSystem.sage
+              : WDDLDesignSystem.sagePale.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          label,
+          style: WDDLDesignSystem.body.copyWith(
+            color: selected ? Colors.white : WDDLDesignSystem.sage,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveMemoryDraft() async {
+    final text = _memoryController.text.trim();
+    if (text.isEmpty) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        'pending_memory_win',
+        jsonEncode({'text': text, 'daysAgo': _memoryDaysAgo}),
+      );
+      HapticFeedback.mediumImpact();
+      if (mounted) setState(() => _memorySaved = true);
+    } catch (_) {}
   }
 
   Widget _buildNextButton() {

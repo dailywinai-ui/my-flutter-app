@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,6 +32,7 @@ class _TodayScreenState extends State<TodayScreen>
   int _currentBottomNavIndex = 0;
   bool _isLoading = false;
   Map<String, dynamic>? _todayWin;
+  Map<String, dynamic>? _memoryWin;
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
@@ -47,6 +51,7 @@ class _TodayScreenState extends State<TodayScreen>
 
     _loadUserProfile();
     _loadTodayWin();
+    _flushPendingMemory().then((_) => _loadMemoryWin());
     _fadeController.forward();
   }
 
@@ -370,6 +375,142 @@ class _TodayScreenState extends State<TodayScreen>
     );
   }
 
+  /// File any memory drafted during onboarding as a backdated win.
+  Future<void> _flushPendingMemory() async {
+    try {
+      if (AuthService.instance.currentUser == null) return;
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('pending_memory_win');
+      if (raw == null) return;
+      final data = jsonDecode(raw) as Map<String, dynamic>;
+      final text = (data['text'] as String? ?? '').trim();
+      if (text.isEmpty) {
+        await prefs.remove('pending_memory_win');
+        return;
+      }
+      final daysAgo = (data['daysAgo'] as int?) ?? 30;
+      final goals = await WinsService.instance.getMajorGoals(activeOnly: true);
+      final String goalId;
+      if (goals.isNotEmpty) {
+        goalId = goals.first.id;
+      } else {
+        final goal = await WinsService.instance.createMajorGoal(
+          title: 'General Progress',
+          description: 'Default goal for tracking daily wins',
+        );
+        goalId = goal.id;
+      }
+      final now = DateTime.now();
+      final winDate = DateTime(now.year, now.month, now.day)
+          .subtract(Duration(days: daysAgo));
+      await WinsService.instance.createDailyWin(
+        description: text,
+        goalId: goalId,
+        winDate: winDate,
+      );
+      await prefs.remove('pending_memory_win');
+    } catch (_) {}
+  }
+
+  /// Pick one past win to resurface, a new one each day.
+  Future<void> _loadMemoryWin() async {
+    try {
+      final wins = await WinsService.instance.getDailyWins(limit: 1000);
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final past = wins.where((w) {
+        final d = DateTime(w.winDate.year, w.winDate.month, w.winDate.day);
+        return d.isBefore(today);
+      }).toList();
+      if (past.isEmpty) {
+        if (mounted) setState(() => _memoryWin = null);
+        return;
+      }
+      final dayIndex = now.difference(DateTime(now.year, 1, 1)).inDays;
+      final pick = past[dayIndex % past.length];
+      if (mounted) {
+        setState(() {
+          _memoryWin = {
+            "id": pick.id,
+            "title": pick.description,
+            "reflection": pick.reflection ?? '',
+            "mood": pick.moodRating ?? 3,
+            "timestamp": pick.createdAt,
+            "date": pick.winDate,
+            "type": "daily_win",
+            "ago": _agoLabel(pick.winDate),
+          };
+        });
+      }
+    } catch (_) {}
+  }
+
+  String _agoLabel(DateTime date) {
+    final now = DateTime.now();
+    final days = DateTime(now.year, now.month, now.day)
+        .difference(DateTime(date.year, date.month, date.day))
+        .inDays;
+    if (days <= 1) return 'yesterday';
+    if (days < 7) return '$days days ago';
+    if (days < 30) {
+      final w = days ~/ 7;
+      return w == 1 ? '1 week ago' : '$w weeks ago';
+    }
+    if (days < 365) {
+      final m = days ~/ 30;
+      return m == 1 ? '1 month ago' : '$m months ago';
+    }
+    final y = days ~/ 365;
+    return y == 1 ? '1 year ago' : '$y years ago';
+  }
+
+  Widget _buildMemoryCard() {
+    final mem = _memoryWin;
+    if (mem == null) return const SizedBox.shrink();
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+        context,
+        '/win-detail-screen',
+        arguments: mem,
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: WDDLDesignSystem.beigeDark, width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'MEMORIES',
+              style: WDDLDesignSystem.eyebrow
+                  .copyWith(color: WDDLDesignSystem.sage),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '"${mem['title']}"',
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 17,
+                fontStyle: FontStyle.italic,
+                color: WDDLDesignSystem.ink,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'From ${mem['ago']}',
+              style: WDDLDesignSystem.caption
+                  .copyWith(color: WDDLDesignSystem.sage),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildLoadingState() {
     return Center(
       child: Column(
@@ -429,6 +570,8 @@ class _TodayScreenState extends State<TodayScreen>
             ),
           ),
 
+          const SizedBox(height: 12),
+          _buildMemoryCard(),
           const SizedBox(height: 80),
         ],
       ),
@@ -442,6 +585,8 @@ class _TodayScreenState extends State<TodayScreen>
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           EmptyStateWidget(),
+          const SizedBox(height: 16),
+          _buildMemoryCard(),
           const SizedBox(height: 80),
         ],
       ),
