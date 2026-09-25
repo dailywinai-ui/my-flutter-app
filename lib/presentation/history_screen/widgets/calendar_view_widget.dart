@@ -411,7 +411,12 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
     final title = (win['title'] as String?) ?? '';
     final reflection = (win['reflection'] as String?) ?? '';
 
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        Navigator.pushNamed(context, '/win-detail-screen', arguments: win);
+      },
+      child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -456,6 +461,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
             ),
           ],
         ],
+      ),
       ),
     );
   }
