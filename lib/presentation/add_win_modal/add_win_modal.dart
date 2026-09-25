@@ -25,6 +25,8 @@ class _AddWinModalState extends State<AddWinModal>
   String? _defaultGoalId;
 
   bool _isEditMode = false;
+  bool _isBackfillMode = false;
+  DateTime? _backfillDate;
   Map<String, dynamic>? _existingWin;
   String? _originalTitle;
 
@@ -97,6 +99,18 @@ class _AddWinModalState extends State<AddWinModal>
   void _checkEditMode() {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments is Map<String, dynamic>) {
+      if (arguments['backfill'] == true) {
+        final argDate = arguments['date'];
+        final now = DateTime.now();
+        setState(() {
+          _isBackfillMode = true;
+          _backfillDate = argDate is DateTime
+              ? DateTime(argDate.year, argDate.month, argDate.day)
+              : DateTime(now.year, now.month, now.day)
+                  .subtract(const Duration(days: 1));
+        });
+        return;
+      }
       setState(() {
         _isEditMode = true;
         _existingWin = arguments;
@@ -143,6 +157,42 @@ class _AddWinModalState extends State<AddWinModal>
         _microAnimationController.reverse();
       }
     });
+  }
+
+  String _formatBackfillDate(DateTime d) {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${months[d.month - 1]} ${d.day}, ${d.year}';
+  }
+
+  Future<void> _pickBackfillDate() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _backfillDate ??
+          DateTime(now.year, now.month, now.day)
+              .subtract(const Duration(days: 1)),
+      firstDate: DateTime(now.year - 5, now.month, now.day),
+      lastDate: DateTime(now.year, now.month, now.day),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: WDDLDesignSystem.sage,
+              onPrimary: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && mounted) {
+      setState(() =>
+          _backfillDate = DateTime(picked.year, picked.month, picked.day));
+      HapticFeedback.selectionClick();
+    }
   }
 
   bool _validateForm() {
@@ -229,7 +279,9 @@ class _AddWinModalState extends State<AddWinModal>
     return await WinsService.instance.createDailyWin(
       description: _titleController.text.trim(),
       goalId: goalId,
-      winDate: DateTime.now(),
+      winDate: _isBackfillMode
+          ? (_backfillDate ?? DateTime.now())
+          : DateTime.now(),
       reflection: null,
     );
   }
@@ -368,7 +420,9 @@ class _AddWinModalState extends State<AddWinModal>
                       Text(
                         _isEditMode
                             ? 'Edit your win'
-                            : 'What do you want to remember about today?',
+                            : _isBackfillMode
+                                ? 'Add a past win'
+                                : 'What do you want to remember about today?',
                         style: WDDLDesignSystem.h1,
                         textAlign: TextAlign.center,
                       ),
@@ -376,12 +430,47 @@ class _AddWinModalState extends State<AddWinModal>
                       Text(
                         _isEditMode
                             ? 'Update your accomplishment'
-                            : 'Small steps, big identity.',
+                            : _isBackfillMode
+                                ? 'Fill in a day from memory.'
+                                : 'Small steps, big identity.',
                         style: WDDLDesignSystem.body.copyWith(
                           color: WDDLDesignSystem.textSecondary,
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      if (_isBackfillMode) ...[
+                        const SizedBox(height: 12),
+                        GestureDetector(
+                          onTap: _isSaving ? null : _pickBackfillDate,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: WDDLDesignSystem.sagePale
+                                  .withValues(alpha: 0.6),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.calendar_today_outlined,
+                                    size: 14,
+                                    color: WDDLDesignSystem.sage),
+                                const SizedBox(width: 6),
+                                Text(
+                                  _backfillDate != null
+                                      ? _formatBackfillDate(_backfillDate!)
+                                      : 'Pick a date',
+                                  style: WDDLDesignSystem.body.copyWith(
+                                    color: WDDLDesignSystem.sage,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

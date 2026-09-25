@@ -157,6 +157,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                           onDaySelected: (day) =>
                               setState(() => _selectedCalendarDay = day),
                           selectedDay: _selectedCalendarDay,
+                          onWinAdded: _loadUserWins,
                         ),
                       ),
               ),
