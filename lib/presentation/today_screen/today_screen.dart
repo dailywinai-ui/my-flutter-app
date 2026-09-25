@@ -34,6 +34,7 @@ class _TodayScreenState extends State<TodayScreen>
   Map<String, dynamic>? _todayWin;
   Map<String, dynamic>? _memoryWin;
   Set<int> _weekDots = {};
+  Map<String, Object>? _pendingMilestone;
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
@@ -438,6 +439,7 @@ class _TodayScreenState extends State<TodayScreen>
           weekDots.add(w.winDate.weekday);
         }
       }
+      _checkMilestones(wins.length);
       final past = wins.where((w) {
         final d = DateTime(w.winDate.year, w.winDate.month, w.winDate.day);
         return d.isBefore(today);
@@ -570,6 +572,95 @@ class _TodayScreenState extends State<TodayScreen>
     );
   }
 
+  static const List<Map<String, Object>> _milestones = [
+    {'count': 7, 'title': 'One week of remembering.'},
+    {'count': 30, 'title': 'Thirty days remembered.'},
+    {'count': 100, 'title': 'One hundred days remembered.'},
+    {'count': 365, 'title': 'A full year of days.'},
+  ];
+
+  Future<void> _checkMilestones(int totalWins) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final celebrated = prefs.getStringList('celebrated_milestones') ?? [];
+      Map<String, Object>? hit;
+      for (final m in _milestones) {
+        final count = m['count'] as int;
+        if (totalWins >= count && !celebrated.contains('$count')) {
+          hit = m;
+          break;
+        }
+      }
+      if (mounted) setState(() => _pendingMilestone = hit);
+    } catch (_) {}
+  }
+
+  Future<void> _dismissMilestone() async {
+    final m = _pendingMilestone;
+    if (m != null) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final celebrated = prefs.getStringList('celebrated_milestones') ?? [];
+        celebrated.add('${m['count']}');
+        await prefs.setStringList('celebrated_milestones', celebrated);
+      } catch (_) {}
+    }
+    if (mounted) setState(() => _pendingMilestone = null);
+  }
+
+  Widget _buildMilestoneCard() {
+    final m = _pendingMilestone;
+    if (m == null) return const SizedBox.shrink();
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: WDDLDesignSystem.sageBg.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: WDDLDesignSystem.sagePale, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'MILESTONE',
+                style: WDDLDesignSystem.eyebrow
+                    .copyWith(color: WDDLDesignSystem.sage),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: _dismissMilestone,
+                child: const Icon(Icons.close_rounded,
+                    size: 18, color: WDDLDesignSystem.inkMuted),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            m['title'] as String,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: WDDLDesignSystem.ink,
+              height: 1.3,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Your archive is becoming something irreplaceable.',
+            style: WDDLDesignSystem.body.copyWith(
+              color: WDDLDesignSystem.inkMuted,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildLoadingState() {
     return Center(
       child: Column(
@@ -630,6 +721,7 @@ class _TodayScreenState extends State<TodayScreen>
           ),
 
           const SizedBox(height: 12),
+          _buildMilestoneCard(),
           _buildMemoryCard(),
           const SizedBox(height: 80),
         ],
@@ -645,6 +737,7 @@ class _TodayScreenState extends State<TodayScreen>
         children: [
           EmptyStateWidget(),
           const SizedBox(height: 16),
+          _buildMilestoneCard(),
           _buildMemoryCard(),
           const SizedBox(height: 80),
         ],
