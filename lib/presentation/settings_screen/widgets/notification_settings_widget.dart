@@ -130,7 +130,7 @@ class NotificationSettingsWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Daily Check-in Reminder',
+                      'Daily Check In Reminder',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),

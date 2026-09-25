@@ -97,7 +97,7 @@ class _ReflectionSuccessModalState extends State<ReflectionSuccessModal>
 
                   // Success message
                   Text(
-                    'Reflection saved',
+                    'Saved.',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF6B8B7F),
@@ -109,7 +109,7 @@ class _ReflectionSuccessModalState extends State<ReflectionSuccessModal>
 
                   // Success description with updated message
                   Text(
-                    "You're building self-awareness one day at a time.",
+                    "One more day your future self gets to revisit.",
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: const Color(0xFF6E767D),
                       height: 1.5,

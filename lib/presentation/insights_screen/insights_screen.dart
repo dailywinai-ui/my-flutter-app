@@ -96,6 +96,9 @@ class _InsightsScreenState extends State<InsightsScreen>
     // ── Consecutive streak (from today back) ──────────────
     _consecutiveStreak = 0;
     DateTime check = now;
+    if (!wins.any((w) => _same(DateTime.parse(w.winDate.toString()), check))) {
+      check = check.subtract(const Duration(days: 1));
+    }
     while (wins.any((w) => _same(DateTime.parse(w.winDate.toString()), check))) {
       _consecutiveStreak++;
       check = check.subtract(const Duration(days: 1));
@@ -178,8 +181,9 @@ class _InsightsScreenState extends State<InsightsScreen>
         final gap = sortedDates[i].difference(sortedDates[i - 1]).inDays;
         if (gap > maxGap) maxGap = gap;
       }
-      if (maxGap > 1) {
-        _longestGapMessage = '$maxGap day${maxGap == 1 ? '' : 's'}';
+      final longestBreak = maxGap - 1;
+      if (longestBreak >= 1) {
+        _longestGapMessage = '$longestBreak day${longestBreak == 1 ? '' : 's'}';
       }
     }
   }
@@ -350,7 +354,7 @@ class _InsightsScreenState extends State<InsightsScreen>
         _buildStat(
           _reflectionCount > 0
               ? '${((_reflectionCount / _totalWins) * 100).round()}%'
-              : '—',
+              : '0%',
           'reflected',
         ),
       ],
@@ -519,8 +523,7 @@ class _InsightsScreenState extends State<InsightsScreen>
                   lineBarsData: [
                     LineChartBarData(
                       spots: spots,
-                      isCurved: true,
-                      curveSmoothness: 0.4,
+                      isCurved: false,
                       color: WDDLDesignSystem.sage,
                       barWidth: 2,
                       dotData: const FlDotData(show: false),

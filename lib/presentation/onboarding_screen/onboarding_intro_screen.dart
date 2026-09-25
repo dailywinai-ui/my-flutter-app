@@ -296,7 +296,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
           const SizedBox(height: 16),
 
           Text(
-            'Win Daily helps you capture one meaningful win each day and move on — without the noise.',
+            'Win Daily helps you capture one meaningful win each day and move on, without the noise.',
             style: WDDLDesignSystem.bodyLarge.copyWith(
               color: WDDLDesignSystem.inkMuted,
             ),
@@ -495,7 +495,7 @@ class _OnboardingIntroScreenState extends State<OnboardingIntroScreen>
           const SizedBox(height: 14),
 
           Text(
-            'Gentle prompts and a quick mood check — to understand your progress, not perform it.',
+            'Gentle prompts and a quick mood check, to understand your progress, not perform it.',
             style: WDDLDesignSystem.bodyLarge.copyWith(
               color: WDDLDesignSystem.inkMuted,
             ),
