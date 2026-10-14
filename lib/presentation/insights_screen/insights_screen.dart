@@ -93,11 +93,14 @@ class _InsightsScreenState extends State<InsightsScreen>
     }
 
     // ── Days remembered (distinct calendar days, no streak pressure) ──
-    _daysRemembered = wins
+    // NOTE: sortedDates is also used by the longest-gap calculation below.
+    final sortedDates = wins
         .map((w) => DateTime.parse(w.winDate.toString()))
         .map((d) => DateTime(d.year, d.month, d.day))
         .toSet()
-        .length;
+        .toList()
+      ..sort();
+    _daysRemembered = sortedDates.length;
 
     // ── Best day of week ───────────────────────────────────
     final dayCounts = List.filled(7, 0); // Mon=0 … Sun=6
