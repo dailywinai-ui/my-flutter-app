@@ -25,7 +25,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               _buildSectionHeader(theme, '1. Overview'),
               _buildSectionContent(
                 theme,
-                'Win Daily is built on calm, simplicity, and trust. We believe your wins belong to you — not to advertisers or third parties. This Privacy Policy explains what information we collect, why we collect it, and how we protect it.',
+                'Win Daily is built on calm, simplicity, and trust. We believe your wins belong to you, not to advertisers or third parties. This Privacy Policy explains what information we collect, why we collect it, and how we protect it.',
               ),
               SizedBox(height: 3.h),
               _buildSectionHeader(theme, '2. Information We Collect', iconPath: 'assets/images/privacy_data_flow.svg'),
@@ -95,7 +95,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               ),
               _buildBulletPoint(
                 theme,
-                'We use trusted third-party cloud providers with strong security standards.',
+                'We use trusted third party cloud providers with strong security standards.',
               ),
               _buildBulletPoint(
                 theme,
@@ -116,10 +116,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 'We\'ll respond to all requests within 30 days.',
               ),
               SizedBox(height: 3.h),
-              _buildSectionHeader(theme, '6. Third-Party Services'),
+              _buildSectionHeader(theme, '6. Third Party Services'),
               _buildSectionContent(
                 theme,
-                'Win Daily may use trusted tools (e.g., Firebase Analytics, Google Play Services) to understand how the app performs — never to track you across apps. Each provider adheres to their own privacy and GDPR/CCPA standards.',
+                'Win Daily may use trusted tools (e.g., Firebase Analytics, Google Play Services) to understand how the app performs, never to track you across apps. Each provider adheres to their own privacy and GDPR/CCPA standards.',
               ),
               SizedBox(height: 3.h),
               _buildSectionHeader(theme, '7. Children\'s Privacy'),

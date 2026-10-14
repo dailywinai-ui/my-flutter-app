@@ -10,12 +10,14 @@ class CalendarViewWidget extends StatefulWidget {
   final List<Map<String, dynamic>> wins;
   final Function(DateTime) onDaySelected;
   final DateTime? selectedDay;
+  final VoidCallback? onWinAdded;
 
   const CalendarViewWidget({
     super.key,
     required this.wins,
     required this.onDaySelected,
     this.selectedDay,
+    this.onWinAdded,
   });
 
   @override
@@ -54,9 +56,34 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
   }
 
   @override
+  void didUpdateWidget(CalendarViewWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.wins != widget.wins) {
+      setState(() => _updateSelectedDayWins());
+    }
+  }
+
+  @override
   void dispose() {
     _cardController.dispose();
     super.dispose();
+  }
+
+  bool _isPastDay(DateTime day) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    return DateTime(day.year, day.month, day.day).isBefore(today);
+  }
+
+  Future<void> _onAddPastWin() async {
+    if (_selectedDay == null) return;
+    HapticFeedback.mediumImpact();
+    final result = await Navigator.pushNamed(
+      context,
+      '/add-win-modal',
+      arguments: {'backfill': true, 'date': _selectedDay},
+    );
+    if (result == true) widget.onWinAdded?.call();
   }
 
   void _updateSelectedDayWins() {
@@ -384,7 +411,12 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
     final title = (win['title'] as String?) ?? '';
     final reflection = (win['reflection'] as String?) ?? '';
 
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        Navigator.pushNamed(context, '/win-detail-screen', arguments: win);
+      },
+      child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -430,6 +462,7 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
           ],
         ],
       ),
+      ),
     );
   }
 
@@ -458,6 +491,22 @@ class _CalendarViewWidgetState extends State<CalendarViewWidget>
           Text('Nothing logged this day.',
             style: WDDLDesignSystem.body.copyWith(color: WDDLDesignSystem.inkMuted),
           ),
+          if (_selectedDay != null && _isPastDay(_selectedDay!)) ...[
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: _onAddPastWin,
+              child: Text(
+                'Add a win from memory',
+                style: WDDLDesignSystem.body.copyWith(
+                  color: WDDLDesignSystem.sage,
+                  fontWeight: FontWeight.w600,
+                  decoration: TextDecoration.underline,
+                  decorationColor:
+                      WDDLDesignSystem.sage.withValues(alpha: 0.4),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

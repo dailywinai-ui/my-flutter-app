@@ -101,8 +101,8 @@ class NotificationService {
 
     await _plugin.zonedSchedule(
       _notificationId,
-      'What do you want to remember about today?',
-      'Take a moment to reflect on what went well today.',
+      'Remember your life.',
+      'Log today\'s win before the day slips away.',
       scheduled,
       const NotificationDetails(
         iOS: DarwinNotificationDetails(

@@ -24,7 +24,7 @@ class _RotatingQuoteWidgetState extends State<RotatingQuoteWidget>
     "Every small step forward counts 🌱",
     "Progress, not perfection.",
     "Consistency is the quiet superpower.",
-    "You showed up today — that's a win.",
+    "You showed up today. That's a win.",
   ];
 
   @override

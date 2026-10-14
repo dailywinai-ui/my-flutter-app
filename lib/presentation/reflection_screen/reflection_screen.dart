@@ -167,7 +167,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       const SizedBox(height: 10),
 
                       Text(
-                        'Reflection helps you understand your progress — not perform it.',
+                        'Reflection helps you understand your progress, not perform it.',
                         style: WDDLDesignSystem.body.copyWith(
                           color: WDDLDesignSystem.inkMuted,
                         ),

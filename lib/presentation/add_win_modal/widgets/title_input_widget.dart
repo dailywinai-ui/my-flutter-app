@@ -96,7 +96,7 @@ class _TitleInputWidgetState extends State<TitleInputWidget> {
                 ),
                 decoration: InputDecoration(
                   hintText:
-                      'Exercised for 30 minutes, finished a task, or had a great conversation — what\'s your win?',
+                      'Exercised for 30 minutes, finished a task, or had a great conversation. What\'s your win?',
                   hintStyle: theme.textTheme.bodyLarge?.copyWith(
                     color: const Color(0xFF9AA0A6),
                     fontSize: 16,

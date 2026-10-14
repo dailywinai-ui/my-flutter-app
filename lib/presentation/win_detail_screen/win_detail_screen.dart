@@ -23,11 +23,50 @@ class _WinDetailScreenState extends State<WinDetailScreen> {
   int currentIndex = 0;
   bool isLoading = true;
   String? errorMessage;
+  Map<String, dynamic>? _requestedWin;
+  bool _argsRead = false;
 
   @override
   void initState() {
     super.initState();
     _loadUserWins();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_argsRead) return;
+    _argsRead = true;
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Map<String, dynamic> && args['id'] != null) {
+      _requestedWin = _normalizeWin(args);
+    }
+  }
+
+  /// Callers pass win maps in different shapes (DateTime vs ISO string vs
+  /// display string for the date). Normalize to the shape this screen uses.
+  Map<String, dynamic> _normalizeWin(Map<String, dynamic> args) {
+    final dateVal = args['date'];
+    final tsVal = args['timestamp'];
+    DateTime fallback = DateTime.now();
+    if (tsVal is DateTime) fallback = tsVal;
+    if (dateVal is DateTime) fallback = dateVal;
+    final parsedIso = dateVal is String ? DateTime.tryParse(dateVal) : null;
+    if (parsedIso != null) fallback = parsedIso;
+    final displayDate = dateVal is DateTime
+        ? _fmtDate(dateVal)
+        : parsedIso != null
+            ? _fmtDate(parsedIso)
+            : (dateVal is String ? dateVal : _fmtDate(fallback));
+    return {
+      'id': args['id'],
+      'date': displayDate,
+      'title': args['title'] ?? '',
+      'reflection': args['reflection'] ?? '',
+      'mood': args['mood'] ?? 3,
+      'timestamp': tsVal is DateTime ? tsVal : fallback,
+      'type': args['type'] ?? 'daily_win',
+    };
   }
 
   Future<void> _loadUserWins() async {
@@ -57,10 +96,22 @@ class _WinDetailScreenState extends State<WinDetailScreen> {
       formatted.sort((a, b) =>
           (b["timestamp"] as DateTime).compareTo(a["timestamp"] as DateTime));
 
+      var startIndex = 0;
+      final requested = _requestedWin;
+      if (requested != null) {
+        final idx =
+            formatted.indexWhere((w) => w['id'] == requested['id']);
+        if (idx != -1) {
+          startIndex = idx;
+        } else {
+          formatted.insert(0, requested);
+          startIndex = 0;
+        }
+      }
       setState(() {
         allWins = formatted;
-        currentWin  = allWins.isNotEmpty ? allWins.first : {};
-        currentIndex = 0;
+        currentWin  = allWins.isNotEmpty ? allWins[startIndex] : {};
+        currentIndex = startIndex;
         isLoading   = false;
       });
     } catch (error) {

@@ -22,8 +22,7 @@ class _InsightsScreenState extends State<InsightsScreen>
   // Computed insights
   int _totalWins = 0;
   int _monthCount = 0;
-  int _consecutiveStreak = 0;
-  int _longestStreak = 0;
+  int _daysRemembered = 0;
   int _reflectionCount = 0;
   String _bestDayOfWeek = '';
   List<int> _winsByDayLast7 = List.filled(7, 0);
@@ -93,32 +92,12 @@ class _InsightsScreenState extends State<InsightsScreen>
       }
     }
 
-    // ── Consecutive streak (from today back) ──────────────
-    _consecutiveStreak = 0;
-    DateTime check = now;
-    while (wins.any((w) => _same(DateTime.parse(w.winDate.toString()), check))) {
-      _consecutiveStreak++;
-      check = check.subtract(const Duration(days: 1));
-    }
-
-    // ── Longest streak ever ────────────────────────────────
-    final sortedDates = wins
+    // ── Days remembered (distinct calendar days, no streak pressure) ──
+    _daysRemembered = wins
         .map((w) => DateTime.parse(w.winDate.toString()))
+        .map((d) => DateTime(d.year, d.month, d.day))
         .toSet()
-        .toList()
-      ..sort();
-    int best = 0, current = 0;
-    DateTime? prev;
-    for (final d in sortedDates) {
-      if (prev != null && d.difference(prev).inDays == 1) {
-        current++;
-      } else {
-        current = 1;
-      }
-      if (current > best) best = current;
-      prev = d;
-    }
-    _longestStreak = best;
+        .length;
 
     // ── Best day of week ───────────────────────────────────
     final dayCounts = List.filled(7, 0); // Mon=0 … Sun=6
@@ -178,8 +157,9 @@ class _InsightsScreenState extends State<InsightsScreen>
         final gap = sortedDates[i].difference(sortedDates[i - 1]).inDays;
         if (gap > maxGap) maxGap = gap;
       }
-      if (maxGap > 1) {
-        _longestGapMessage = '$maxGap day${maxGap == 1 ? '' : 's'}';
+      final longestBreak = maxGap - 1;
+      if (longestBreak >= 1) {
+        _longestGapMessage = '$longestBreak day${longestBreak == 1 ? '' : 's'}';
       }
     }
   }
@@ -331,9 +311,6 @@ class _InsightsScreenState extends State<InsightsScreen>
             const SizedBox(height: 20),
           ],
 
-          // ── Progress halo ─────────────────────────────────
-          if (_consecutiveStreak > 0)
-            _staggered(5, _buildStreakHalo()),
         ],
       ),
     );
@@ -345,12 +322,12 @@ class _InsightsScreenState extends State<InsightsScreen>
       children: [
         _buildStat('$_monthCount', 'this month'),
         _buildStatDivider(),
-        _buildStat('$_consecutiveStreak', 'day streak'),
+        _buildStat('$_daysRemembered', 'days remembered'),
         _buildStatDivider(),
         _buildStat(
           _reflectionCount > 0
               ? '${((_reflectionCount / _totalWins) * 100).round()}%'
-              : '—',
+              : '0%',
           'reflected',
         ),
       ],
@@ -519,8 +496,7 @@ class _InsightsScreenState extends State<InsightsScreen>
                   lineBarsData: [
                     LineChartBarData(
                       spots: spots,
-                      isCurved: true,
-                      curveSmoothness: 0.4,
+                      isCurved: false,
                       color: WDDLDesignSystem.sage,
                       barWidth: 2,
                       dotData: const FlDotData(show: false),
@@ -554,15 +530,6 @@ class _InsightsScreenState extends State<InsightsScreen>
               Icons.calendar_today_rounded,
               'You show up most on $_bestDayOfWeek.',
             ),
-
-          // Longest streak
-          if (_longestStreak > 1) ...[
-            const SizedBox(height: 10),
-            _patternRow(
-              Icons.local_fire_department_rounded,
-              'Your longest streak is $_longestStreak days.',
-            ),
-          ],
 
           // Longest gap
           if (_longestGapMessage.isNotEmpty) ...[
@@ -635,45 +602,6 @@ class _InsightsScreenState extends State<InsightsScreen>
           )),
         ],
       ),
-    );
-  }
-
-  // ── Streak halo ────────────────────────────────────────────
-  Widget _buildStreakHalo() {
-    final progress = (_consecutiveStreak / 30).clamp(0.0, 1.0);
-    return Column(
-      children: [
-        Container(
-          height: 6,
-          decoration: BoxDecoration(
-            color: WDDLDesignSystem.beigeDark,
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: FractionallySizedBox(
-            widthFactor: progress,
-            alignment: Alignment.centerLeft,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    WDDLDesignSystem.sage.withValues(alpha: 0.6),
-                    WDDLDesignSystem.sage,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(3),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '$_consecutiveStreak day${_consecutiveStreak == 1 ? '' : 's'} in a row',
-          style: WDDLDesignSystem.caption.copyWith(
-            color: WDDLDesignSystem.inkMuted,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 

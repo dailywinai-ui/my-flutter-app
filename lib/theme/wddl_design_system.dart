@@ -206,7 +206,7 @@ class WDDLDesignSystem {
   // ─── MICROCOPY ────────────────────────────────────────────────────────────
   static const String winLoggedMessage = 'Saved. Your future self says thanks.';
   static const String reflectionSavedMessage =
-      'Reflection saved — you\'re building self-awareness one day at a time.';
+      'Saved. One more day your future self gets to revisit.';
 
   static const List<String> calmTechMessages = [
     'Reflect. Don\'t perform.',

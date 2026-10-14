@@ -121,7 +121,7 @@ class ReflectionMoodSelectorWidget extends StatelessWidget {
         SizedBox(height: 3.h),
         Center(
           child: Text(
-            'Not every day is a high — showing up is what counts.',
+            'Not every day is a high. Showing up is what counts.',
             style: theme.textTheme.bodySmall?.copyWith(
               color: const Color(0xFF6E767D),
               fontSize: 12.sp,
