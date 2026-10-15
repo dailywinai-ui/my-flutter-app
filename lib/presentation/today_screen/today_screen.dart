@@ -309,7 +309,28 @@ class _TodayScreenState extends State<TodayScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 48),
+                          const SizedBox(height: 14),
+
+                          // Brand row
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Row(
+                              children: [
+                                _buildRingsMark(27),
+                                const SizedBox(width: 9),
+                                Text(
+                                  'Win Daily',
+                                  style: GoogleFonts.cormorantGaramond(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w600,
+                                    color: WDDLDesignSystem.ink,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 26),
 
                           // Greeting + date header
                           Padding(
@@ -327,7 +348,7 @@ class _TodayScreenState extends State<TodayScreen>
                                 Text(
                                   _formatDate(DateTime.now()),
                                   style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 26,
+                                    fontSize: 33,
                                     fontWeight: FontWeight.w600,
                                     color: WDDLDesignSystem.ink,
                                     height: 1.2,
@@ -336,9 +357,10 @@ class _TodayScreenState extends State<TodayScreen>
                                 const SizedBox(height: 6),
                                 Text(
                                   _getDayPrompt(),
-                                  style: WDDLDesignSystem.body.copyWith(
-                                    color: WDDLDesignSystem.inkMuted,
+                                  style: GoogleFonts.cormorantGaramond(
+                                    fontSize: 18,
                                     fontStyle: FontStyle.italic,
+                                    color: WDDLDesignSystem.sage,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -347,21 +369,7 @@ class _TodayScreenState extends State<TodayScreen>
                             ),
                           ),
 
-                          const SizedBox(height: 24),
-
-                          // Tab navigation
-                          TabNavigationWidget(
-                            currentIndex: _currentTabIndex,
-                            onTabChanged: _onTabChanged,
-                          ),
-
-                          // Divider
-                          Container(
-                            height: 1,
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 16),
-                            color: WDDLDesignSystem.beigeDark,
-                          ),
+                          const SizedBox(height: 22),
                         ],
                       ),
                     ),
@@ -495,43 +503,56 @@ class _TodayScreenState extends State<TodayScreen>
   Widget _buildMemoryCard() {
     final mem = _memoryWin;
     if (mem == null) return const SizedBox.shrink();
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-        context,
-        '/win-detail-screen',
-        arguments: mem,
-      ),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: WDDLDesignSystem.beigeDark, width: 1),
+    final date = mem['date'] as DateTime;
+    const months = [
+      'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+      'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER',
+    ];
+    final ago = mem['ago'] as String;
+    final agoCap =
+        ago.isEmpty ? ago : ago[0].toUpperCase() + ago.substring(1);
+    return SizedBox(
+      width: double.infinity,
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/win-detail-screen',
+          arguments: mem,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'MEMORIES',
+              'FROM YOUR ARCHIVE \u00B7 ${months[date.month - 1]} ${date.day}',
               style: WDDLDesignSystem.eyebrow
                   .copyWith(color: WDDLDesignSystem.sage),
             ),
             const SizedBox(height: 10),
             Text(
-              '"${mem['title']}"',
+              mem['title'] as String,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 17,
+                fontSize: 19,
                 fontStyle: FontStyle.italic,
                 color: WDDLDesignSystem.ink,
-                height: 1.5,
+                height: 1.4,
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              'From ${mem['ago']}',
-              style: WDDLDesignSystem.caption
-                  .copyWith(color: WDDLDesignSystem.sage),
+            const SizedBox(height: 6),
+            RichText(
+              text: TextSpan(
+                style: WDDLDesignSystem.caption
+                    .copyWith(color: WDDLDesignSystem.inkMuted),
+                children: [
+                  TextSpan(
+                    text: agoCap,
+                    style: TextStyle(
+                      color: WDDLDesignSystem.sage,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const TextSpan(text: ' \u00B7 Tap to reread'),
+                ],
+              ),
             ),
           ],
         ),
@@ -546,26 +567,80 @@ class _TodayScreenState extends State<TodayScreen>
     return 'What went right today?';
   }
 
+  Widget _buildRingsMark(double size) {
+    Widget ring(double s, double opacity) => Container(
+          width: s,
+          height: s,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: WDDLDesignSystem.sage.withValues(alpha: opacity),
+              width: 1.6,
+            ),
+          ),
+        );
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          ring(size, 1),
+          ring(size * 0.62, 0.65),
+          ring(size * 0.3, 0.4),
+        ],
+      ),
+    );
+  }
+
   Widget _buildWeekDots() {
+    const letters = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     final todayWeekday = DateTime.now().weekday;
     return Row(
       children: List.generate(7, (i) {
         final weekday = i + 1;
         final logged = _weekDots.contains(weekday);
         final isToday = weekday == todayWeekday;
-        return Container(
-          margin: EdgeInsets.only(right: i == 6 ? 0 : 10),
+        final dot = Container(
           width: 10,
           height: 10,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: logged ? WDDLDesignSystem.sage : Colors.transparent,
             border: Border.all(
-              color: isToday
-                  ? WDDLDesignSystem.sage
-                  : WDDLDesignSystem.beigeDark,
-              width: isToday ? 1.5 : 1,
+              color:
+                  logged ? WDDLDesignSystem.sage : WDDLDesignSystem.beigeDark,
+              width: 1,
             ),
+          ),
+        );
+        return Expanded(
+          child: Column(
+            children: [
+              Text(
+                letters[i],
+                style: WDDLDesignSystem.caption.copyWith(
+                  fontSize: 9,
+                  letterSpacing: 1,
+                  color: WDDLDesignSystem.inkMuted.withValues(alpha: 0.6),
+                ),
+              ),
+              const SizedBox(height: 5),
+              isToday
+                  ? Container(
+                      padding: const EdgeInsets.all(2.5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: WDDLDesignSystem.sage, width: 1.4),
+                      ),
+                      child: dot,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(2.5),
+                      child: dot,
+                    ),
+            ],
           ),
         );
       }),
@@ -613,48 +688,32 @@ class _TodayScreenState extends State<TodayScreen>
     if (m == null) return const SizedBox.shrink();
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.symmetric(vertical: 11),
       decoration: BoxDecoration(
-        color: WDDLDesignSystem.sageBg.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: WDDLDesignSystem.sagePale, width: 1),
+        border: Border(
+          top: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+          bottom: BorderSide(color: WDDLDesignSystem.beigeDark, width: 1),
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            children: [
-              Text(
-                'MILESTONE',
-                style: WDDLDesignSystem.eyebrow
-                    .copyWith(color: WDDLDesignSystem.sage),
+          _buildRingsMark(20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              m['title'] as String,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 17,
+                fontStyle: FontStyle.italic,
+                color: WDDLDesignSystem.ink,
               ),
-              const Spacer(),
-              GestureDetector(
-                onTap: _dismissMilestone,
-                child: const Icon(Icons.close_rounded,
-                    size: 18, color: WDDLDesignSystem.inkMuted),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            m['title'] as String,
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              color: WDDLDesignSystem.ink,
-              height: 1.3,
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            'Your archive is becoming something irreplaceable.',
-            style: WDDLDesignSystem.body.copyWith(
-              color: WDDLDesignSystem.inkMuted,
-              fontStyle: FontStyle.italic,
-            ),
+          GestureDetector(
+            onTap: _dismissMilestone,
+            child: const Icon(Icons.close_rounded,
+                size: 16, color: WDDLDesignSystem.inkMuted),
           ),
         ],
       ),
@@ -681,46 +740,71 @@ class _TodayScreenState extends State<TodayScreen>
   }
 
   Widget _buildWinState() {
+    final win = _todayWin!;
+    final ts = win['timestamp'] as DateTime?;
+    String agoText = '';
+    if (ts != null) {
+      final diff = DateTime.now().difference(ts);
+      if (diff.inMinutes < 1) {
+        agoText = 'just now';
+      } else if (diff.inMinutes < 60) {
+        agoText = '${diff.inMinutes}m ago';
+      } else if (diff.inHours < 24) {
+        agoText = '${diff.inHours}h ago';
+      } else {
+        agoText = '${diff.inDays}d ago';
+      }
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WDDLDesignSystem.newWinCardAnimation(
-            child: WinCardWidget(
-              winData: _todayWin!,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: _onWinCardTap,
               onLongPress: _onWinCardLongPress,
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // Win logged banner
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: WDDLDesignSystem.sageBg.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: WDDLDesignSystem.sagePale),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.check_circle_outline_rounded,
-                    color: WDDLDesignSystem.sage, size: 18),
-                const SizedBox(width: 10),
-                Text(
-                  WDDLDesignSystem.winLoggedMessage,
-                  style: WDDLDesignSystem.body.copyWith(
-                    color: WDDLDesignSystem.sage,
-                    fontWeight: FontWeight.w500,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "TODAY'S WIN",
+                    style: WDDLDesignSystem.eyebrow
+                        .copyWith(color: WDDLDesignSystem.sage),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  Text(
+                    win['title'] as String? ?? '',
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 25,
+                      color: WDDLDesignSystem.ink,
+                      height: 1.32,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(
+                        agoText.isEmpty ? 'Saved' : 'Saved \u00B7 $agoText',
+                        style: WDDLDesignSystem.caption
+                            .copyWith(color: WDDLDesignSystem.inkMuted),
+                      ),
+                      const Spacer(),
+                      Text(
+                        'Add a reflection \u2192',
+                        style: WDDLDesignSystem.caption.copyWith(
+                          color: WDDLDesignSystem.sage,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-
-          const SizedBox(height: 12),
+          const SizedBox(height: 18),
           _buildMilestoneCard(),
           _buildMemoryCard(),
           const SizedBox(height: 80),
