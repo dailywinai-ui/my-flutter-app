@@ -35,6 +35,7 @@ class _TodayScreenState extends State<TodayScreen>
   Map<String, dynamic>? _memoryWin;
   Set<int> _weekDots = {};
   Map<String, Object>? _pendingMilestone;
+  int _lastTotalWins = 0;
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
@@ -580,6 +581,7 @@ class _TodayScreenState extends State<TodayScreen>
   ];
 
   Future<void> _checkMilestones(int totalWins) async {
+    _lastTotalWins = totalWins;
     try {
       final prefs = await SharedPreferences.getInstance();
       final celebrated = prefs.getStringList('celebrated_milestones') ?? [];
@@ -587,8 +589,7 @@ class _TodayScreenState extends State<TodayScreen>
       for (final m in _milestones) {
         final count = m['count'] as int;
         if (totalWins >= count && !celebrated.contains('$count')) {
-          hit = m;
-          break;
+          hit = m; // keep looping: end on the highest milestone reached
         }
       }
       if (mounted) setState(() => _pendingMilestone = hit);
@@ -601,7 +602,12 @@ class _TodayScreenState extends State<TodayScreen>
       try {
         final prefs = await SharedPreferences.getInstance();
         final celebrated = prefs.getStringList('celebrated_milestones') ?? [];
-        celebrated.add('${m['count']}');
+        for (final mm in _milestones) {
+          final c = mm['count'] as int;
+          if (c <= _lastTotalWins && !celebrated.contains('$c')) {
+            celebrated.add('$c');
+          }
+        }
         await prefs.setStringList('celebrated_milestones', celebrated);
       } catch (_) {}
     }
