@@ -29,17 +29,14 @@ class _ReflectionScreenState extends State<ReflectionScreen>
 
   final List<String> _allPrompts = [
     'What made this possible?',
-    'How do you feel about this achievement?',
-    'What did you learn from this experience?',
-    'What would you do differently next time?',
-    'Who helped you achieve this win?',
-    'What\'s your next step forward?',
-    'Why was this important to you?',
-    'What surprised you most about this?',
-    'How will this help you in the future?',
+    'What do you want to remember about this?',
+    'Who was part of this?',
+    'What almost stopped you?',
+    'What detail do you never want to forget?',
+    'What would you tell yourself from a year ago?',
+    'Why did this matter to you?',
+    'What surprised you?',
     'What are you most proud of?',
-    'What obstacles did you overcome?',
-    'How has this changed you?',
   ];
 
   late final List<String> _displayedPrompts;
@@ -142,13 +139,13 @@ class _ReflectionScreenState extends State<ReflectionScreen>
               child: SafeArea(
                 bottom: false,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 28),
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 22),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Eyebrow
                       Text(
-                        'STEP 02',
+                        'REFLECTION',
                         style: WDDLDesignSystem.eyebrow,
                       ),
                       const SizedBox(height: 8),
@@ -167,7 +164,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       const SizedBox(height: 10),
 
                       Text(
-                        'Reflection helps you understand your progress, not perform it.',
+                        'A few words now, for the version of you who will reread this.',
                         style: WDDLDesignSystem.body.copyWith(
                           color: WDDLDesignSystem.inkMuted,
                         ),
@@ -193,7 +190,7 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                     const SizedBox(height: 12),
 
                     Container(
-                      constraints: const BoxConstraints(minHeight: 140),
+                      height: 170,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -202,6 +199,9 @@ class _ReflectionScreenState extends State<ReflectionScreen>
                       child: TextField(
                         controller: _reflectionController,
                         maxLines: null,
+                        minLines: null,
+                        expands: true,
+                        textAlignVertical: TextAlignVertical.top,
                         style: WDDLDesignSystem.journalText,
                         decoration: InputDecoration(
                           hintText: 'Today, I realized that…',
