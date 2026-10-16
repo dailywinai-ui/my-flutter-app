@@ -694,33 +694,6 @@ class _TodayScreenState extends State<TodayScreen>
           ),
 
           const SizedBox(height: 12),
-
-          // Win logged banner
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: WDDLDesignSystem.sageBg.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: WDDLDesignSystem.sagePale),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.check_circle_outline_rounded,
-                    color: WDDLDesignSystem.sage, size: 18),
-                const SizedBox(width: 10),
-                Text(
-                  WDDLDesignSystem.winLoggedMessage,
-                  style: WDDLDesignSystem.body.copyWith(
-                    color: WDDLDesignSystem.sage,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 12),
           _buildMilestoneCard(),
           _buildMemoryCard(),
           const SizedBox(height: 80),
