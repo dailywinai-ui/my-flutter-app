@@ -6,6 +6,10 @@ class DailyWin {
   final DateTime winDate;
   final int? moodRating;
   final String? reflection;
+  final List<String> photoPaths;
+  final String? tapePath;
+  final String? reflectionAudioPath;
+  final String? place;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -17,6 +21,10 @@ class DailyWin {
     required this.winDate,
     this.moodRating,
     this.reflection,
+    this.photoPaths = const [],
+    this.tapePath,
+    this.reflectionAudioPath,
+    this.place,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -30,6 +38,13 @@ class DailyWin {
       winDate: DateTime.parse(json['win_date'] as String),
       moodRating: json['mood_rating'] as int?,
       reflection: json['reflection'] as String?,
+      photoPaths: (json['photo_paths'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      tapePath: json['tape_path'] as String?,
+      reflectionAudioPath: json['reflection_audio_path'] as String?,
+      place: json['place'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
@@ -44,6 +59,10 @@ class DailyWin {
       'win_date': winDate.toIso8601String().split('T')[0], // Date only
       'mood_rating': moodRating,
       'reflection': reflection,
+      'photo_paths': photoPaths,
+      'tape_path': tapePath,
+      'reflection_audio_path': reflectionAudioPath,
+      'place': place,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
     };
@@ -57,6 +76,10 @@ class DailyWin {
     DateTime? winDate,
     int? moodRating,
     String? reflection,
+    List<String>? photoPaths,
+    String? tapePath,
+    String? reflectionAudioPath,
+    String? place,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -68,6 +91,10 @@ class DailyWin {
       winDate: winDate ?? this.winDate,
       moodRating: moodRating ?? this.moodRating,
       reflection: reflection ?? this.reflection,
+      photoPaths: photoPaths ?? this.photoPaths,
+      tapePath: tapePath ?? this.tapePath,
+      reflectionAudioPath: reflectionAudioPath ?? this.reflectionAudioPath,
+      place: place ?? this.place,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
